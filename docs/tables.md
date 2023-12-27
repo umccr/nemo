@@ -8,7 +8,7 @@ Initial sketch of tables used in utopia.
 | N  | Table           | Description                           |
 | -- | ---             | ---                                   |
 | 1  | `cvg`           | `wgs_coverage_metrics`                |
-| 2  | `cvg_contig`    | `wgs_contig_mean_cov`                 |
+| 2  | `cvgcontig`     | `wgs_contig_mean_cov`                 |
 | 3  | `fqc_bpcontent` | `fastqc_positional_base_content`      |
 | 4  | `fqc_bpavgqual` | `fastqc_positional_base_mean_quality` |
 | 5  | `fqc_bpqual`    | `fastqc_positional_quality`           |
@@ -17,17 +17,18 @@ Initial sketch of tables used in utopia.
 | 8  | `fqc_rdlen`     | `fastqc_read_lengths`                 |
 | 9  | `fqc_rdavgqual` | `fastqc_read_mean_quality`            |
 | 10 | `fqc_seqpos`    | `fastqc_sequence_positions`           |
-| 11 | `fragment_len`  | `fragment_length_hist`                |
+| 11 | `fraglen`       | `fragment_length_hist`                |
 | 12 | `map`           | `mapping_metrics`                     |
 | 13 | `ploidy`        | `ploidy_estimation_metrics`           |
 | 14 | `replay`        | `replay`                              |
 | 15 | `sv`            | `sv_metrics`                          |
 | 16 | `time`          | `time_metrics`                        |
 | 17 | `trim`          | `trimmer_metrics`                     |
-| 18 | `wgsfhist`      | `fine_hist`                           |
-| 19 | `wgshist`       | `trimmer_metrics`                     |
+| 18 | `wgsfhist`      | `wgs_fine_hist`                       |
+| 19 | `wgshist`       | `wgs_hist`                            |
 | 20 | `umi`           | `umi_metrics`                         |
-| 21 | `umi_hist`      | `umi_metrics (histogram)`             |
+| 21 | `umihist`       | `umi_metrics (histogram)`             |
+
 
 ## Category B: cttso
 
