@@ -8,11 +8,34 @@
 - **Construct**: a logical grouping of **Resources**.
 - **Resource**: e.g. S3 buckets, Lambda, DynamoDB.
 
+### Constructs
+
 A construct class takes three params:
 
-- **scope**: use `this` to say the stack is its parent.
-- **id**: logical ID of construct within app.
-- **props**: bundle of key-values passed in an object.
+- **scope**: construct's parent/owner; use `this` to say the stack is its parent.
+- **id**: logical ID of construct within app; used as namespace; should be unique within scope.
+- **props**: bundle of key-values passed in an object; can be omitted if all optional.
+
+#### AWS Construct Links
+
+- Hub - https://constructs.dev/
+  - e.g. GitHub Actions OIDC:
+    - https://constructs.dev/packages/aws-cdk-github-oidc
+    - https://github.com/aripalo/aws-cdk-github-oidc
+
+- Library
+  - https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html
+
+#### Construct Levels
+
+- L1: low level CFN Resources that are named `CfnXyz` e.g. [CfnBucket][l1-bucket]
+- L2: higher level with convenient defaults e.g. [s3.Bucket][l2-bucket]
+- L3: patterns that help with common tasks involving multiple resources e.g. [aws-apigateway.LambdaRestApi][l3-apilambda].
+
+[l1-bucket]: (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.CfnBucket.html)
+[l2-bucket]: (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)
+[l3-apilambda]: (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApi.html)
+
 
 ## Commands
 

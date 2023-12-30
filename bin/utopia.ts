@@ -4,4 +4,6 @@ import * as cdk from 'aws-cdk-lib';
 import { UtopiaStack } from '../lib/utopia-stack';
 
 const app = new cdk.App();
-new UtopiaStack(app, 'UtopiaStack', {});
+new UtopiaStack(app, 'UtopiaStack', {
+  description: 'Utopia Stack',
+});
