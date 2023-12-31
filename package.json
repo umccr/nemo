@@ -2,7 +2,7 @@
   "name": "utopia",
   "version": "0.1.0",
   "bin": {
-    "utopia": "bin/utopia.js"
+    "utopia": "bin/infrastructure.ts"
   },
   "scripts": {
     "build": "tsc",
