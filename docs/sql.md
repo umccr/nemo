@@ -1,0 +1,213 @@
+# SQL Notes
+
+- [SQL Notes](#sql-notes)
+  - [Create/drop database](#createdrop-database)
+  - [Create/drop table](#createdrop-table)
+  - [Insert data](#insert-data)
+  - [Filter data](#filter-data)
+  - [Update data](#update-data)
+  - [Delete data](#delete-data)
+  - [Primary key](#primary-key)
+  - [Foreign key](#foreign-key)
+  - [On Delete](#on-delete)
+  - [Join](#join)
+  - [Aggregate functions](#aggregate-functions)
+  - [Group by with Join](#group-by-with-join)
+
+### Create/drop database
+
+```sql
+DROP DATABASE IF EXISTS test1;
+CREATE DATABASE test1;
+```
+
+### Create/drop table
+
+```sql
+DROP TABLE IF EXISTS cities;
+CREATE TABLE cities (
+    name VARCHAR(50),
+    country VARCHAR(50),
+    population INTEGER,
+    area INTEGER
+);
+```
+
+### Insert data
+
+```sql
+INSERT INTO cities (name, country, population, area)
+VALUES
+ ('Tokyo', 'Japan', 38505000, 8223),
+ ('Delhi', 'India', 28125000, 2240),
+ ('Shanghai', 'China', 22125000, 4015),
+ ('Sao Paulo', 'Brazil', 20935000, 3043);
+```
+
+### Filter data
+
+```sql
+SELECT * FROM cities
+WHERE population > 25000000;
+```
+
+### Update data
+
+```sql
+UPDATE cities
+SET population = 39505000
+WHERE name = 'Tokyo';
+```
+
+### Delete data
+
+```sql
+DELETE FROM cities
+WHERE name = 'Sao Paulo';
+```
+
+### Primary key
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50)
+);
+```
+
+### Foreign key
+
+```sql
+CREATE TABLE photos (
+    id SERIAL PRIMARY KEY,
+    url VARCHAR(200),
+    user_id INTEGER REFERENCES users(id)
+);
+```
+
+### On Delete
+
+| Option        | Description |
+| ------------- | ----------- |
+| `RESTRICT`    | Throw error |
+| `NO ACTION`   | Throw error |
+| `CASCADE`     | Cascade     |
+| `SET NULL`    | Set null    |
+| `SET DEFAULT` | Set default |
+
+### Join
+
+```sql
+SELECT users.username, photos.url FROM users
+JOIN photos ON users.id = photos.user_id;
+```
+
+| Option  | Description                                                                                                        |
+| ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `INNER` | (default) Keep all matching rows in both tables, drop unmatched rows                                               |
+| `LEFT`  | Keep all rows in left table, using NULL in place of right unmatched rows, drop rows in right table without a match |
+| `RIGHT` | Keep all rows in right table, using NULL in place of left unmatched rows, drop rows in left table without a match  |
+| `FULL`  | Keep all matching rows in both tables, using NULL in place of unmatched rows                                       |
+
+### Aggregate functions
+
+```sql
+SELECT COUNT(*) FROM cities;
+SELECT SUM(population) FROM cities;
+SELECT AVG(population) FROM cities;
+SELECT MAX(population) FROM cities;
+SELECT MIN(population) FROM cities;
+```
+
+### Group by with Join
+
+- remember to select the group by column
+
+```sql
+SELECT authors.name, COUNT(*) FROM books
+JOIN authors ON authors.id = books.author_id
+GROUP BY authors.name;
+```
+
+### Group by Having
+
+- filters out the groups
+
+```sql
+SELECT authors.name, COUNT(*) FROM books
+JOIN authors ON authors.id = books.author_id
+GROUP BY authors.name
+HAVING COUNT(*) > 1;
+```
+
+### ORDER
+
+```sql
+SELECT * FROM cities
+ORDER BY population DESC;
+```
+
+### OFFSET and LIMIT
+
+- `OFFSET` skips the first `n` rows
+- `LIMIT` returns the first `n` rows
+
+```sql
+SELECT * FROM cities LIMIT 3;
+SELECT * FROM cities OFFSET 3;
+```
+
+- Grab the names of only the second and third most populated cities:
+
+```sql
+SELECT name FROM cities
+ORDER BY population DESC
+LIMIT 2 OFFSET 1;
+```
+
+### UNION
+
+- `UNION`: join results from two queries, and remove duplicates
+- `UNION ALL`: keeps duplicates
+
+```sql
+(
+SELECT * FROM products
+ORDER BY price DESC
+LIMIT 4
+)
+UNION
+(
+SELECT * FROM products
+ORDER BY price / weight DESC
+LIMIT 4
+);
+```
+
+### INTERSECT
+
+- `INTERSECT`: join common rows from two queries, and remove duplicates
+- `INTERSECT ALL`: keeps duplicates
+
+```sql
+(
+SELECT * FROM products
+ORDER BY price DESC
+LIMIT 4
+)
+INTERSECT
+(
+SELECT * FROM products
+ORDER BY price / weight DESC
+LIMIT 4
+);
+```
+
+### EXCEPT
+
+- `EXCEPT`: find rows in first query but not in second, and remove duplicates
+- `EXCEPT ALL`: keeps duplicates
+
+
+```sql
+```
