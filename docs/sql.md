@@ -14,6 +14,8 @@
   - [Aggregate functions](#aggregate-functions)
   - [Group by with Join](#group-by-with-join)
 
+## Table/Database Manipulation
+
 ### Create/drop database
 
 ```sql
@@ -208,6 +210,115 @@ LIMIT 4
 - `EXCEPT`: find rows in first query but not in second, and remove duplicates
 - `EXCEPT ALL`: keeps duplicates
 
+## Data Types
+
+### Numeric
+
+| Name                | Description                    |
+| ------------        | -----------                    |
+| `SMALLINT`          | +/-32,768                      |
+| `INTEGER`           | +/-2,147,483,648               |
+| `BIGINT`            | +/-9,223,372,036,854,775,808   |
+| `DECIMAL`/`NUMERIC` | Use this for precision         |
+| `REAL`              | 4 bytes                        |
+| `DOUBLE PRECISION`  | 8 bytes                        |
+| `SMALLSERIAL`       | 1 to 32,767                    |
+| `SERIAL`            | 1 to 2,147,483,647             |
+| `BIGSERIAL`         | 1 to 9,223,372,036,854,775,807 |
+
+### Character
+
+| Name         | Description     |
+| ----         | -----------     |
+| `CHAR`       | Fixed length    |
+| `VARCHAR(N)` | Variable length |
+| `TEXT`       | Variable length |
+
+### Date and Time
+
+| Name | Description |
+| ---- | ----------- |
+| `DATE` | YYYY-MM-DD  |
+| `TIME` | HH:MM:SS    |
+| `TIMESTAMP` | YYYY-MM-DD HH:MM:SS |
+
+## Validation and Constraints
+
+### NOT NULL
+
+- `CREATE TABLE`
 
 ```sql
+CREATE TABLE phones (
+  id SERIAL PRIMARY KEY,
+  manufacturer VARCHAR(255) NOT NULL,
+  model VARCHAR(255) NOT NULL
+);
+```
+
+- `ALTER TABLE`
+
+```sql
+ALTER TABLE phones
+ALTER COLUMN manufacturer
+SET NOT NULL;
+```
+
+### DEFAULT
+
+- `CREATE TABLE`
+
+```sql
+CREATE TABLE phones (
+  id SERIAL PRIMARY KEY,
+  manufacturer VARCHAR(255) DEFAULT 'Apple',
+  model VARCHAR(255) NOT NULL
+);
+```
+
+- `ALTER TABLE`
+
+```sql
+ALTER TABLE phones
+ALTER COLUMN manufacturer
+SET DEFAULT 'Apple';
+```
+
+### UNIQUE
+
+- `CREATE TABLE`
+
+```sql
+CREATE TABLE phones (
+  id SERIAL PRIMARY KEY,
+  manufacturer VARCHAR(255) NOT NULL,
+  model VARCHAR(255) NOT NULL UNIQUE
+);
+```
+
+- `ALTER TABLE`
+
+```sql
+ALTER TABLE phones
+ADD UNIQUE(model);
+```
+
+### CHECK
+
+- `CREATE TABLE`
+
+```sql
+CREATE TABLE phones (
+  id SERIAL PRIMARY KEY,
+  manufacturer VARCHAR(255) NOT NULL,
+  model VARCHAR(255) NOT NULL,
+  price NUMERIC CHECK (price > 0)
+);
+```
+
+- `ALTER TABLE`
+
+```sql
+ALTER TABLE phones
+ADD CHECK (price > 0);
 ```
