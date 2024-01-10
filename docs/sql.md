@@ -1,20 +1,38 @@
 # SQL Notes
 
 - [SQL Notes](#sql-notes)
-  - [Create/drop database](#createdrop-database)
-  - [Create/drop table](#createdrop-table)
-  - [Insert data](#insert-data)
-  - [Filter data](#filter-data)
-  - [Update data](#update-data)
-  - [Delete data](#delete-data)
-  - [Primary key](#primary-key)
-  - [Foreign key](#foreign-key)
-  - [On Delete](#on-delete)
-  - [Join](#join)
-  - [Aggregate functions](#aggregate-functions)
-  - [Group by with Join](#group-by-with-join)
+  - [Table Manipulation](#table-manipulation)
+    - [Create/drop database](#createdrop-database)
+    - [Create/drop table](#createdrop-table)
+    - [Insert data](#insert-data)
+    - [Filter data](#filter-data)
+    - [Update data](#update-data)
+    - [Delete data](#delete-data)
+    - [Primary key](#primary-key)
+    - [Foreign key](#foreign-key)
+    - [On Delete](#on-delete)
+    - [Join](#join)
+    - [Aggregate functions](#aggregate-functions)
+    - [Group by with Join](#group-by-with-join)
+    - [Group by Having](#group-by-having)
+    - [ORDER](#order)
+    - [OFFSET and LIMIT](#offset-and-limit)
+    - [UNION](#union)
+    - [INTERSECT](#intersect)
+    - [EXCEPT](#except)
+  - [Data Types](#data-types)
+    - [Numeric](#numeric)
+    - [Character](#character)
+    - [Date and Time](#date-and-time)
+  - [Validation and Constraints](#validation-and-constraints)
+    - [NOT NULL](#not-null)
+    - [DEFAULT](#default)
+    - [UNIQUE](#unique)
+    - [CHECK](#check)
+  - [Internals](#internals)
+  - [Index](#index)
 
-## Table/Database Manipulation
+## Table Manipulation
 
 ### Create/drop database
 
@@ -215,7 +233,7 @@ LIMIT 4
 ### Numeric
 
 | Name                | Description                    |
-| ------------        | -----------                    |
+| ------------------- | ------------------------------ |
 | `SMALLINT`          | +/-32,768                      |
 | `INTEGER`           | +/-2,147,483,648               |
 | `BIGINT`            | +/-9,223,372,036,854,775,808   |
@@ -229,17 +247,17 @@ LIMIT 4
 ### Character
 
 | Name         | Description     |
-| ----         | -----------     |
+| ------------ | --------------- |
 | `CHAR`       | Fixed length    |
 | `VARCHAR(N)` | Variable length |
 | `TEXT`       | Variable length |
 
 ### Date and Time
 
-| Name | Description |
-| ---- | ----------- |
-| `DATE` | YYYY-MM-DD  |
-| `TIME` | HH:MM:SS    |
+| Name        | Description         |
+| ----------- | ------------------- |
+| `DATE`      | YYYY-MM-DD          |
+| `TIME`      | HH:MM:SS            |
 | `TIMESTAMP` | YYYY-MM-DD HH:MM:SS |
 
 ## Validation and Constraints
@@ -321,4 +339,101 @@ CREATE TABLE phones (
 ```sql
 ALTER TABLE phones
 ADD CHECK (price > 0);
+```
+
+## Internals
+
+```sql
+SHOW data_directory;
+# /opt/homebrew/var/postgresql@15
+```
+
+```sql
+# see the dir above for the oid folders
+SELECT oid, datname
+FROM pg_database;
+```
+
+| oid   | datname     |
+| ----- | ----------- |
+| 5     | "postgres"  |
+| 16388 | "pdiakumis" |
+| 1     | "template1" |
+| 4     | "template0" |
+| 16451 | "test"      |
+| 16742 | "foo"       |
+
+```sql
+# shows the individual files within each folder
+SELECT * FROM pg_class;
+```
+
+| Name       | Description                                                                                                 |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| Heap       | File with all the data of the table                                                                         |
+| Tuple/item | Row from the table                                                                                          |
+| Block/page | Heap file is divided into blocks, each containing a number of rows. The size of each block is usually 8 KB. |
+
+## Index
+
+- Create
+
+```sql
+CREATE INDEX ON cities (name, population);
+```
+
+- Drop
+
+```sql
+DROP INDEX cities_name_population_idx;
+```
+
+- Benchmark
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM users
+WHERE username = 'Emil30';
+```
+
+- Size
+
+```sql
+SELECT pg_size_pretty(pg_relation_size('users'));
+```
+
+- List indexes for database
+
+```sql
+SELECT relname, relkind
+FROM pg_class
+WHERE relkind = 'i';
+```
+
+## Views
+
+- Create
+
+```sql
+CREATE VIEW recent_posts AS (
+    SELECT * FROM posts
+    ORDER BY created_at DESC
+    LIMIT 10
+);
+```
+
+- Change
+  - e.g. from 10 to 15
+
+```sql
+CREATE OR REPLACE VIEW recent_posts AS (
+    SELECT * FROM posts
+    ORDER BY created_at DESC
+    LIMIT 15
+);
+```
+
+- Drop
+
+```sql
+DROP VIEW recent_posts;
 ```
