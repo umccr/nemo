@@ -1,8 +1,8 @@
 {
-  "name": "utopia",
+  "name": "nemo",
   "version": "0.1.0",
   "bin": {
-    "utopia": "bin/infrastructure.ts"
+    "nemo": "bin/infrastructure.ts"
   },
   "scripts": {
     "build": "tsc",

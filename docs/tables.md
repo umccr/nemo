@@ -1,6 +1,6 @@
 # Tables
 
-Initial sketch of tables used in utopia.
+Initial sketch of tables used in nemo.
 
 ## Category A: DRAGEN Metrics
 
