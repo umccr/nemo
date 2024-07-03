@@ -31,6 +31,7 @@
     - [CHECK](#check)
   - [Internals](#internals)
   - [Index](#index)
+  - [Views](#views)
 
 ## Table Manipulation
 

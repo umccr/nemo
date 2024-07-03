@@ -1,12 +1,14 @@
 # AWS RDS
 
 - DB instance: isolated db environment
-  - takes an ID (e.g. `db-xxxxxx`) specified by customer, used in DNS hostname allocated by RDS (e.g. `db-xxxxxx.ap-southeast-2.rds.amazonaws.com`)
+  - takes an ID (e.g. `db-xxxxxx`) specified by customer, used in DNS hostname
+    allocated by RDS (e.g. `db-xxxxxx.ap-southeast-2.rds.amazonaws.com`)
 - DB engine: MySQL, PostgreSQL etc.
 - DB instance class: computation and memory of instance
   - consists of instance type and size
   - e.g.: db.m6g type, db.m6g.2xlarge class
-- DB instance storage: General purpose SSD (dev/test), Provisioned IOPS SSD (prod).
+- DB instance storage: General purpose SSD (dev/test), Provisioned IOPS SSD
+  (prod).
 - VPC: run DB instance on a VPC (IP address range, subnet, routing, ACLs etc.)
   - no additional cost
 - DB Regions/AZs:
@@ -57,4 +59,3 @@ aws ec2 describe-availability-zones --region $AWS_DEFAULT_REGION | jq -r '.Avail
 ## ap-southeast-2b
 ## ap-southeast-2c
 ```
-
