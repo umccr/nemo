@@ -1,32 +1,50 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
-import { ApplicationLoadBalancedFargateService } from 'aws-cdk-lib/aws-ecs-patterns';
+import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import { S3Bucket } from './constructs/S3Bucket';
+import { Bucket, CfnBucket } from 'aws-cdk-lib/aws-s3';
+import { CfnParameter, Duration } from 'aws-cdk-lib/core';
+
+class L3Bucket extends Construct {
+  constructor(scope: Construct, id: string, expiration: number) {
+    super(scope, id);
+    new Bucket(this, 'nemo-l3-dev', {
+      lifecycleRules: [
+        {
+          expiration: Duration.days(expiration),
+        },
+      ],
+    });
+  }
+}
 
 export class NemoWebStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-
-    new ApplicationLoadBalancedFargateService(this, 'MyWebServer', {
-      taskImageOptions: {
-        image: ContainerImage.fromRegistry('amazon/amazon-ecs-sample'),
+    new CfnBucket(this, 'nemo-l1-dev', {
+      lifecycleConfiguration: {
+        rules: [
+          {
+            expirationInDays: 1,
+            status: 'Enabled',
+          },
+        ],
       },
-      publicLoadBalancer: true,
     });
-
-    // const bucket = new S3Bucket(this, 'MyRemovableBucket', {
-    //   environment: 'dev',
-    // });
-
-    // add a lambda function that works with docker image
-    // const lambda = new DockerImageFunction(this, 'MyFunction', {
-    //   code: DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda')),
-    //   environment: {
-    //     BUCKET_NAME: bucket.bucketName,
-    //   },
-    // });
-
-    // bucket.grantReadWrite(lambda);
+    const duration = new CfnParameter(this, 'duration', {
+      default: 6,
+      minValue: 1,
+      maxValue: 10,
+      type: 'Number',
+    });
+    const l2bucket = new Bucket(this, 'nemo-l2-dev', {
+      lifecycleRules: [
+        {
+          expiration: Duration.days(duration.valueAsNumber),
+        },
+      ],
+    });
+    new CfnOutput(this, 'nemo-l2-dev-output', {
+      value: l2bucket.bucketName,
+    });
+    new L3Bucket(this, 'nemo-l3-dev', 3);
   }
 }

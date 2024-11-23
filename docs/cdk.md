@@ -64,3 +64,40 @@ A construct class takes three params:
 | `npx cdk synth`          | emit synthesized cfn template     |
 | `npx cdk destroy`        | destroy stack                     |
 | `npx cdk bootstrap`      | bootstrap cdk project             |
+
+## Tips
+
+- Debug bucket names
+  - Use `CfnOutput` and check `cdk synth`
+
+```ts
+import { CfnOutput } from 'aws-cdk-lib';
+
+const l2bucket = new Bucket(this, 'foo');
+new CfnOutput(this, 'output1', {
+  value: l2bucket.bucketName,
+});
+```
+
+- Use deploy parameter:
+
+```ts
+ const duration = new CfnParameter(this, 'duration', {
+   default: 6,
+   minValue: 1,
+   maxValue: 10,
+   type: 'Number',
+ });
+ const l2bucket = new Bucket(this, 'nemo-l2-dev', {
+   lifecycleRules: [
+     {
+       expiration: Duration.days(duration.valueAsNumber),
+     },
+   ],
+ });
+```
+Then:
+
+```shell
+cdk deploy --parameters duration=8
+```
