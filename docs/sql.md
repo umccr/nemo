@@ -1,6 +1,9 @@
 # SQL Notes
 
 - [SQL Notes](#sql-notes)
+  - [Misc](#misc)
+    - [ACID](#acid)
+    - [Data Access API and Service](#data-access-api-and-service)
   - [Table Manipulation](#table-manipulation)
     - [Create/drop database](#createdrop-database)
     - [Create/drop table](#createdrop-table)
@@ -32,6 +35,21 @@
   - [Internals](#internals)
   - [Index](#index)
   - [Views](#views)
+  - [psql](#psql)
+
+## Misc
+
+### ACID
+
+- Atomic:
+- Consistent:
+- Isolated: online data backups
+- Durable: guaranteed not to lose committed data
+
+### Data Access API and Service
+
+- PostgreSQL: data access service (stateful)
+- API: SQL
 
 ## Table Manipulation
 
@@ -344,6 +362,23 @@ ADD CHECK (price > 0);
 
 ## Internals
 
+- Size per database:
+
+```sql
+SELECT datname, pg_database_size(datname) AS bytes
+FROM pg_database
+```
+
+```text
+  datname  │  bytes
+═══════════╪═════════
+ postgres  │ 7761043
+ pdiakumis │ 7842963
+ template1 │ 7842963
+ template0 │ 7602703
+ test1     │ 7924883
+```
+
 ```sql
 SHOW data_directory;
 # /opt/homebrew/var/postgresql@15
@@ -437,4 +472,20 @@ CREATE OR REPLACE VIEW recent_posts AS (
 
 ```sql
 DROP VIEW recent_posts;
+```
+
+## psql
+
+- `\c db_name`: choose database
+- `\?`: help
+- `\l`: list databases
+- `\dt`: list tables
+- `\e`: open last query in EDITOR
+
+## R
+
+- List tables
+
+```r
+DBI::dbListObjects(conn, Id(schema = "mySchemaName"))
 ```
