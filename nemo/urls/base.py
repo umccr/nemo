@@ -23,5 +23,6 @@ api_version = API_VERSION
 api_base = f"{api_namespace}/{api_version}/"
 
 urlpatterns = [
+    path("polls/", include("polls.urls")),
     path("admin/", admin.site.urls),
 ]

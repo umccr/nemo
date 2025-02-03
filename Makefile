@@ -22,14 +22,20 @@ lint:
 format:
 	@uv run ruff format
 
+migrate:
+	@uv run ./manage.py migrate
+
+pyshell:
+	@uv run ./manage.py shell
+
+
+
+
 ## full mock suite test pipeline - install deps, bring up compose stack, run suite, bring down compose stack
 #test: install up suite down
 #
 #suite:
 #	@python manage.py test
-#
-#migrate:
-#	@python manage.py migrate
 #
 #start: migrate
 #	@python manage.py runserver_plus 0.0.0.0:8000
