@@ -11,4 +11,21 @@ uv
 | Environment setup      | `uv sync`                    | Creates `.venv` and `uv.lock`                                            |
 | Environment lock       | `uv lock`                    |                                                                          |
 | Environment activation | `source .venv/bin/activate`  |                                                                          |
-| Django runserver       | `uv run manage.py runserver` | `uv sync` -> `source .venv/bin/activate` -> `python manage.py runserver` |
+| Add package            | `uv add django`              |                                                                          |
+| Remove package         | `uv remove django`           |                                                                          |
+
+- For django:
+
+Instead of the following:
+
+```bash
+uv sync
+source .venv/bin/activate
+python manage.py runserver
+```
+
+Use:
+
+```bash
+uv run manage.py runserver
+```

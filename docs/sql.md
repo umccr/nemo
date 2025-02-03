@@ -481,6 +481,8 @@ DROP VIEW recent_posts;
 - `\l`: list databases
 - `\dt`: list tables
 - `\e`: open last query in EDITOR
+- `\conninfo`: You are connected to database "nemo" as user "orcabus" via socket in "/tmp" at port "5432".
+- `\du`: list users
 
 ## R
 
