@@ -480,6 +480,7 @@ DROP VIEW recent_posts;
 - `\?`: help
 - `\l`: list databases
 - `\dt`: list tables
+- `\d table_name`: describe table
 - `\e`: open last query in EDITOR
 - `\conninfo`: You are connected to database "nemo" as user "orcabus" via socket in "/tmp" at port "5432".
 - `\du`: list users
@@ -490,4 +491,47 @@ DROP VIEW recent_posts;
 
 ```r
 DBI::dbListObjects(conn, Id(schema = "mySchemaName"))
+```
+
+### Schema
+
+#### Dump
+
+```
+pg_dump --schema-only nemo > schema.txt
+```
+
+#### dm
+
+```r
+dm <- dm:::dm_meta_raw(con, NULL)
+dm$columns
+```
+
+#### DBI
+
+```r
+tbl <- tibble::tibble(
+  dracarysId = "abcd1234",
+  foo_num = 123,
+  foo_dbl = 3.14,
+  foo_chr = "foobar",
+  foo_int = 35L,
+)
+DBI::dbDataType(DBI::ANSI(), tbl)
+# dracarysId    foo_num    foo_dbl    foo_chr    foo_int
+#     "TEXT"   "DOUBLE"   "DOUBLE"     "TEXT"      "INT"
+```
+
+```r
+DBI::dbGetInfo(con) |> str()
+# List of 8
+#  $ dbname          : chr "test1"
+#  $ host            : chr "/tmp"
+#  $ port            : chr "5432"
+#  $ username        : chr "pdiakumis"
+#  $ protocol.version: int 3
+#  $ server.version  : int 170002
+#  $ db.version      : int 170002
+#  $ pid             : int 17045
 ```

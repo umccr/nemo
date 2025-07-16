@@ -16,6 +16,7 @@ Django
 | Print SQL migrate                                               | `python manage.py sqlmigrate foo 0001`                      |
 | Apply migration                                                 | `python manage.py migrate`                                  |
 | Open shell                                                      | `python manage.py shell`                                    |
+| Create superuser                                                | `python manage.py createsuperuser`                          |
 
 - Database:
   - make sure user has login attribute:
