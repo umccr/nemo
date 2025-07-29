@@ -1,5 +1,4 @@
 .EXPORT_ALL_VARIABLES:
-DJANGO_SETTINGS_MODULE = nemo.settings.local
 DB_HOSTNAME ?= localhost
 DB_PORT ?= 5432
 
@@ -11,9 +10,6 @@ install:
 hello:
 	@uv run ./nemo/hello.py
 
-serve:
-	@uv run ./manage.py runserver
-
 check: lint
 
 lint:
@@ -22,54 +18,6 @@ lint:
 format:
 	@uv run ruff format
 
-migrate:
-	@uv run ./manage.py migrate
-
-pyshell:
-	@uv run ./manage.py shell
-
-
-
-
-## full mock suite test pipeline - install deps, bring up compose stack, run suite, bring down compose stack
-#test: install up suite down
-#
-#suite:
-#	@python manage.py test
-#
-#start: migrate
-#	@python manage.py runserver_plus 0.0.0.0:8000
-#
-#mock:
-#	@python manage.py generate_analysis_for_metadata
-#
-#run-mock: reset-db migrate mock start
-#
-#openapi:
-#	@python manage.py generateschema > orcabus.hlo.openapi.yaml
-#
-#validate: openapi
-#	@python -m openapi_spec_validator orcabus.hlo.openapi.yaml
-#
-#coverage: install up migrate
-#	@echo $$DJANGO_SETTINGS_MODULE
-#	@coverage run --source='.' manage.py test
-#
-#report:
-#	@coverage report -m
-#	@coverage html
-#
-#up:
-#	@docker compose up --wait -d
-#
-#down:
-#	@docker compose down
-#
-#stop: down
-#
-#ps:
-#	@docker compose ps
-#
 #psql:
 #	@docker exec -e PGPASSWORD=orcabus -it orcabus_db psql -h 0.0.0.0 -d workflow_manager -U orcabus
 #
