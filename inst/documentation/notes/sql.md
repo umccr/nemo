@@ -1,44 +1,3 @@
-# SQL Notes
-
-- [SQL Notes](#sql-notes)
-  - [Misc](#misc)
-    - [ACID](#acid)
-    - [Data Access API and Service](#data-access-api-and-service)
-  - [Table Manipulation](#table-manipulation)
-    - [Create/drop database](#createdrop-database)
-    - [Create/drop table](#createdrop-table)
-    - [Insert data](#insert-data)
-    - [Filter data](#filter-data)
-    - [Update data](#update-data)
-    - [Delete data](#delete-data)
-    - [Primary key](#primary-key)
-    - [Foreign key](#foreign-key)
-    - [On Delete](#on-delete)
-    - [Join](#join)
-    - [Aggregate functions](#aggregate-functions)
-    - [Group by with Join](#group-by-with-join)
-    - [Group by Having](#group-by-having)
-    - [ORDER](#order)
-    - [OFFSET and LIMIT](#offset-and-limit)
-    - [UNION](#union)
-    - [INTERSECT](#intersect)
-    - [EXCEPT](#except)
-  - [Data Types](#data-types)
-    - [Numeric](#numeric)
-    - [Character](#character)
-    - [Date and Time](#date-and-time)
-  - [Validation and Constraints](#validation-and-constraints)
-    - [NOT NULL](#not-null)
-    - [DEFAULT](#default)
-    - [UNIQUE](#unique)
-    - [CHECK](#check)
-  - [Internals](#internals)
-  - [Index](#index)
-  - [Views](#views)
-  - [psql](#psql)
-
-## Misc
-
 ### ACID
 
 - Atomic:
@@ -46,21 +5,16 @@
 - Isolated: online data backups
 - Durable: guaranteed not to lose committed data
 
-### Data Access API and Service
+### Table Manipulation
 
-- PostgreSQL: data access service (stateful)
-- API: SQL
-
-## Table Manipulation
-
-### Create/drop database
+#### Create/drop database
 
 ```sql
 DROP DATABASE IF EXISTS test1;
 CREATE DATABASE test1;
 ```
 
-### Create/drop table
+#### Create/drop table
 
 ```sql
 DROP TABLE IF EXISTS cities;
@@ -72,7 +26,7 @@ CREATE TABLE cities (
 );
 ```
 
-### Insert data
+#### Insert data
 
 ```sql
 INSERT INTO cities (name, country, population, area)
@@ -83,14 +37,14 @@ VALUES
  ('Sao Paulo', 'Brazil', 20935000, 3043);
 ```
 
-### Filter data
+#### Filter data
 
 ```sql
 SELECT * FROM cities
 WHERE population > 25000000;
 ```
 
-### Update data
+#### Update data
 
 ```sql
 UPDATE cities
@@ -98,14 +52,14 @@ SET population = 39505000
 WHERE name = 'Tokyo';
 ```
 
-### Delete data
+#### Delete data
 
 ```sql
 DELETE FROM cities
 WHERE name = 'Sao Paulo';
 ```
 
-### Primary key
+#### Primary key
 
 ```sql
 CREATE TABLE users (
@@ -114,7 +68,7 @@ CREATE TABLE users (
 );
 ```
 
-### Foreign key
+#### Foreign key
 
 ```sql
 CREATE TABLE photos (
@@ -124,7 +78,7 @@ CREATE TABLE photos (
 );
 ```
 
-### On Delete
+#### On Delete
 
 | Option        | Description |
 | ------------- | ----------- |
@@ -134,7 +88,7 @@ CREATE TABLE photos (
 | `SET NULL`    | Set null    |
 | `SET DEFAULT` | Set default |
 
-### Join
+#### Join
 
 ```sql
 SELECT users.username, photos.url FROM users
@@ -148,7 +102,7 @@ JOIN photos ON users.id = photos.user_id;
 | `RIGHT` | Keep all rows in right table, using NULL in place of left unmatched rows, drop rows in left table without a match  |
 | `FULL`  | Keep all matching rows in both tables, using NULL in place of unmatched rows                                       |
 
-### Aggregate functions
+#### Aggregate functions
 
 ```sql
 SELECT COUNT(*) FROM cities;
@@ -158,7 +112,7 @@ SELECT MAX(population) FROM cities;
 SELECT MIN(population) FROM cities;
 ```
 
-### Group by with Join
+#### Group by with Join
 
 - remember to select the group by column
 
@@ -168,7 +122,7 @@ JOIN authors ON authors.id = books.author_id
 GROUP BY authors.name;
 ```
 
-### Group by Having
+#### Group by Having
 
 - filters out the groups
 
@@ -179,14 +133,14 @@ GROUP BY authors.name
 HAVING COUNT(*) > 1;
 ```
 
-### ORDER
+#### ORDER
 
 ```sql
 SELECT * FROM cities
 ORDER BY population DESC;
 ```
 
-### OFFSET and LIMIT
+#### OFFSET and LIMIT
 
 - `OFFSET` skips the first `n` rows
 - `LIMIT` returns the first `n` rows
@@ -204,7 +158,7 @@ ORDER BY population DESC
 LIMIT 2 OFFSET 1;
 ```
 
-### UNION
+#### UNION
 
 - `UNION`: join results from two queries, and remove duplicates
 - `UNION ALL`: keeps duplicates
@@ -223,7 +177,7 @@ LIMIT 4
 );
 ```
 
-### INTERSECT
+#### INTERSECT
 
 - `INTERSECT`: join common rows from two queries, and remove duplicates
 - `INTERSECT ALL`: keeps duplicates
@@ -242,14 +196,14 @@ LIMIT 4
 );
 ```
 
-### EXCEPT
+#### EXCEPT
 
 - `EXCEPT`: find rows in first query but not in second, and remove duplicates
 - `EXCEPT ALL`: keeps duplicates
 
-## Data Types
+### Data Types
 
-### Numeric
+#### Numeric
 
 | Name                | Description                    |
 | ------------------- | ------------------------------ |
@@ -263,7 +217,7 @@ LIMIT 4
 | `SERIAL`            | 1 to 2,147,483,647             |
 | `BIGSERIAL`         | 1 to 9,223,372,036,854,775,807 |
 
-### Character
+#### Character
 
 | Name         | Description     |
 | ------------ | --------------- |
@@ -271,7 +225,7 @@ LIMIT 4
 | `VARCHAR(N)` | Variable length |
 | `TEXT`       | Variable length |
 
-### Date and Time
+#### Date and Time
 
 | Name        | Description         |
 | ----------- | ------------------- |
@@ -279,9 +233,9 @@ LIMIT 4
 | `TIME`      | HH:MM:SS            |
 | `TIMESTAMP` | YYYY-MM-DD HH:MM:SS |
 
-## Validation and Constraints
+### Validation and Constraints
 
-### NOT NULL
+#### NOT NULL
 
 - `CREATE TABLE`
 
@@ -301,7 +255,7 @@ ALTER COLUMN manufacturer
 SET NOT NULL;
 ```
 
-### DEFAULT
+#### DEFAULT
 
 - `CREATE TABLE`
 
@@ -321,7 +275,7 @@ ALTER COLUMN manufacturer
 SET DEFAULT 'Apple';
 ```
 
-### UNIQUE
+#### UNIQUE
 
 - `CREATE TABLE`
 
@@ -340,7 +294,7 @@ ALTER TABLE phones
 ADD UNIQUE(model);
 ```
 
-### CHECK
+#### CHECK
 
 - `CREATE TABLE`
 
@@ -360,7 +314,7 @@ ALTER TABLE phones
 ADD CHECK (price > 0);
 ```
 
-## Internals
+### Internals
 
 - Size per database:
 
@@ -410,7 +364,7 @@ SELECT * FROM pg_class;
 | Tuple/item | Row from the table                                                                                          |
 | Block/page | Heap file is divided into blocks, each containing a number of rows. The size of each block is usually 8 KB. |
 
-## Index
+### Index
 
 - Create
 
@@ -445,7 +399,7 @@ FROM pg_class
 WHERE relkind = 'i';
 ```
 
-## Views
+### Views
 
 - Create
 
@@ -474,7 +428,7 @@ CREATE OR REPLACE VIEW recent_posts AS (
 DROP VIEW recent_posts;
 ```
 
-## psql
+### psql
 
 - `\c db_name`: choose database
 - `\?`: help
@@ -485,7 +439,7 @@ DROP VIEW recent_posts;
 - `\conninfo`: You are connected to database "nemo" as user "orcabus" via socket in "/tmp" at port "5432".
 - `\du`: list users
 
-## R
+### R
 
 - List tables
 

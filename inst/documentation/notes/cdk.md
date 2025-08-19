@@ -1,6 +1,4 @@
-# AWS CDK
-
-## Notes
+### Building Blocks
 
 - **Project**: files and folders with CDK code.
 
@@ -51,7 +49,7 @@ A construct class takes three params:
 [l3-apilambda]:
   https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApi.html
 
-## Commands
+### Commands
 
 | Command                  | Description                       |
 | ------------------------ | --------------------------------- |
@@ -65,7 +63,7 @@ A construct class takes three params:
 | `npx cdk destroy`        | destroy stack                     |
 | `npx cdk bootstrap`      | bootstrap cdk project             |
 
-## Tips
+### Tips
 
 - Debug bucket names
   - Use `CfnOutput` and check `cdk synth`

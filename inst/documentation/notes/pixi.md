@@ -1,13 +1,6 @@
-pixi setup
-==========
-
-## Intro
+### Installation
 
 Pixi is awesome - see <https://pixi.sh/>.
-
-## Usage
-
-### Installation
 
 ```
 brew install pixi

@@ -1,0 +1,42 @@
+---
+title: "Notes"
+vignette: >
+  %\VignetteIndexEntry{Notes}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: vars
+#| echo: false
+dir1 <- system.file("documentation", "notes", package = "nemo")
+```
+
+## SQL
+
+```{asis, file=file.path(dir1, "sql.md")}
+#| label: child-sql
+```
+
+## AWS RDS
+
+```{asis, file=file.path(dir1, "rds.md")}
+#| label: child-rds
+```
+
+
+## AWS CDK
+
+```{asis, file=file.path(dir1, "cdk.md")}
+#| label: child-cdk
+```
+
+## Pixi
+
+```{asis, file=file.path(dir1, "pixi.md")}
+#| label: child-pixi
+```

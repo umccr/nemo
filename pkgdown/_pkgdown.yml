@@ -1,0 +1,28 @@
+url: https://umccr.github.io/nemo
+title: nemo
+authors:
+  Peter Diakumis:
+    href: https://github.com/pdiakumis
+home:
+  title: "Tidy Bioinformatic Pipeline Outputs"
+  description: >
+    A tidyverse R6 approach for working with bioinformatic pipeline outputs.
+template:
+  bootstrap: 5
+  bootswatch: zephyr
+navbar:
+  structure:
+    left: [home, articles, news]
+    right: [reference, search, github]
+  components:
+    home:
+      text: Intro
+      href: index.html
+    articles:
+      text: Articles
+      menu:
+        - text: Notes
+          href: articles/notes.html
+    news:
+      text: NEWS
+      href: articles/NEWS.html

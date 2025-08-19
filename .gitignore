@@ -9,3 +9,4 @@ cdk.out
 /nogit/
 /tmp/
 __pycache__/
+.Rproj.user

@@ -1,4 +1,4 @@
-# AWS RDS
+### Intro
 
 - DB instance: isolated db environment
   - takes an ID (e.g. `db-xxxxxx`) specified by customer, used in DNS hostname
