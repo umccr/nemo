@@ -1,0 +1,81 @@
+---
+format: gfm
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: ''
+    fig.path: "man/figures/README-"
+---
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
+
+```{r}
+#| label: pkg_load
+#| echo: false
+#| message: false
+use("nemo")
+```
+
+```{r}
+#| label: opts
+#| echo: false
+options(width = 100)
+```
+
+<a href="https://umccr.github.io/nemo"><img src="man/figures/logo.png" alt="logo" align="left" height="100" /></a>
+
+# Tidy and Explore Bioinformatic Pipeline Outputs
+
+
+[![conda-latest1]](https://anaconda.org/umccr/r-nemo)
+[![gha]](https://github.com/umccr/nemo/actions/workflows/deploy.yaml)
+
+[conda-latest1]: <https://anaconda.org/umccr/r-nemo/badges/latest_release_date.svg> "Conda Latest Release"
+[gha]: <https://github.com/umccr/nemo/actions/workflows/deploy.yaml/badge.svg> "GitHub Actions"
+
+- 📚 Docs: <https://umccr.github.io/nemo>
+
+## Overview
+
+{{< include /inst/doc-templates/introduction/_overview.qmd >}}
+
+## 🍕 Installation
+
+{{< include /inst/doc-templates/installation/_r.qmd >}}
+
+Alternatively:
+
+- conda package: <https://anaconda.org/umccr/r-nemo>
+- Docker image: <https://github.com/umccr/nemo/pkgs/container/nemo>
+
+For more details see: <https://umccr.github.io/nemo/articles/installation>
+
+## 🌀 CLI
+
+A `nemo.R` command line interface is available for convenience.
+
+- If you're using the conda package, the `nemo.R` command will already be
+  available inside the activated conda environment.
+- If you're _not_ using the conda package, you need to export the
+  `nemo/inst/cli/` directory to your `PATH` in order to use `nemo.R`.
+
+```{bash}
+#| label: cli1
+#| echo: true
+#| eval: false
+nemo_cli=$(Rscript -e 'x = system.file("cli", package = "nemo"); cat(x, "\n")' | xargs)
+export PATH="${nemo_cli}:${PATH}"
+```
+
+```{bash}
+#| label: cli2
+#| eval: false
+# TODO
+nemo_cli=$(Rscript -e 'x = system.file("cli", package = "nemo"); cat(x, "\n")' | xargs)
+export PATH="${nemo_cli}:${PATH}"
+
+echo "$ nemo.R --version" & nemo.R --version
+echo ""
+echo "#-----------------------------------#"
+echo "$ nemo.R --help" & nemo.R --help
+echo "'"

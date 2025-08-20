@@ -1,0 +1,12 @@
+[![ghcr-tags] ![ghcr-latest] ![ghcr-size]](https://github.com/umccr/nemo/pkgs/container/nemo)
+
+[ghcr-tags]: <https://ghcr-badge.egpl.dev/umccr/nemo/tags> "GHCR tags"
+[ghcr-latest]: <https://ghcr-badge.egpl.dev/umccr/nemo/latest_tag> "GHCR latest tag"
+[ghcr-size]: <https://ghcr-badge.egpl.dev/umccr/nemo/size?tag=0.0.4> "GHCR image size"
+
+The Docker image is available from the GitHub Container Registry at
+<https://github.com/umccr/nemo/pkgs/container/nemo>.
+
+```bash
+docker pull --platform linux/amd64 ghcr.io/umccr/nemo:0.0.4
+```

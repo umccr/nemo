@@ -1,43 +1,17 @@
-.EXPORT_ALL_VARIABLES:
-DB_HOSTNAME ?= localhost
-DB_PORT ?= 5432
+readme-render:
+	@quarto render README.qmd
 
-.PHONY: test suite
+air:
+	@air format
 
-install:
-	@uv sync
+pkgdown-build:
+	@R -e "pkgdown::build_site()" --quiet --no-restore --no-save
 
-hello:
-	@uv run ./nemo/hello.py
+readme-pkgdown: readme-render pkgdown-build
 
-check: lint
+roxydoc:
+	@R -e "devtools::document()" --quiet --no-restore --no-save
 
-lint:
-	@uv run ruff check
+build:
+	@R -e "pak::local_install(upgrade = FALSE)" --quiet --no-restore --no-save
 
-format:
-	@uv run ruff format
-
-#psql:
-#	@docker exec -e PGPASSWORD=orcabus -it orcabus_db psql -h 0.0.0.0 -d workflow_manager -U orcabus
-#
-## database operation
-#reset-db:
-#	@docker exec -e PGPASSWORD=orcabus -it orcabus_db psql -h $(DB_HOSTNAME) -U orcabus -d orcabus -c "DROP DATABASE IF EXISTS workflow_manager;"
-#	@docker exec -e PGPASSWORD=orcabus -it orcabus_db psql -h $(DB_HOSTNAME) -U orcabus -d orcabus -c "CREATE DATABASE workflow_manager;"
-#
-#s3-dump-download:
-#	@aws s3 cp s3://orcabus-test-data-843407916570-ap-southeast-2/workflow-manager/wfm_dump.sql.gz data/wfm_dump.sql.gz
-#
-#db-load-data: reset-db
-#	@gunzip -c data/wfm_dump.sql.gz | docker exec -i orcabus_db psql -U orcabus -d workflow_manager >/dev/null
-#
-#s3-dump-download-if-not-exists:
-#		@if [ -f "data/wfm_dump.sql.gz" ]; then \
-#			echo "Using existing sql dump from './data/wfm_dump.sql.gz"; \
-#		else \
-#			echo "Downloading sql dump from './data/wfm_dump.sql.gz"; \
-#			$(MAKE) s3-dump-download; \
-#		fi
-#
-#s3-load: s3-dump-download-if-not-exists db-load-data
