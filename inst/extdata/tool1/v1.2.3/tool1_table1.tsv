@@ -1,0 +1,4 @@
+SampleID	Chromosome	Start	End	metricX
+sampleA	chr1	10	50	0.1
+sampleA	chr2	100	500	0.2
+sampleA	chr3	1000	5000	0.3
