@@ -28,8 +28,8 @@ tool1 <- list(
       version = "latest",
       data = tibble::tibble(
         SampleID = "sampleA",
-        metricX = c("a", "b", "c"),
-        metricY = c(12.3, 4.56, 7.89)
+        metricA = c("a", "b", "c"),
+        metricB = c(12.3, 4.56, 7.89)
       )
     )
   )
@@ -40,7 +40,7 @@ purrr::map2(tool1, names(tool1), \(tab, tab_name) {
   purrr::map(tab, \(entry) {
     odir <- here::here("inst/extdata", "tool1", entry$version) |>
       fs::dir_create()
-    fname <- file.path(odir, glue::glue("tool1_{tab_name}.tsv"))
+    fname <- file.path(odir, glue::glue("sampleA.tool1.{tab_name}.tsv"))
     readr::write_tsv(entry$data, fname)
   })
 })
