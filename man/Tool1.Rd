@@ -26,6 +26,8 @@ list.files(odir, pattern = "parquet", full.names = FALSE)
 \item \href{#method-Tool1-tidy_table1}{\code{Tool1$tidy_table1()}}
 \item \href{#method-Tool1-parse_table2}{\code{Tool1$parse_table2()}}
 \item \href{#method-Tool1-tidy_table2}{\code{Tool1$tidy_table2()}}
+\item \href{#method-Tool1-parse_table3}{\code{Tool1$parse_table3()}}
+\item \href{#method-Tool1-tidy_table3}{\code{Tool1$tidy_table3()}}
 \item \href{#method-Tool1-clone}{\code{Tool1$clone()}}
 }
 }
@@ -128,6 +130,42 @@ Path to file.}
 Tidy \code{table2.tsv} file.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tool1$tidy_table2(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{character(1)})\cr
+Path to file.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tool1-parse_table3"></a>}}
+\if{latex}{\out{\hypertarget{method-Tool1-parse_table3}{}}}
+\subsection{Method \code{parse_table3()}}{
+Read \code{table3.tsv} file.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tool1$parse_table3(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{character(1)})\cr
+Path to file.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tool1-tidy_table3"></a>}}
+\if{latex}{\out{\hypertarget{method-Tool1-tidy_table3}{}}}
+\subsection{Method \code{tidy_table3()}}{
+Tidy \code{table3.tsv} file.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tool1$tidy_table3(x)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

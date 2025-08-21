@@ -56,3 +56,23 @@ tidy:
           - field: 'metric_b'
             type: 'float'
             description: 'metric B'
+  table3:
+    description: 'Table3 for tool1.'
+    schema:
+      latest:
+        tbl1:
+          - field: 'sample_id'
+            type: 'char'
+            description: 'sample ID'
+          - field: 'qcstatus'
+            type: 'char'
+            description: 'QC status'
+          - field: 'reads_total'
+            type: 'float'
+            description: 'total reads'
+          - field: 'reads_map'
+            type: 'float'
+            description: 'mapped reads'
+          - field: 'reads_unmap'
+            type: 'float'
+            description: 'unmapped reads'

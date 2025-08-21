@@ -44,3 +44,13 @@ raw:
           type: 'char'
         - field: 'metricB'
           type: 'float'
+  table3:
+    description: 'Table3 for tool1.'
+    pattern: "\\.tool1\\.table3\\.tsv$"
+    ftype: 'txt-nohead'
+    schema:
+      latest:
+        - field: 'Variable'
+          type: 'char'
+        - field: 'Value'
+          type: 'char'

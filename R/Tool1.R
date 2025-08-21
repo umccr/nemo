@@ -47,6 +47,21 @@ Tool1 <- R6::R6Class(
     #' Path to file.
     tidy_table2 = function(x) {
       self$.tidy_file(x, "table2")
+    },
+    #' @description Read `table3.tsv` file.
+    #' @param x (`character(1)`)\cr
+    #' Path to file.
+    parse_table3 = function(x) {
+      d0 <- self$.parse_file_nohead(x, "table3")
+      d0 |>
+        tidyr::pivot_wider(names_from = "Variable", values_from = "Value") |>
+        set_tbl_version_attr(get_tbl_version_attr(d0))
+    },
+    #' @description Tidy `table3.tsv` file.
+    #' @param x (`character(1)`)\cr
+    #' Path to file.
+    tidy_table3 = function(x) {
+      self$.tidy_file(x, "table3", convert_types = TRUE)
     }
   )
 )
