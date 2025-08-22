@@ -23,6 +23,7 @@
 #'
 #' @testexamples
 #' expect_equal(names(d)[1:3], c("SampleID", "Chromosome", "Start"))
+#' @export
 parse_file <- function(fpath, pname, schemas_all, delim = "\t", ...) {
   cnames <- file_hdr(fpath, delim = delim, ...)
   schema <- schema_guess(
@@ -67,6 +68,7 @@ parse_file <- function(fpath, pname, schemas_all, delim = "\t", ...) {
 #'
 #' @testexamples
 #' expect_equal(names(d), c("Variable", "Value"))
+#' @export
 parse_file_nohead <- function(fpath, schema, delim = "\t", ...) {
   assertthat::assert_that(
     nrow(schema) == 1,
@@ -111,6 +113,7 @@ parse_file_nohead <- function(fpath, schema, delim = "\t", ...) {
 #'
 #' @testexamples
 #' expect_equal(hdr[1:2], c("SampleID", "Chromosome"))
+#' @export
 file_hdr <- function(fpath, delim = "\t", n_max = 0, ...) {
   readr::read_delim(
     fpath,
@@ -151,6 +154,7 @@ file_hdr <- function(fpath, delim = "\t", n_max = 0, ...) {
 #' expect_equal(length(s1), 2)
 #' expect_equal(s1[["version"]], "latest")
 #' expect_equal(s2[["version"]], "v1.2.3")
+#' @export
 schema_guess <- function(pname, cnames, schemas_all) {
   assertthat::assert_that(
     rlang::is_bare_character(cnames),

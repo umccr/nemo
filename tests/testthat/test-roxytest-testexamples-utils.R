@@ -10,7 +10,7 @@ test_that("Function list_files_dir() @ L20", {
 })
 
 
-test_that("Function get_tbl_version_attr() @ L52", {
+test_that("Function get_tbl_version_attr() @ L53", {
   
   path <- system.file("extdata/tool1", package = "nemo")
   path2 <- file.path(path, "v1.2.3", "sampleA.tool1.table1.tsv")
@@ -23,7 +23,7 @@ test_that("Function get_tbl_version_attr() @ L52", {
 })
 
 
-test_that("Function empty_tbl() @ L81", {
+test_that("Function empty_tbl() @ L82", {
   
   (x <- empty_tbl(cnames = c("a", "b", "c")))
   expect_equal(nrow(x), 0)

@@ -30,6 +30,8 @@ Imports:
     tidyr,
     yaml
 Suggests:
+    quarto,
+    RPostgres,
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE,
               roclets = c("namespace", "rd", "roxytest::testthat_roclet"))

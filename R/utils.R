@@ -49,6 +49,7 @@ list_files_dir <- function(d, max_files = NULL, type = "file") {
 #'
 #' @testexamples
 #' expect_equal(v, "v1.2.3")
+#' @export
 get_tbl_version_attr <- function(tbl, x = "file_version") {
   assertthat::assert_that(
     assertthat::has_attr(tbl, x),
