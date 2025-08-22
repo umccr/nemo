@@ -2,7 +2,7 @@
 
 # File R/Config.R: @testexamples
 
-test_that("Function Config() @ L27", {
+test_that("Function Config() @ L28", {
   
   tool <- "tool1"
   pkg <- "nemo"
@@ -22,5 +22,6 @@ test_that("Function Config() @ L27", {
   expect_true(conf$are_raw_schemas_valid())
   expect_true(ts1 |> dplyr::filter(.data$name == "table1") |> nrow() == 2)
   expect_true(all(unique(rv1$value) == c("v1.2.3", "latest")))
+  expect_error(Config$new("foo", pkg))
 })
 

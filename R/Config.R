@@ -22,6 +22,7 @@
 #' expect_true(conf$are_raw_schemas_valid())
 #' expect_true(ts1 |> dplyr::filter(.data$name == "table1") |> nrow() == 2)
 #' expect_true(all(unique(rv1$value) == c("v1.2.3", "latest")))
+#' expect_error(Config$new("foo", pkg))
 #'
 #' @export
 Config <- R6::R6Class(
@@ -47,9 +48,6 @@ Config <- R6::R6Class(
     #' Package name for config lookup.
     initialize = function(tool, pkg) {
       tool <- tolower(tool)
-      msg1 <- glue::glue_collapse(NEMO_TOOLS, sep = ", ", last = " and ")
-      msg2 <- glue("'{tool}' is not a valid tool.\nCurrently supported: {msg1}")
-      assertthat::assert_that(tool %in% NEMO_TOOLS, msg = msg2)
       self$tool <- tool
       self$config <- self$read(pkg = pkg)
       self$raw_schemas_all <- self$get_raw_schemas_all()
@@ -74,13 +72,16 @@ Config <- R6::R6Class(
     #' Package name where the config files are located.
     #' @return A `list()` with the parsed data.
     read = function(pkg) {
-      pkg_config_path <- system.file(
-        glue("config/tools/{self$tool}"),
-        package = pkg
-      )
-      stopifnot(
-        dir.exists(pkg_config_path),
-        file.exists(file.path(pkg_config_path, c("raw.yaml", "tidy.yaml")))
+      pkg_config_path <- system.file("config/tools", package = pkg)
+      stopifnot(dir.exists(pkg_config_path))
+      tools <- list.files(pkg_config_path, full.names = FALSE)
+      msg1 <- glue("'{self$tool}' does not have a config under '{pkg_config_path}/'.")
+      msg2 <- glue("There should be a raw.yaml and tidy.yaml file for {self$tool}.")
+      assertthat::assert_that(self$tool %in% tools, msg = msg1)
+      pkg_config_path <- file.path(pkg_config_path, self$tool)
+      assertthat::assert_that(
+        all(file.exists(file.path(pkg_config_path, c("raw.yaml", "tidy.yaml")))),
+        msg = msg2
       )
       raw <- yaml::read_yaml(file.path(pkg_config_path, "raw.yaml"))
       tidy <- yaml::read_yaml(file.path(pkg_config_path, "tidy.yaml"))
