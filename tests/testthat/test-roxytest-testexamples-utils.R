@@ -23,7 +23,18 @@ test_that("Function get_tbl_version_attr() @ L53", {
 })
 
 
-test_that("Function empty_tbl() @ L82", {
+test_that("Function set_tbl_version_attr() @ L79", {
+  
+  d <- tibble::tibble(a = 1:3, b = letters[1:3])
+  v <- "v1.2.3"
+  d <- set_tbl_version_attr(d, v)
+  (a <- attr(d, "file_version"))
+  
+  expect_equal(a, v)
+})
+
+
+test_that("Function empty_tbl() @ L100", {
   
   (x <- empty_tbl(cnames = c("a", "b", "c")))
   expect_equal(nrow(x), 0)

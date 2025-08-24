@@ -58,6 +58,24 @@ get_tbl_version_attr <- function(tbl, x = "file_version") {
   attr(tbl, x)
 }
 
+#' Set Table Version Attribute
+#'
+#' Set the version attribute from a table.
+#' @param tbl (`tibble()`)\cr
+#' Table with a version attribute.
+#' @param v (`character(1)`)\cr
+#' Version string to set.
+#' @param x (`character(1)`)\cr
+#' Name of the attribute to retrieve.
+#' @examples
+#' d <- tibble::tibble(a = 1:3, b = letters[1:3])
+#' v <- "v1.2.3"
+#' d <- set_tbl_version_attr(d, v)
+#' (a <- attr(d, "file_version"))
+#'
+#' @testexamples
+#' expect_equal(a, v)
+#' @export
 set_tbl_version_attr <- function(tbl, v, x = "file_version") {
   attr(tbl, x) <- v
   tbl
@@ -97,8 +115,15 @@ schema_type_remap <- function(x) {
   unname(type_map[x])
 }
 
+
+#' Enframe Data
+#'
+#' @return Enframed data with column name "data".
+#' @param x (`list()`)\cr
+#' List to enframe.
+#' @export
 enframe_data <- function(x) {
-  tibble::enframe(x, value = "data")
+  tibble::enframe(x, name = "name", value = "data")
 }
 
 #' Print current timestamp for logging
