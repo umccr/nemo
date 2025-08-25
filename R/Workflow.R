@@ -3,18 +3,18 @@
 #' @description
 #' A Workflow is composed of multiple Tools.
 #' @examples
-#' \dontrun{
-#' paths <- c(system.file("extdata/oa", package = "tidywigits"), system.file("extdata/tool1", package = "nemo"))
-#' tools <- list(align = tidywigits::Alignments, sigs = tidywigits::Sigs, tool1 = nemo::Tool1)
-#' wf1 <- Workflow$new(name = "foo", path = paths, tools = tools)
+#' path <- system.file("extdata/tool1", package = "nemo")
+#' tools <- list(tool1 = Tool1)
+#' wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
 #' odir <- tempdir()
 #' wf1$list_files()
 #' wf1$nemofy(odir = odir, format = "parquet", id = "run1")
+#' (lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
+#' #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
+#' #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
+#' @testexamples
+#' expect_equal(length(lf), 4)
 #'
-#' dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
-#' wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
-#'
-#' }
 #' @export
 Workflow <- R6::R6Class(
   "Workflow",

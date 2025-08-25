@@ -13,7 +13,7 @@ odir <- tempdir()
 id <- "tool1_run1"
 obj <- cls$new(indir)
 obj$nemofy(odir = odir, format = "parquet", id = id)
-list.files(odir, pattern = "parquet", full.names = FALSE)
+(lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
 }
 \section{Super class}{
 \code{\link[nemo:Tool]{nemo::Tool}} -> \code{Tool1}

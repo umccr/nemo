@@ -9,7 +9,9 @@
 #' id <- "tool1_run1"
 #' obj <- cls$new(indir)
 #' obj$nemofy(odir = odir, format = "parquet", id = id)
-#' list.files(odir, pattern = "parquet", full.names = FALSE)
+#' (lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
+#' @testexamples
+#' expect_equal(length(lf), 4)
 #' @export
 Tool1 <- R6::R6Class(
   "Tool1",
