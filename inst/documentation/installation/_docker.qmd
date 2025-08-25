@@ -8,5 +8,5 @@ The Docker image is available from the GitHub Container Registry at
 <https://github.com/umccr/nemo/pkgs/container/nemo>.
 
 ```bash
-docker pull --platform linux/amd64 ghcr.io/umccr/nemo:0.0.4
+docker pull --platform linux/amd64 ghcr.io/umccr/nemo:0.0.0.9000
 ```

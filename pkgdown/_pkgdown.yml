@@ -23,6 +23,36 @@ navbar:
       menu:
         - text: Notes
           href: articles/notes.html
+        - text: Structure
+          href: articles/structure.html
     news:
       text: NEWS
       href: articles/NEWS.html
+reference:
+  - title: "Base Classes"
+    contents:
+      - Config
+      - Tool
+      - Workflow
+  - title: "Config"
+    contents:
+      - config_prep_raw
+      - config_prep_raw_schema
+  - title: "Parsing"
+    contents:
+      - parse_file
+      - file_hdr
+      - parse_file_nohead
+      - schema_guess
+  - title: "Other"
+    contents:
+      - date_log
+      - empty_tbl
+      - list_files_dir
+      - nemo_out_formats
+      - nemo_write
+      - valid_out_fmt
+      - get_tbl_version_attr
+      - set_tbl_version_attr
+      - Tool1
+      - enframe_data

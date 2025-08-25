@@ -35,13 +35,9 @@ options(width = 100)
 
 - 📚 Docs: <https://umccr.github.io/nemo>
 
-## Overview
-
-{{< include /inst/doc-templates/introduction/_overview.qmd >}}
-
 ## 🍕 Installation
 
-{{< include /inst/doc-templates/installation/_r.qmd >}}
+{{< include /inst/documentation/installation/_r.qmd >}}
 
 Alternatively:
 
@@ -79,3 +75,4 @@ echo ""
 echo "#-----------------------------------#"
 echo "$ nemo.R --help" & nemo.R --help
 echo "'"
+```
