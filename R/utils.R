@@ -133,3 +133,14 @@ enframe_data <- function(x) {
 date_log <- function() {
   as.character(glue('[{format(Sys.time(), "%Y-%m-%dT%H:%M:%S%Z")}]'))
 }
+
+#' Get Python Binary
+#'
+#' Get the path to the Python binary in the system PATH.
+#' @return Path to the Python binary.
+#' @export
+get_python <- function() {
+  py <- Sys.which("python")
+  stopifnot("Cannot find Python in PATH." = nchar(py) > 0)
+  py
+}
