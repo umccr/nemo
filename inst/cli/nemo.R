@@ -1,41 +1,39 @@
 #!/usr/bin/env Rscript
 
 {
-  suppressPackageStartupMessages(use("nemo", "get_python"))
+  suppressPackageStartupMessages(use("nemo", c("get_python", "date_log")))
   suppressPackageStartupMessages(use("argparse", "ArgumentParser"))
-  suppressPackageStartupMessages(use("emojifont", "emoji"))
   suppressPackageStartupMessages(use("fs", "dir_create"))
   suppressPackageStartupMessages(use("glue", c("glue", "glue_collapse")))
 }
 
-e <- emoji
-pkg <- "nemo"
-prog_nm <- paste0(pkg, ".R")
-version <- as.character(packageVersion(pkg))
-get_nemo_workflow <- function(wf) {
-  wfs <- list(
-    wigits = list(pkg = "tidywigits", fun = "Wigits"),
-    basemean = list(pkg = "base", fun = "mean")
-    # dragen = list(pkg = "dracarys", fun = "Dragen"),
-    # cttso = list(pkg = "cttsor", fun = "Tso")
-  )
-  all_wfs <- names(wfs)
-  if (!wf %in% all_wfs) {
-    msg1 <- glue_collapse(sep = ", ", last = " or ")
-    msg2 <- glue("Workflow {wf} not found. Available: {all_wfs}")
-    stop(msg2)
-  }
-  pkgfun <- getExportedValue(wfs[[wf]][["pkg"]], wfs[[wf]][["fun"]])
-  return(pkgfun)
-}
-
-p <- ArgumentParser(
-  description = glue("{e('tropical_fish')} Tidy Bioinformatic Workflows {e('turtle')}"),
+e <- emojifont::emoji
+pkg_name <- "nemo"
+prog_nm <- paste0(pkg_name, ".R")
+version <- as.character(packageVersion(pkg_name))
+p <- argparse::ArgumentParser(
+  description = glue("🐠 Tidy Bioinformatic Workflows 🐢"),
   prog = prog_nm,
-  python_cmd = get_python()
+  python_cmd = nemo::get_python()
 )
 p$add_argument("-v", "--version", action = "version", version = glue("{prog_nm} {version}"))
+subparser_name <- "subparser_name"
+subp <- p$add_subparsers(help = "sub-command help", dest = subparser_name)
+source(system.file("cli/funcs.R", package = pkg_name))
+source(system.file("cli/tidy.R", package = pkg_name))
+source(system.file("cli/list.R", package = pkg_name))
+tidy_add_args(subp)
+list_add_args(subp)
 args <- p$parse_args()
+
 if (length(args$subparser_name) == 0) {
   p$print_help()
+} else if (args$subparser_name == "tidy") {
+  tidy_parse_args(args)
+} else if (args$subparser_name == "list") {
+  list_parse_args(args)
+} else {
+  all_subp <- c("tidy", "list") |>
+    glue::glue_collapse(sep = ", ", last = " or ")
+  stop("Need to specify one of the following: ", all_subp)
 }
