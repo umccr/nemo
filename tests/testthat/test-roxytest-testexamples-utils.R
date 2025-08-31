@@ -40,3 +40,11 @@ test_that("Function empty_tbl() @ L100", {
   expect_equal(nrow(x), 0)
 })
 
+
+test_that("Function nemoverse_wf_dispatch() @ L160", {
+  
+  wf <- "basemean"
+  (x <- nemoverse_wf_dispatch(wf))
+  expect_equal(x, base::mean)
+})
+

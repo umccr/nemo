@@ -144,3 +144,33 @@ get_python <- function() {
   stopifnot("Cannot find Python in PATH." = nchar(py) > 0)
   py
 }
+
+#' Nemoverse Workflow Dispatcher
+#'
+#' Dispatches the nemoverse workflow class based on the chosen workflow.
+#'
+#' @param Name of workflow.
+#' @return The nemo workflow class to initiate.
+#' @examples
+#' wf <- "basemean"
+#' (x <- nemoverse_wf_dispatch(wf))
+#' @testexamples
+#' expect_equal(x, base::mean)
+#' @export
+nemoverse_wf_dispatch <- function(wf = NULL) {
+  stopifnot(!is.null(wf))
+  wfs <- list(
+    wigits = list(pkg = "tidywigits", wf = "Wigits"),
+    basemean = list(pkg = "base", wf = "mean")
+    # dragen = list(pkg = "dracarys", wf = "Dragen"),
+    # cttso = list(pkg = "cttsor", wf = "Tso")
+  )
+  all_wfs <- names(wfs)
+  if (!wf %in% all_wfs) {
+    msg1 <- glue::glue_collapse(sep = ", ", last = " or ")
+    msg2 <- glue("Workflow {wf} not found. Available: {all_wfs}")
+    stop(msg2)
+  }
+  pkgfun <- getExportedValue(wfs[[wf]][["pkg"]], wfs[[wf]][["wf"]])
+  return(pkgfun)
+}
