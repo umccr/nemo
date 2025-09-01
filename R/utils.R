@@ -126,14 +126,6 @@ enframe_data <- function(x) {
   tibble::enframe(x, name = "name", value = "data")
 }
 
-#' Print current timestamp for logging
-#'
-#' @return Current timestamp as character.
-#' @export
-date_log <- function() {
-  as.character(glue('[{format(Sys.time(), "%Y-%m-%dT%H:%M:%S%Z")}]'))
-}
-
 #' Get Python Binary
 #'
 #' Get the path to the Python binary in the system PATH.
@@ -149,7 +141,7 @@ get_python <- function() {
 #'
 #' Dispatches the nemoverse workflow class based on the chosen workflow.
 #'
-#' @param Name of workflow.
+#' @param wf Workflow name.
 #' @return The nemo workflow class to initiate.
 #' @examples
 #' wf <- "basemean"

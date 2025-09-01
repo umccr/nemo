@@ -41,7 +41,7 @@ test_that("Function empty_tbl() @ L100", {
 })
 
 
-test_that("Function nemoverse_wf_dispatch() @ L160", {
+test_that("Function nemoverse_wf_dispatch() @ L152", {
   
   wf <- "basemean"
   (x <- nemoverse_wf_dispatch(wf))

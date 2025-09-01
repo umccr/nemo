@@ -7,7 +7,7 @@
 nemoverse_wf_dispatch(wf = NULL)
 }
 \arguments{
-\item{Name}{of workflow.}
+\item{wf}{Workflow name.}
 }
 \value{
 The nemo workflow class to initiate.

@@ -2,7 +2,7 @@
 tidy_add_args <- function(subp) {
   fmts <- nemo::nemo_out_formats() |> glue::glue_collapse(sep = ", ")
   tidy <- subp$add_parser("tidy", help = "Tidy Workflow Outputs")
-  tidy$add_argument("-m", "--module", help = "Module name.", required = TRUE)
+  tidy$add_argument("-w", "--workflow", help = "Workflow name.", required = TRUE)
   tidy$add_argument("-d", "--in_dir", help = "Input directory.", required = TRUE)
   tidy$add_argument("-o", "--out_dir", help = "Output directory.")
   tidy$add_argument("-f", "--format", help = paste("Format of output (def: %(default)s). Choices:", fmts), default = "parquet")
@@ -32,7 +32,7 @@ tidy_parse_args <- function(args) {
     exclude <- strsplit(exclude, ",")[[1]]
   }
   tidy_args <- list(
-    module = args$module,
+    workflow = args$workflow,
     in_dir = args$in_dir,
     out_dir = out_dir,
     out_format = args$format,
@@ -51,9 +51,9 @@ tidy_parse_args <- function(args) {
   }
 }
 
-nemo_tidy <- function(module, in_dir, out_dir, out_format, id, dbname, dbuser, include, exclude) {
+nemo_tidy <- function(workflow, in_dir, out_dir, out_format, id, dbname, dbuser, include, exclude) {
   nemo::valid_out_fmt(out_format)
-  fun <- get_nemo_workflow(module)
+  fun <- nemo::nemoverse_wf_dispatch(workflow)
   dbconn <- NULL
   if (out_format == "db") {
     stopifnot(!is.null(dbname), !is.null(dbuser))
@@ -63,7 +63,7 @@ nemo_tidy <- function(module, in_dir, out_dir, out_format, id, dbname, dbuser, i
       user = dbuser
     )
   }
-  cli::cli_alert_info("{date_log()} ⏳: Tidying dir: {in_dir}")
+  nemo_log("INFO", paste("⏳ Tidying dir:", in_dir))
   obj <- fun$new(in_dir)
   res <- obj$nemofy(
     odir = out_dir,
@@ -74,9 +74,9 @@ nemo_tidy <- function(module, in_dir, out_dir, out_format, id, dbname, dbuser, i
     exclude = exclude
   )
   if (out_format == "db") {
-    cli::cli_alert_success("{date_log()} 🎉: Tidy results written to db: {dbname}")
+    nemo_log("INFO", paste("🎉 Tidy results written to db:", dbname))
   } else {
-    cli::cli_alert_success("{date_log()} 🎉: Tidy results written to dir: {out_dir}")
+    nemo_log("INFO", paste("🎉 Tidy results written to dir:", out_dir))
   }
   return(invisible(res))
 }

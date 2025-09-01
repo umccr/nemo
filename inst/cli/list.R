@@ -1,7 +1,7 @@
 # fmt: skip
 list_add_args <- function(subp) {
   l <- subp$add_parser("list", help = "List Parsable Workflow Outputs")
-  l$add_argument("-m", "--module", help = "Module name.", required = TRUE)
+  l$add_argument("-w", "--workflow", help = "Workflow name.", required = TRUE)
   l$add_argument("-d", "--in_dir", help = "Input directory.", required = TRUE)
   l$add_argument("-q", "--quiet", help = "Shush all the logs.", action = "store_true")
 }
@@ -9,7 +9,7 @@ list_add_args <- function(subp) {
 list_parse_args <- function(args) {
   list_args <- list(
     in_dir = args$in_dir,
-    module = args$module
+    workflow = args$workflow
   )
   # list run
   if (args$quiet) {
@@ -19,8 +19,8 @@ list_parse_args <- function(args) {
   }
 }
 
-nemo_list <- function(in_dir, module, format = NULL) {
-  fun <- get_nemo_workflow(module)
+nemo_list <- function(in_dir, workflow, format = NULL) {
+  fun <- nemo::nemoverse_wf_dispatch(workflow)
   if (is.null(format)) {
     format <- "pretty"
   }

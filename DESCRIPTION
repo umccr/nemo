@@ -22,6 +22,7 @@ Imports:
     dplyr,
     fs,
     glue,
+    log4r,
     purrr,
     R6,
     readr,
@@ -30,6 +31,7 @@ Imports:
     tidyr,
     yaml
 Suggests:
+    argparse,
     quarto,
     RPostgres,
     testthat (>= 3.0.0)
