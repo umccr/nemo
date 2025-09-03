@@ -145,24 +145,36 @@ get_python <- function() {
 #' @return The nemo workflow class to initiate.
 #' @examples
 #' wf <- "basemean"
-#' (x <- nemoverse_wf_dispatch(wf))
+#' (fun <- nemoverse_wf_dispatch(wf))
 #' @testexamples
-#' expect_equal(x, base::mean)
+#' expect_equal(fun, base::mean)
+#' expect_error(nemoverse_wf_dispatch("foo"))
+#' expect_error(nemoverse_wf_dispatch("dummy1"))
 #' @export
 nemoverse_wf_dispatch <- function(wf = NULL) {
   stopifnot(!is.null(wf))
   wfs <- list(
-    wigits = list(pkg = "tidywigits", wf = "Wigits"),
-    basemean = list(pkg = "base", wf = "mean")
+    wigits = list(pkg = "tidywigits", wf = "Wigits", repo = "https://github.com/umccr/tidywigits"),
+    basemean = list(pkg = "base", wf = "mean", repo = "CRAN"),
+    dummy1 = list(pkg = "dummy1", wf = "bar", repo = "BAZ")
     # dragen = list(pkg = "dracarys", wf = "Dragen"),
     # cttso = list(pkg = "cttsor", wf = "Tso")
   )
   all_wfs <- names(wfs)
+  # check if wf available
   if (!wf %in% all_wfs) {
-    msg1 <- glue::glue_collapse(sep = ", ", last = " or ")
-    msg2 <- glue("Workflow {wf} not found. Available: {all_wfs}")
-    stop(msg2)
+    all_wfs_glued <- glue::glue_collapse(all_wfs, sep = ", ", last = " or ")
+    msg <- glue("Workflow '{wf}' not found. Available: {all_wfs_glued}")
+    stop(msg)
   }
-  pkgfun <- getExportedValue(wfs[[wf]][["pkg"]], wfs[[wf]][["wf"]])
+  x <- wfs[[wf]]
+  # check if pkg installed
+  pkg_found <- find.package(x[["pkg"]], quiet = TRUE) |> length()
+  if (pkg_found == 1) {
+    pkgfun <- getExportedValue(x[["pkg"]], x[["wf"]])
+  } else {
+    msg <- glue("Package {x[['pkg']]} not found, please install from {x[['repo']]}")
+    stop(msg)
+  }
   return(pkgfun)
 }

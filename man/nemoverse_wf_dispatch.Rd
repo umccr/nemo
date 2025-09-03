@@ -17,5 +17,5 @@ Dispatches the nemoverse workflow class based on the chosen workflow.
 }
 \examples{
 wf <- "basemean"
-(x <- nemoverse_wf_dispatch(wf))
+(fun <- nemoverse_wf_dispatch(wf))
 }

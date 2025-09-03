@@ -41,10 +41,12 @@ test_that("Function empty_tbl() @ L100", {
 })
 
 
-test_that("Function nemoverse_wf_dispatch() @ L152", {
+test_that("Function nemoverse_wf_dispatch() @ L154", {
   
   wf <- "basemean"
-  (x <- nemoverse_wf_dispatch(wf))
-  expect_equal(x, base::mean)
+  (fun <- nemoverse_wf_dispatch(wf))
+  expect_equal(fun, base::mean)
+  expect_error(nemoverse_wf_dispatch("foo"))
+  expect_error(nemoverse_wf_dispatch("dummy1"))
 })
 
