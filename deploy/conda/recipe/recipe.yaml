@@ -23,12 +23,13 @@ requirements:
     - r-dplyr
     - r-fs
     - r-glue
+    - r-knitr
     - r-log4r
     - r-purrr
     - r-r6
-    - r-rpostgres
     - r-readr
     - r-rlang
+    - r-rpostgres
     - r-tibble
     - r-tidyr
     - r-yaml
@@ -41,12 +42,13 @@ requirements:
     - r-dplyr
     - r-fs
     - r-glue
+    - r-knitr
     - r-log4r
     - r-purrr
     - r-r6
-    - r-rpostgres
     - r-readr
     - r-rlang
+    - r-rpostgres
     - r-tibble
     - r-tidyr
     - r-yaml
@@ -61,7 +63,7 @@ tests:
 about:
   homepage: https://github.com/umccr/nemo
   summary: Tidy and explore outputs from bioinformatic pipelines
-  description: Provides the base components for tidying and exploring outputs from bioinformatic pipelines.
+  description: Provides the building blocks for tidying and exploring outputs from bioinformatic pipelines.
   license: MIT
   license_file: LICENSE
   repository: https://github.com/umccr/nemo

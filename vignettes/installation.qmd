@@ -30,12 +30,6 @@ dir1 <- system.file("documentation/installation", package = "nemo")
 #| label: child-conda
 ```
 
-### Docker
-
-```{r child=file.path(dir1, "_docker.qmd")}
-#| label: child-docker
-```
-
 ### Pixi
 
 ```{r child=file.path(dir1, "_pixi.qmd")}
