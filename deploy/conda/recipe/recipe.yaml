@@ -1,0 +1,72 @@
+context:
+  name: r-nemo
+  version: 0.0.0.9000 # bump
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  path: ../../..
+
+build:
+  number: 0
+  noarch: generic
+
+requirements:
+  host:
+    - r-base
+    - r-argparse
+    - r-arrow
+    - r-assertthat
+    - r-dbi
+    - r-dplyr
+    - r-fs
+    - r-glue
+    - r-log4r
+    - r-purrr
+    - r-r6
+    - r-rpostgres
+    - r-readr
+    - r-rlang
+    - r-tibble
+    - r-tidyr
+    - r-yaml
+  run:
+    - r-base
+    - r-argparse
+    - r-arrow
+    - r-assertthat
+    - r-dbi
+    - r-dplyr
+    - r-fs
+    - r-glue
+    - r-log4r
+    - r-purrr
+    - r-r6
+    - r-rpostgres
+    - r-readr
+    - r-rlang
+    - r-tibble
+    - r-tidyr
+    - r-yaml
+
+tests:
+  - r:
+      libraries:
+        - nemo
+  - script:
+    - nemo.R --version
+
+about:
+  homepage: https://github.com/umccr/nemo
+  summary: Tidy and explore outputs from bioinformatic pipelines
+  description: Provides the base components for tidying and exploring outputs from bioinformatic pipelines.
+  license: MIT
+  license_file: LICENSE
+  repository: https://github.com/umccr/nemo
+  documentation: https://umccr.github.io/nemo
+
+extra:
+  recipe-maintainers:
+    - pdiakumis

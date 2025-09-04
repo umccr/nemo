@@ -1,0 +1,10 @@
+name: pkgdown_env
+channels:
+  - umccr
+  - conda-forge
+dependencies:
+  - umccr::r-nemo ==0.0.0.9000 # versioned by bump2version
+  - umccr::r-tidywigits # needed only for vignettes
+  - quarto
+  - r-pkgdown
+  - r-quarto
