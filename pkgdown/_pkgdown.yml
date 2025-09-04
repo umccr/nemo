@@ -21,10 +21,12 @@ navbar:
     articles:
       text: Articles
       menu:
-        - text: Notes
-          href: articles/notes.html
+        - text: Installation
+          href: articles/installation.html
         - text: Structure
           href: articles/structure.html
+        - text: UML
+          href: articles/uml.html
     news:
       text: NEWS
       href: articles/NEWS.html
@@ -44,15 +46,23 @@ reference:
       - file_hdr
       - parse_file_nohead
       - schema_guess
+  - title: "Example Classes"
+    contents:
+      - Tool1
+      - Workflow1
   - title: "Other"
     contents:
-      - date_log
       - empty_tbl
+      - get_tbl_version_attr
       - list_files_dir
       - nemo_out_formats
       - nemo_write
       - valid_out_fmt
-      - get_tbl_version_attr
       - set_tbl_version_attr
-      - Tool1
       - enframe_data
+      - get_python
+      - nemo_cli
+      - nemo_log
+      - nemo_log_date
+      - nemoverse_wf_dispatch
+      - pkg_found
