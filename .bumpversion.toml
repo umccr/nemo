@@ -40,26 +40,21 @@ search = "r-nemo =={current_version}"
 replace = "r-nemo =={new_version}"
 
 [[tool.bumpversion.files]]
-filename = "inst/doc-templates/installation/_docker.qmd"
-search = "nemo:{current_version}"
-replace = "nemo:{new_version}"
+filename = "deploy/conda/env/yaml/pkgdown.yaml"
+search = "r-nemo =={current_version}"
+replace = "r-nemo =={new_version}"
 
 [[tool.bumpversion.files]]
-filename = "inst/doc-templates/installation/_docker.qmd"
-search = "tag={current_version}"
-replace = "tag={new_version}"
-
-[[tool.bumpversion.files]]
-filename = "inst/doc-templates/installation/_conda.qmd"
+filename = "inst/documentation/installation/_conda.qmd"
 search = "r-nemo=={current_version}"
 replace = "r-nemo=={new_version}"
 
 [[tool.bumpversion.files]]
-filename = "inst/doc-templates/installation/_r.qmd"
+filename = "inst/documentation/installation/_r.qmd"
 search = "nemo@v{current_version}"
 replace = "nemo@v{new_version}"
 
 [[tool.bumpversion.files]]
-filename = "inst/doc-templates/installation/_pixi.qmd"
+filename = "inst/documentation/installation/_pixi.qmd"
 search = "r-nemo=={current_version}"
 replace = "r-nemo=={new_version}"
