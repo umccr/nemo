@@ -78,6 +78,7 @@ nemo_write <- function(d, fpfix = NULL, format = "tsv", id = NULL, dbconn = NULL
 #'
 #' Checks that the specified output format is valid.
 #' @param x Output format.
+#' @param choices Available choices for valid output formats.
 #' @examples
 #' valid_out_fmt("tsv")
 #' @testexamples
@@ -85,11 +86,10 @@ nemo_write <- function(d, fpfix = NULL, format = "tsv", id = NULL, dbconn = NULL
 #' expect_error(valid_out_fmt("foo"))
 #' expect_error(valid_out_fmt(c("tsv", "csv")))
 #' @export
-valid_out_fmt <- function(x) {
-  format_choices <- nemo_out_formats()
-  y <- glue::glue_collapse(format_choices, sep = ", ", last = " or ")
+valid_out_fmt <- function(x, choices = nemo_out_formats()) {
+  y <- glue::glue_collapse(choices, sep = ", ", last = " or ")
   assertthat::assert_that(
-    rlang::is_scalar_character(x) && x %in% format_choices,
+    rlang::is_scalar_character(x) && x %in% choices,
     msg = glue("Output format should be _one_ of {y}.")
   )
 }

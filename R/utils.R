@@ -168,13 +168,29 @@ nemoverse_wf_dispatch <- function(wf = NULL) {
     stop(msg)
   }
   x <- wfs[[wf]]
-  # check if pkg installed
-  pkg_found <- find.package(x[["pkg"]], quiet = TRUE) |> length()
-  if (pkg_found == 1) {
+  if (pkg_found(x[["pkg"]])) {
     pkgfun <- getExportedValue(x[["pkg"]], x[["wf"]])
   } else {
     msg <- glue("Package {x[['pkg']]} not found, please install from {x[['repo']]}")
     stop(msg)
   }
   return(pkgfun)
+}
+
+#' Check if Package is Installed
+#'
+#' Check if an R package is installed.
+#' @param p (`character(1)`)\cr
+#' Package name.
+#' @return `TRUE` if the package is installed, `FALSE` otherwise.
+#' @examples
+#' pkg_found("base")
+#' pkg_found("somefakepackagename")
+#' @testexamples
+#' expect_true(pkg_found("base"))
+#' expect_false(pkg_found("somefakepackagename"))
+#' @export
+pkg_found <- function(p) {
+  stopifnot(is.character(p), length(p) == 1)
+  length(find.package(p, quiet = TRUE)) == 1
 }

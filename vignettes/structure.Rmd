@@ -76,7 +76,7 @@ for instance:
 ```{r purple_config1}
 tool <- "purple"
 toolu <- toupper(tool)
-conf <- nemo::Config$new(tool, pkg = "tidywigits")
+conf <- Config$new(tool, pkg = "tidywigits")
 conf
 ```
 

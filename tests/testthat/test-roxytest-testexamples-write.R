@@ -14,7 +14,7 @@ test_that("Function nemo_write() @ L37", {
 })
 
 
-test_that("Function valid_out_fmt() @ L88", {
+test_that("Function valid_out_fmt() @ L89", {
   
   valid_out_fmt("tsv")
   expect_true(valid_out_fmt("tsv"))

@@ -4,10 +4,12 @@
 \alias{valid_out_fmt}
 \title{Output Format is Valid}
 \usage{
-valid_out_fmt(x)
+valid_out_fmt(x, choices = nemo_out_formats())
 }
 \arguments{
 \item{x}{Output format.}
+
+\item{choices}{Available choices for valid output formats.}
 }
 \description{
 Checks that the specified output format is valid.

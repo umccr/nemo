@@ -50,3 +50,12 @@ test_that("Function nemoverse_wf_dispatch() @ L154", {
   expect_error(nemoverse_wf_dispatch("dummy1"))
 })
 
+
+test_that("Function pkg_found() @ L193", {
+  
+  pkg_found("base")
+  pkg_found("somefakepackagename")
+  expect_true(pkg_found("base"))
+  expect_false(pkg_found("somefakepackagename"))
+})
+

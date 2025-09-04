@@ -1,11 +1,13 @@
-# fmt: skip
-tidy_add_args <- function(subp) {
-  fmts <- nemo::nemo_out_formats() |> glue::glue_collapse(sep = ", ")
+cli_tidy_add_args <- function(subp, wf = NULL) {
+  fmts <- nemo_out_formats() |> glue::glue_collapse(sep = ", ")
   tidy <- subp$add_parser("tidy", help = "Tidy Workflow Outputs")
-  tidy$add_argument("-w", "--workflow", help = "Workflow name.", required = TRUE)
+  if (is.null(wf)) {
+    tidy$add_argument("-w", "--workflow", help = "Workflow name.", required = TRUE)
+  }
   tidy$add_argument("-d", "--in_dir", help = "Input directory.", required = TRUE)
   tidy$add_argument("-o", "--out_dir", help = "Output directory.")
-  tidy$add_argument("-f", "--format", help = paste("Format of output (def: %(default)s). Choices:", fmts), default = "parquet")
+  # fmt: skip
+  tidy$add_argument("-f", "--format", help = paste0("Format of output [def: %(default)s] (", fmts, ")"), default = "parquet")
   tidy$add_argument("-i", "--id", help = "ID to use for this run.", required = TRUE)
   tidy$add_argument("--dbname", help = "Database name.")
   tidy$add_argument("--dbuser", help = "Database user.")
@@ -14,7 +16,7 @@ tidy_add_args <- function(subp) {
   tidy$add_argument("-q", "--quiet", help = "Shush all the logs.", action = "store_true")
 }
 
-tidy_parse_args <- function(args) {
+cli_tidy_parse_args <- function(args, wf = NULL) {
   out_dir <- args$out_dir
   if (args$format != "db") {
     if (is.null(out_dir)) {
@@ -42,18 +44,31 @@ tidy_parse_args <- function(args) {
     include = include,
     exclude = exclude
   )
+  if (!is.null(wf)) {
+    list_args$workflow <- wf
+  }
 
   # tidy run
   if (args$quiet) {
-    res <- suppressMessages(do.call(nemo_tidy, tidy_args))
+    res <- suppressMessages(do.call(cli_nemo_tidy, tidy_args))
   } else {
-    res <- do.call(nemo_tidy, tidy_args)
+    res <- do.call(cli_nemo_tidy, tidy_args)
   }
 }
 
-nemo_tidy <- function(workflow, in_dir, out_dir, out_format, id, dbname, dbuser, include, exclude) {
-  nemo::valid_out_fmt(out_format)
-  fun <- nemo::nemoverse_wf_dispatch(workflow)
+cli_nemo_tidy <- function(
+  workflow,
+  in_dir,
+  out_dir,
+  out_format,
+  id,
+  dbname,
+  dbuser,
+  include,
+  exclude
+) {
+  valid_out_fmt(out_format)
+  fun <- nemoverse_wf_dispatch(workflow)
   dbconn <- NULL
   if (out_format == "db") {
     stopifnot(!is.null(dbname), !is.null(dbuser))
@@ -63,7 +78,7 @@ nemo_tidy <- function(workflow, in_dir, out_dir, out_format, id, dbname, dbuser,
       user = dbuser
     )
   }
-  nemo_log("INFO", paste("⏳ Tidying dir:", in_dir))
+  nemo_log("INFO", paste("Tidying dir:", in_dir))
   obj <- fun$new(in_dir)
   res <- obj$nemofy(
     odir = out_dir,
@@ -74,9 +89,9 @@ nemo_tidy <- function(workflow, in_dir, out_dir, out_format, id, dbname, dbuser,
     exclude = exclude
   )
   if (out_format == "db") {
-    nemo_log("INFO", paste("🎉 Tidy results written to db:", dbname))
+    nemo_log("INFO", paste("Tidy results written to db:", dbname))
   } else {
-    nemo_log("INFO", paste("🎉 Tidy results written to dir:", out_dir))
+    nemo_log("INFO", paste("Tidy results written to dir:", out_dir))
   }
   return(invisible(res))
 }
