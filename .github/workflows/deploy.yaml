@@ -1,0 +1,158 @@
+name: conda-docker-docs
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+env:
+  pkg_name: nemo
+  anaconda_token: ${{ secrets.ANACONDA_UPLOAD_TOKEN }}
+  conda_recipe: deploy/conda/recipe
+  conda_env_yaml: deploy/conda/env/yaml
+  conda_env_lock: deploy/conda/env/lock
+  VERSION: '0.0.0.9000' # bump
+
+jobs:
+  condarise-dockerise:
+    if: "startsWith(github.event.head_commit.message, 'Bump version:')"
+    name: Conda Docker Deployment
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    permissions:
+      contents: write # for lockfiles
+      packages: write # for docker
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v5
+
+      - name: Miniforge setup
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          environment-file: ${{ env.conda_env_yaml }}/condabuild.yaml
+          activate-environment: condabuild_env
+          miniforge-version: latest
+
+      - name: 🐍 Conda pkg build and upload
+        run: |
+          rattler-build build \
+            --recipe ${conda_recipe}/recipe.yaml \
+            --output-dir ${RUNNER_TEMP}/out1
+
+          pkg_path=$(find ${RUNNER_TEMP}/out1 -type f -name "*.conda")
+
+          rattler-build upload anaconda \
+            --owner umccr \
+            --api-key ${anaconda_token} \
+            ${pkg_path}
+
+      - name: 🔒 Conda lock
+        run: |
+          conda-lock lock \
+            --file ${conda_env_yaml}/${pkg_name}.yaml \
+            -p linux-64 \
+            -p osx-arm64
+          conda-lock render \
+            -p linux-64 \
+            -p osx-arm64 \
+            conda-lock.yml \
+          && rm conda-lock.yml \
+          && mv conda-linux-64.lock conda-osx-arm64.lock ${conda_env_lock}/
+
+      - name: 💾 Commit lockfiles
+        run: |
+          git status
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          MSG="[bot] Updating conda-lock files (v${VERSION})"
+          git add .
+          git commit -m "${MSG}"
+          git push
+
+      - name: 📥 Pull lock commit
+        id: pull_lock_commit
+        run: |
+          git pull --no-rebase
+          git --no-pager log --decorate=short --pretty=oneline -n3
+          LATEST_COMMIT_HASH="$(git --no-pager log -1 --format='%H')"
+          echo "latest_commit_hash=${LATEST_COMMIT_HASH}" >> $GITHUB_OUTPUT
+
+      - name: 🔖 Create tag
+        uses: actions/github-script@v7
+        env:
+          LATEST_COMMIT_HASH: ${{ steps.pull_lock_commit.outputs.latest_commit_hash }}
+        with:
+          script: |
+            const the_tag_name = 'refs/tags/v' + process.env.VERSION
+            const the_sha = process.env.LATEST_COMMIT_HASH
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: the_tag_name,
+              sha: the_sha
+            })
+
+      # work with tag from above
+      - name: Code checkout
+        uses: actions/checkout@v5
+        with:
+          ref: v${{ env.VERSION }}
+
+      - name: 🏰 QEMU setup
+        uses: docker/setup-qemu-action@v3
+
+      - name: 🏯 Buildx setup
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          buildkitd-config-inline: |
+            [worker.oci]
+              max-parallelism = 2
+
+      - name: 🐙 GitHub CR login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐳 Docker img build and push
+        uses: docker/build-push-action@v6
+        with:
+          tags: ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+          context: .
+          push: true
+          platforms: linux/amd64
+
+  pkgdown:
+    name: pkgdown
+    needs: [condarise-dockerise]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    permissions:
+      contents: write # for committing
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v5
+        with:
+          ref: v${{ env.VERSION }}
+      - name: Miniforge setup
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          environment-file: ${{ env.conda_env_yaml }}/pkgdown.yaml
+          activate-environment: pkgdown_env
+          miniforge-version: latest
+      - name: 🌐 Website publish
+        run: |
+          Rscript -e "list.files(system.file('extdata', package = 'nemo'), recursive = TRUE)"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          Rscript -e "pkgdown::deploy_to_branch(pkg = '.', new_process = FALSE)"
+
