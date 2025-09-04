@@ -10,8 +10,8 @@ pixi add r-nemo==0.0.0.9000
 Then you can create a task to run the `nemo.R` CLI script:
 
 ```bash
-pixi task add tw "nemo.R"
-pixi run tw --help
+pixi task add nemo "nemo.R"
+pixi run nemo --help
 ```
 
 Or activate the environment and use nemo directly in an R environment:

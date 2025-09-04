@@ -1,0 +1,43 @@
+---
+title: "Installation"
+vignette: >
+  %\VignetteIndexEntry{Installation}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+There are several ways to install {nemo}:
+
+```{r}
+#| label: vars
+#| echo: false
+dir1 <- system.file("documentation/installation", package = "nemo")
+```
+
+### R
+
+```{r child=file.path(dir1, "_r.qmd")}
+#| label: child-r
+```
+
+### Conda
+
+```{r child=file.path(dir1, "_conda.qmd")}
+#| label: child-conda
+```
+
+### Docker
+
+```{r child=file.path(dir1, "_docker.qmd")}
+#| label: child-docker
+```
+
+### Pixi
+
+```{r child=file.path(dir1, "_pixi.qmd")}
+#| label: child-pixi
+```
