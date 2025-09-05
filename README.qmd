@@ -24,8 +24,7 @@ options(width = 100)
 
 <a href="https://umccr.github.io/nemo"><img src="man/figures/logo.png" alt="logo" align="left" height="100" /></a>
 
-# Tidy and Explore Bioinformatic Pipeline Outputs
-
+# 🐢 Tidy and Explore Bioinformatic Pipeline Outputs
 
 [![conda-latest1]](https://anaconda.org/umccr/r-nemo)
 [![gha]](https://github.com/umccr/nemo/actions/workflows/deploy.yaml)
@@ -34,6 +33,29 @@ options(width = 100)
 [gha]: <https://github.com/umccr/nemo/actions/workflows/deploy.yaml/badge.svg> "GitHub Actions"
 
 - 📚 Docs: <https://umccr.github.io/nemo>
+  - [Installation](https://umccr.github.io/nemo/articles/installation)
+  - [R6 structure](https://umccr.github.io/nemo/articles/structure)
+  - [Changelog](https://umccr.github.io/nemo/articles/NEWS)
+
+## Overview
+
+{nemo} is an R package that contains the building blocks for parsing, tidying,
+and writing bioinformatic pipeline results in a more consistent structure.
+
+In short, it traverses through a directory containing results from one or more
+runs of certain bioinformatic tools, parses any files it recognises, tidies
+them up (which includes data reshaping, normalisation, column name cleanup etc.),
+and writes them to the output format of choice e.g. Apache Parquet, PostgreSQL,
+TSV, RDS.
+
+The specific tools it can handle are controlled by configuration files written
+in YAML that are part of 'child' {nemo} packages, like {[tidywigits]} and
+{[dracarys]}. These configuration files (under `inst/config` in those respective
+packages) specify the schemas, types, patterns and field descriptions
+for the _raw_ input _files_ and _tidy_ output _tbls_.
+
+[tidywigits]: <https://github.com/umccr/tidywigits> "tidywigits"
+[dracarys]: <https://github.com/umccr/dracarys> "dracarys"
 
 ## 🍕 Installation
 
@@ -42,7 +64,6 @@ options(width = 100)
 Alternatively:
 
 - conda package: <https://anaconda.org/umccr/r-nemo>
-- Docker image: <https://github.com/umccr/nemo/pkgs/container/nemo>
 
 For more details see: <https://umccr.github.io/nemo/articles/installation>
 
@@ -65,8 +86,7 @@ export PATH="${nemo_cli}:${PATH}"
 
 ```{bash}
 #| label: cli2
-#| eval: false
-# TODO
+#| echo: false
 nemo_cli=$(Rscript -e 'x = system.file("cli", package = "nemo"); cat(x, "\n")' | xargs)
 export PATH="${nemo_cli}:${PATH}"
 
@@ -75,4 +95,10 @@ echo ""
 echo "#-----------------------------------#"
 echo "$ nemo.R --help" & nemo.R --help
 echo "'"
+echo "#-----------------------------------#"
+echo "$ nemo.R tidy --help" & nemo.R tidy --help
+echo ""
+echo "#-----------------------------------#"
+echo "$ nemo.R list --help" & nemo.R list --help
+echo ""
 ```
