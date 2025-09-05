@@ -45,7 +45,7 @@ cli_tidy_parse_args <- function(args, wf = NULL) {
     exclude = exclude
   )
   if (!is.null(wf)) {
-    list_args$workflow <- wf
+    tidy_args$workflow <- wf
   }
 
   # tidy run

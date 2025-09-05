@@ -25,7 +25,7 @@ nemo_log <- function(level, msg, ...) {
 }
 
 nemo_log_layout <- function(level, ...) {
-  paste0(nemo_log_date(), "-nemo-", level, "-", ..., "\n", collapse = "")
+  paste0(nemo_log_date(), " nemo ", level, ": ", ..., "\n", collapse = "")
 }
 
 #' Print current timestamp for logging
