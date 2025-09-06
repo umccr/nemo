@@ -1,0 +1,5 @@
+SampleID	sampleA
+QCStatus	Pass
+TotalReads	10000
+MappedReads	9500
+UnmappedReads	500
