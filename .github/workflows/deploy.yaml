@@ -50,14 +50,12 @@ jobs:
         run: |
           conda-lock lock \
             --file ${conda_env_yaml}/${pkg_name}.yaml \
-            -p linux-64 \
-            -p osx-arm64
+            -p linux-64
           conda-lock render \
             -p linux-64 \
-            -p osx-arm64 \
             conda-lock.yml \
           && rm conda-lock.yml \
-          && mv conda-linux-64.lock conda-osx-arm64.lock ${conda_env_lock}/
+          && mv conda-linux-64.lock ${conda_env_lock}/
       - name: 💾 Commit lockfiles
         run: |
           git status
