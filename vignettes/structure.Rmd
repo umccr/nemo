@@ -9,6 +9,10 @@ knitr:
   opts_chunk:
     collapse: true
     comment: '#>'
+params:
+  tool: "Tool1"
+  workflow: "Workflow1"
+  pkg: "nemo"
 ---
 
 ```{css, echo=FALSE}
@@ -26,10 +30,17 @@ Correct flex boxes from sizing based upon the largest in tabset
 }
 ```
 
+```{r params_eval, echo=FALSE, eval=FALSE}
+params <- list(
+  tool = "Tool1",
+  workflow = "Workflow1",
+  pkg = "nemo"
+)
+```
+
 ```{r pkgs, message=FALSE, warning=FALSE, echo=FALSE}
 {
-  use("tidywigits", c("Purple", "Wigits"))
-  use("nemo")
+  use(params$pkg)
   use("dplyr")
   use("glue", "glue")
   use("purrr", "map")
@@ -40,6 +51,7 @@ Correct flex boxes from sizing based upon the largest in tabset
   use("knitr", "kable")
 }
 ```
+
 
 ```{r}
 #| label: opts
@@ -52,31 +64,35 @@ implementation, which helps with code organisation. It consists of several base
 classes like `Config`, `Tool`, and `Workflow` which we describe below.
 Each R6 class can contain public and private functions and non-functions (fields).
 
+Other R packages like {[tidywigits]} and {[dracarys]} can create their own `Tool` and
+`Workflow` children classes that inherit (or override) functions from
+the {nemo} parent classes. This allows for custom parsers and tidiers for specific
+bioinformatic tools and workflows.
+
 [R6]: <https://github.com/r-lib/R6> "R6 package repo"
+[tidywigits]: <https://github.com/umccr/tidywigits> "tidywigits"
+[dracarys]: <https://github.com/umccr/dracarys> "dracarys"
+
+Here we use the `Tool1` and `Workflow1` classes as examples to illustrate the
+structure of the package.
 
 ## `Config`
 
 A `Config` object contains functionality for interacting with YAML
-configuration files that are part of child nemo packages like {[tidywigits]} and
-{[dracarys]}.
-These configuration files
-(under `inst/config`) specify the schemas, types, patterns and field descriptions
-for the _raw_ input _files_ and _tidy_ output _tbls_. See `?Config`.
-
-[tidywigits]: <https://github.com/umccr/tidywigits> "tidywigits"
-[dracarys]: <https://github.com/umccr/dracarys> "dracarys"
+configuration files (under `inst/config`) that specify the schemas, types,
+patterns and field descriptions for the _raw_ input _files_ and _tidy_ output
+_tbls_. See `?Config`.
 
 ### raw {.tabset .tabset-pills}
 
 #### intro
 
-Let's look at some of the information for the raw PURPLE config (from {tidywigits}),
-for instance:
+Let's look at some of the information for the raw `Tool1` config, for instance:
 
-```{r purple_config1}
-tool <- "purple"
-toolu <- toupper(tool)
-conf <- Config$new(tool, pkg = "tidywigits")
+```{r tool1_config1}
+tool <- params$tool
+workflow <- params$workflow
+conf <- Config$new(tool, pkg = "nemo")
 conf
 ```
 
@@ -87,45 +103,44 @@ the `$` sign.
 
 Patterns are used to fish out the relevant files from a directory listing.
 
-```{r purple_config_raw_patterns}
+```{r tool1_config_raw_patterns}
 conf$get_raw_patterns() |>
-  knitr::kable(caption = glue("{toolu} raw file patterns."))
+  knitr::kable(caption = glue("{tool} raw file patterns."))
 ```
 
 #### descriptions
 
 File descriptions are based on the available open source documentation.
 
-```{r purple_config_raw_descriptions}
+```{r tool1_config_raw_descriptions}
 conf$get_raw_descriptions() |>
-  knitr::kable(caption = glue("{toolu} raw file descriptions."))
+  knitr::kable(caption = glue("{tool} raw file descriptions."))
 ```
 
 #### versions
 
 Versions are used to distinguish changes in schema between individual tool
-versions. For example, after LINX v1.25, several columns were
-dropped from the `breakends` table, which is reflected in the available LINX
-schemas. For now we are using `latest` as a default version based on the most
+versions. For example, after `Tool1` v1.2.3 metrics Y and Z were added to `table1`,
+which is reflected in the available schemas.
+For now we are using `latest` as a default version based on the most
 recent schema tests, and any discrepancies we see are labelled accordingly by the
 version of the tool that generated a file with a different schema.
 
-```{r purple_config_raw_versions}
+```{r tool1_config_raw_versions}
 conf$get_raw_versions() |>
-  knitr::kable(caption = glue("{toolu} raw file versions."))
+  knitr::kable(caption = glue("{tool} raw file versions."))
 ```
 
 
 #### schemas
 
 The raw schemas specify the column name and type (e.g. character (`c`),
-integer (`i`), float/double (`d`))
-for each input file (just showing a couple below):
+integer (`i`), float/double (`d`)) for each input file:
 
-```{r purple_config_raw_schemas1}
+```{r tool1_config_raw_schemas1}
 (s <- conf$get_raw_schemas_all())
 s |>
-  dplyr::filter(name == "puritytsv") |>
+  dplyr::filter(name == "table1", version == "v1.2.3") |>
   dplyr::select("schema") |>
   tidyr::unnest("schema")
 ```
@@ -134,27 +149,26 @@ s |>
 
 #### intro
 
-Now let's look at some of the information in the tidy PURPLE config. The
+Now let's look at some of the information in the tidy `Tool1` config. The
 difference between raw and tidy configs is mostly in the column names (they are
-standardised to lowercase separated by underscores, i.e. snake_case), and some
+standardised to lowercase separated by underscores, i.e. `snake_case`), and some
 raw files get split into multiple tidy tables (e.g. for normalisation purposes).
 
 #### descriptions
 
 Tidy descriptions are the same as the raw descriptions for now.
 
-```{r purple_config_tidy_descriptions}
+```{r tool1_config_tidy_descriptions}
 conf$get_tidy_descriptions() |>
-  knitr::kable(caption = glue("{toolu} tidy file descriptions."))
+  knitr::kable(caption = glue("{tool} tidy file descriptions."))
 ```
-
 
 #### schemas
 
-```{r purple_config_tidy_schemas1}
+```{r tool1_config_tidy_schemas1}
 (s <- conf$get_tidy_schemas_all())
 s |>
-  dplyr::filter(.data$name == "puritytsv") |>
+  dplyr::filter(.data$name == "table1", version == "v1.2.3") |>
   dplyr::select("schema") |>
   tidyr::unnest("schema")
 ```
@@ -181,15 +195,15 @@ optimise the parsing if needed with faster packages such as {[data.table]},
 
 We can have different `Tool` children classes that inherit (or override) functions
 and fields from the `Tool` parent class.
-For example, we can create a `Tool` object for PURPLE as follows:
+For example, we can create a `Tool` object for `Tool1` as follows:
 
-- Initialise a `Purple` object:
+- Initialise a `Tool1` object:
 
-```{r tool_purple}
-ppl_path <- system.file("extdata/oa/purple", package = "tidywigits")
-ppl <- tidywigits::Purple$new(path = ppl_path)
+```{r tool_tool1}
+tool1_path <- system.file("extdata/tool1", package = "nemo")
+t1 <- nemo::Tool1$new(path = tool1_path)
 # each class comes with a print function
-ppl
+t1
 ```
 
 ### config
@@ -197,19 +211,21 @@ ppl
 - Its `Config` object is also constructed based on the `name` supplied - this
 is used internally to find files of interest and infer their schemas:
 
-```{r ppl_conf}
-ppl$config
-ppl$config$get_raw_patterns()
-ppl$config$get_raw_schema("puritytsv")
-ppl$config$get_tidy_schema("puritytsv")
+```{r tool1_conf}
+t1$config
+t1$config$get_raw_patterns()
+t1$config$get_raw_schema("table1", v = "v1.2.3")
+# t1$config$get_raw_schema("table1", v = "latest") # default
+t1$config$get_tidy_schema("table1", v = "v1.2.3")
+# t1$config$get_tidy_schema("table1", v = "latest") # default
 ```
 
 ### list
 
 We can list files that can be parsed with `list_files()`:
 
-```{r ppl_list}
-(lf <- ppl$list_files())
+```{r tool1_list}
+(lf <- t1$list_files())
 lf |> dplyr::slice(1) |> str()
 ```
 
@@ -218,14 +234,14 @@ lf |> dplyr::slice(1) |> str()
 We can parse and tidy files of interest using the `tidy` function. Note
 that this function is called on the object and not assigned anywhere:
 
-```{r ppl_tidy}
+```{r tool1_tidy}
 # this will create a new field tbls containing the tidy data (and optionally
 # the 'raw' parsed data)
-ppl$tidy(tidy = TRUE, keep_raw = TRUE)
-ppl$tbls
-ppl$tbls$raw[[8]] |> dplyr::glimpse()
+t1$tidy(tidy = TRUE, keep_raw = TRUE)
+t1$tbls
+t1$tbls$raw[[1]] |> dplyr::glimpse()
 # the tidy tibbles are nested to allow for more than one tidy tibble per file
-ppl$tbls$tidy[[8]][["data"]][[1]] |> dplyr::glimpse()
+t1$tbls$tidy[[1]][["data"]][[1]] |> dplyr::glimpse()
 ```
 
 ### filter
@@ -234,12 +250,12 @@ We can also focus on a subset of files to tidy using the `filter_files()` functi
 The `include` and `exclude` arguments can specify which parsers to include or
 exclude in the analysis:
 
-```{r ppl_filter}
-# create new Purple object
-ppl2 <- tidywigits::Purple$new(path = ppl_path)
-ppl2$files
-ppl2$filter_files(include = c("purple_qc", "purple_cnvsomtsv"))
-ppl2$files
+```{r tool1_filter}
+# create new Tool1 object
+t2 <- nemo::Tool1$new(path = tool1_path)
+t2$files
+t2$filter_files(include = c("tool1_table2", "tool1_table3"))
+t2$files
 ```
 
 ### write
@@ -252,11 +268,11 @@ from different runs in a data pipeline.
 When writing to a database like PostgreSQL, another column `nemo_pfix` is used
 to distinguish results from the same run from the same tool.
 
-```{r ppl_write}
-ppl2$tidy() # first need to tidy
+```{r tool1_write}
+t2$tidy() # first need to tidy
 outdir1 <- tempdir()
 fmt <- "csv"
-ppl2$write(odir = outdir1, format = fmt, id = "run123")
+t2$write(odir = outdir1, format = fmt, id = "run123")
 wfiles <- fs::dir_info(outdir1) |> dplyr::select(1:5)
 wfiles |>
   dplyr::mutate(bname = basename(.data$path)) |>
@@ -270,14 +286,13 @@ The `nemofy` function is a convenient wrapper for the process of filtering,
 tidying, and writing.
 
 ```{r nemofy1}
-ppl3 <- tidywigits::Purple$new(path = ppl_path)
-outdir2 <- file.path(tempdir(), "ppl3") |> fs::dir_create()
-ppl3$files
-ppl3$nemofy(
+t3 <- nemo::Tool1$new(path = tool1_path)
+outdir2 <- file.path(tempdir(), "t3") |> fs::dir_create()
+t3$files
+t3$nemofy(
   odir = outdir2,
   format = "tsv",
-  id = "run_ppl3",
-  exclude = c("purple_cnvgenetsv", "purple_cnvsomtsv", "purple_drivercatalog", "purple_germdeltsv")
+  id = "run_t3"
 )
 wfiles2 <- fs::dir_info(outdir2) |>
   dplyr::mutate(bname = basename(.data$path))
@@ -292,26 +307,25 @@ A `Workflow` consists of a list of one or more `Tool`s. We can construct a
 certain `Workflow` with different `Tool`s, which would allow parsing and writing
 tidy tables from a variety of bioinformatic tools. See `?Workflow`.
 
-For example, the {tidywigits} R package contains a `Wigits` class as a `Workflow` child based on a suite of
-its own `Tool`s. Similarly to `Tool`, a `Workflow` object
+For example, {nemo} contains a `Workflow1` class as a `Workflow` child (containing
+only a single `Tool1` for simplicity). Similarly to `Tool`, a `Workflow` object
 contains functions such as `filter_files`, `list_files`, `tidy`, `write` and
 `nemofy`:
 
-```{r wigits_init}
-w <- system.file("extdata/oa/purple", package = "tidywigits") |>
-  tidywigits::Wigits$new()
+```{r w1_init}
+w <- system.file("extdata/tool1", package = "nemo") |>
+  nemo::Workflow1$new()
 outdir3 <- file.path(tempdir(), "oa") |> fs::dir_create()
 w$list_files()
 x <- w$nemofy(
   odir = outdir3,
   format = "tsv",
-  id = "wigits_run1",
-  exclude = c("cobalt_ratiotsv", "amber_baftsv", "isofox_altsj", "isofox_transdata")
+  id = "workflow1_run1"
 )
 wfiles3 <- fs::dir_info(outdir3) |>
   dplyr::select(1:5) |>
   dplyr::mutate(bname = basename(.data$path))
 wfiles3 |>
   dplyr::select("bname", "size", "type")
-readr::read_tsv(wfiles3$path[5], show_col_types = F)
+readr::read_tsv(wfiles3$path[1], show_col_types = F)
 ```

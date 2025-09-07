@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-      - dev
 env:
   pkg_name: nemo
   anaconda_token: ${{ secrets.ANACONDA_UPLOAD_TOKEN }}
   conda_recipe: deploy/conda/recipe
   conda_env_yaml: deploy/conda/env/yaml
   conda_env_lock: deploy/conda/env/lock
-  VERSION: '0.0.0.9000' # bump
+  VERSION: '0.0.0.9003' # bump
 
 jobs:
   conda:
@@ -50,14 +49,12 @@ jobs:
         run: |
           conda-lock lock \
             --file ${conda_env_yaml}/${pkg_name}.yaml \
-            -p linux-64 \
-            -p osx-arm64
+            -p linux-64
           conda-lock render \
             -p linux-64 \
-            -p osx-arm64 \
             conda-lock.yml \
           && rm conda-lock.yml \
-          && mv conda-linux-64.lock conda-osx-arm64.lock ${conda_env_lock}/
+          && mv conda-linux-64.lock ${conda_env_lock}/
       - name: 💾 Commit lockfiles
         run: |
           git status
