@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nemo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Workflow Object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/umccr/nemo/blob/gha/R/Workflow.R" class="external-link"><code>R/Workflow.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/umccr/nemo/blob/main/R/Workflow.R" class="external-link"><code>R/Workflow.R</code></a></small>
       <div class="d-none name"><code>Workflow.Rd</code></div>
     </div>
 
@@ -353,10 +353,10 @@ Files to exclude.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   tool_parser  parser bname        size lastmodified        path  pattern prefix</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fs:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.to…   113 2025-09-07 <span style="color: #949494;">11:31:27</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.to…   153 2025-09-07 <span style="color: #949494;">11:31:27</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.to…    70 2025-09-07 <span style="color: #949494;">11:31:27</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.to…    83 2025-09-07 <span style="color: #949494;">11:31:27</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.to…   113 2025-09-07 <span style="color: #949494;">13:03:45</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.to…   153 2025-09-07 <span style="color: #949494;">13:03:45</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.to…    70 2025-09-07 <span style="color: #949494;">13:03:45</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.to…    83 2025-09-07 <span style="color: #949494;">13:03:45</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: schema &lt;list&gt;, group &lt;glue&gt;</span></span>
 <span class="r-in"><span><span class="va">wf1</span><span class="op">$</span><span class="fu">nemofy</span><span class="op">(</span>odir <span class="op">=</span> <span class="va">odir</span>, format <span class="op">=</span> <span class="st">"parquet"</span>, id <span class="op">=</span> <span class="st">"run1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 9</span></span>
