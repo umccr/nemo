@@ -3,7 +3,7 @@ channels:
   - umccr
   - conda-forge
 dependencies:
-  - umccr::r-nemo ==0.0.0.9002 # bump
+  - umccr::r-nemo ==0.0.0.9003 # bump
   - umccr::r-tidywigits # needed only for vignettes
   - r-pkgdown
   - r-quarto
