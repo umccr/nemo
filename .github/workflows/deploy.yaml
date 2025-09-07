@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - gha
 env:
   pkg_name: nemo
   anaconda_token: ${{ secrets.ANACONDA_UPLOAD_TOKEN }}
