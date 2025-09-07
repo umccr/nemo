@@ -1,0 +1,13 @@
+pandoc: 3.6.3
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  installation: installation.html
+  NEWS: NEWS.html
+  notes: notes.html
+  structure: structure.html
+  uml: uml.html
+last_built: 2025-09-07T11:33Z
+urls:
+  reference: https://umccr.github.io/nemo/reference
+  article: https://umccr.github.io/nemo/articles
