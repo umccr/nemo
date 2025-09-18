@@ -252,6 +252,25 @@ Tool <- R6::R6Class(
         setNames(name) |>
         enframe_data()
     },
+    #' @description Parse files with no header and two columns representing
+    #' key-value pairs.
+    #' @param x (`character(1)`)\cr
+    #' File path.
+    #' @param name (`character(1)`)\cr
+    #' Parser name (e.g. "qc" - see docs).
+    #' @param delim (`character(1)`)\cr
+    #' File delimiter.
+    #' @param ... Passed on to `readr::read_delim`.
+    #' @return A tibble with the parsed data.
+    .parse_file_keyvalue = function(x, name, delim = "\t", ...) {
+      parse_file_keyvalue(
+        fpath = x,
+        pname = name,
+        schemas_all = self$raw_schemas_all,
+        delim = delim,
+        ...
+      )
+    },
     #' @description Parse headless file.
     #' @param x (`character(1)`)\cr
     #' File path.

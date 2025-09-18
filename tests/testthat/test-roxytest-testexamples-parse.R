@@ -15,21 +15,7 @@ test_that("Function parse_file() @ L27", {
 })
 
 
-test_that("Function parse_file_nohead() @ L72", {
-  
-  path <- system.file("extdata/tool1", package = "nemo")
-  x <- Tool$new("tool1", pkg = "nemo", path = path)
-  schema <- x$raw_schemas_all |>
-         dplyr::filter(.data$name == "table3") |>
-         dplyr::select("version", "schema")
-  fpath <- file.path(path, "latest", "sampleA.tool1.table3.tsv")
-  (d <- parse_file_nohead(fpath, schema))
-  
-  expect_equal(names(d), c("Variable", "Value"))
-})
-
-
-test_that("Function file_hdr() @ L117", {
+test_that("Function file_hdr() @ L105", {
   
   dir1 <- system.file("extdata/tool1", package = "nemo")
   fpath <- file.path(dir1, "latest", "sampleA.tool1.table1.tsv")
@@ -39,7 +25,7 @@ test_that("Function file_hdr() @ L117", {
 })
 
 
-test_that("Function schema_guess() @ L158", {
+test_that("Function schema_guess() @ L146", {
   
   dir1 <- system.file("extdata/tool1", package = "nemo")
   fpath1 <- file.path(dir1, "latest", "sampleA.tool1.table1.tsv")
@@ -55,5 +41,18 @@ test_that("Function schema_guess() @ L158", {
   expect_equal(length(s1), 2)
   expect_equal(s1[["version"]], "latest")
   expect_equal(s2[["version"]], "v1.2.3")
+})
+
+
+test_that("Function parse_file_keyvalue() @ L202", {
+  
+  dir1 <- system.file("extdata/tool1", package = "nemo")
+  fpath <- file.path(dir1, "latest", "sampleA.tool1.table3.tsv")
+  x <- Tool1$new(dir1)
+  schemas_all <- x$raw_schemas_all
+  pname <- "table3"
+  (d <- parse_file_keyvalue(fpath, pname, schemas_all))
+  
+  expect_equal(names(d)[1:2], c("SampleID", "QCStatus"))
 })
 

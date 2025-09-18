@@ -56,18 +56,6 @@ parse_file <- function(fpath, pname, schemas_all, delim = "\t", ...) {
 #' @param delim (`character(1)`)\cr
 #' File delimiter.
 #' @param ... Passed on to `readr::read_delim`.
-#'
-#' @examples
-#' path <- system.file("extdata/tool1", package = "nemo")
-#' x <- Tool$new("tool1", pkg = "nemo", path = path)
-#' schema <- x$raw_schemas_all |>
-#'        dplyr::filter(.data$name == "table3") |>
-#'        dplyr::select("version", "schema")
-#' fpath <- file.path(path, "latest", "sampleA.tool1.table3.tsv")
-#' (d <- parse_file_nohead(fpath, schema))
-#'
-#' @testexamples
-#' expect_equal(names(d), c("Variable", "Value"))
 #' @export
 parse_file_nohead <- function(fpath, schema, delim = "\t", ...) {
   assertthat::assert_that(
@@ -183,4 +171,52 @@ schema_guess <- function(pname, cnames, schemas_all) {
     dplyr::select("schema") |>
     tidyr::unnest("schema")
   list(schema = schema, version = version)
+}
+
+#' Parse Key-Value file
+#'
+#' @description
+#' Parses files with no header and two columns representing key-value pairs.
+#'
+#' @param fpath (`character(1)`)\cr
+#' File path.
+#' @param pname (`character(1)`)\cr
+#' Parser name.
+#' @param schemas_all (`tibble()`)\cr
+#' Tibble with name, version and schema list-col.
+#' @param delim (`character(1)`)\cr
+#' File delimiter.
+#' @param ... Passed on to `readr::read_delim`.
+#'
+#' @examples
+#' dir1 <- system.file("extdata/tool1", package = "nemo")
+#' fpath <- file.path(dir1, "latest", "sampleA.tool1.table3.tsv")
+#' x <- Tool1$new(dir1)
+#' schemas_all <- x$raw_schemas_all
+#' pname <- "table3"
+#' (d <- parse_file_keyvalue(fpath, pname, schemas_all))
+#'
+#' @testexamples
+#' expect_equal(names(d)[1:2], c("SampleID", "QCStatus"))
+#' @export
+parse_file_keyvalue <- function(fpath, pname, schemas_all, delim = "\t", ...) {
+  ncols <- file_hdr(fpath, delim = delim, ...) |> length()
+  msg <- glue("Expected 2 columns, but found {ncols} in {fpath}")
+  assertthat::assert_that(ncols == 2, msg = msg)
+  d <- readr::read_delim(
+    file = fpath,
+    col_names = c("key", "value"),
+    col_types = "cc",
+    delim = delim,
+    ...
+  )
+  d_wide <- d |>
+    tidyr::pivot_wider(names_from = "key", values_from = "value")
+  schema <- schema_guess(
+    pname = pname,
+    cnames = colnames(d_wide),
+    schemas_all = schemas_all
+  )
+  attr(d_wide, "file_version") <- schema[["version"]]
+  d_wide[]
 }
