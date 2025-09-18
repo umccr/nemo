@@ -79,6 +79,7 @@ Tibble of files from \code{\link[=list_files_dir]{list_files_dir()}}.}
 \item \href{#method-Tool-list_files}{\code{Tool$list_files()}}
 \item \href{#method-Tool-.parse_file}{\code{Tool$.parse_file()}}
 \item \href{#method-Tool-.tidy_file}{\code{Tool$.tidy_file()}}
+\item \href{#method-Tool-.parse_file_keyvalue}{\code{Tool$.parse_file_keyvalue()}}
 \item \href{#method-Tool-.parse_file_nohead}{\code{Tool$.parse_file_nohead()}}
 \item \href{#method-Tool-.eval_func}{\code{Tool$.eval_func()}}
 \item \href{#method-Tool-tidy}{\code{Tool$tidy()}}
@@ -235,6 +236,36 @@ Convert field types based on schema.}
 }
 \subsection{Returns}{
 A tibble with the tidy data enframed.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Tool-.parse_file_keyvalue"></a>}}
+\if{latex}{\out{\hypertarget{method-Tool-.parse_file_keyvalue}{}}}
+\subsection{Method \code{.parse_file_keyvalue()}}{
+Parse files with no header and two columns representing
+key-value pairs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tool$.parse_file_keyvalue(x, name, delim = "\\t", ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{character(1)})\cr
+File path.}
+
+\item{\code{name}}{(\code{character(1)})\cr
+Parser name (e.g. "qc" - see docs).}
+
+\item{\code{delim}}{(\code{character(1)})\cr
+File delimiter.}
+
+\item{\code{...}}{Passed on to \code{readr::read_delim}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A tibble with the parsed data.
 }
 }
 \if{html}{\out{<hr>}}

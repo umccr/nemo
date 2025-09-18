@@ -50,7 +50,13 @@ raw:
     ftype: 'txt-nohead'
     schema:
       latest:
-        - field: 'Variable'
+        - field: 'SampleID'
           type: 'char'
-        - field: 'Value'
+        - field: 'QCStatus'
           type: 'char'
+        - field: 'TotalReads'
+          type: 'float'
+        - field: 'MappedReads'
+          type: 'float'
+        - field: 'UnmappedReads'
+          type: 'float'

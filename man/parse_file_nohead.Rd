@@ -21,13 +21,3 @@ File delimiter.}
 \description{
 Parses files with no column names.
 }
-\examples{
-path <- system.file("extdata/tool1", package = "nemo")
-x <- Tool$new("tool1", pkg = "nemo", path = path)
-schema <- x$raw_schemas_all |>
-       dplyr::filter(.data$name == "table3") |>
-       dplyr::select("version", "schema")
-fpath <- file.path(path, "latest", "sampleA.tool1.table3.tsv")
-(d <- parse_file_nohead(fpath, schema))
-
-}
