@@ -27,17 +27,16 @@ File version.}
 
 \item{...}{Passed on to \code{readr::read_delim}.}
 }
+\value{
+A named list with the config info.
+}
 \description{
 Prepares config from raw file.
 }
 \examples{
-\dontrun{
-path <- here::here("nogit/oa_v2/esvee/prep/COLO829_tumor.esvee.prep.fragment_length.tsv")
-name <- "prepfraglen"
-descr <- "Fragment length stats."
-pat <- "\\\\.esvee\\\\.prep\\\\.fragment_length\\\\.tsv$"
-type <- "tsv"
-v <- "latest"
-l <- config_prep_raw(path = path, name = name, descr = descr, pat = pat, type = type, v = v)
-}
+path <- system.file("extdata", "tool1/latest/sampleA.tool1.table1.tsv", package = "nemo")
+name <- "table1"
+descr <- "Table1 from Tool1."
+pat <- "\\\\.tool1\\\\.table1\\\\.tsv$"
+l <- config_prep_raw(path, name, descr, pat)
 }

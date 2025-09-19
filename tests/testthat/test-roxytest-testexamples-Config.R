@@ -25,3 +25,22 @@ test_that("Function Config() @ L28", {
   expect_error(Config$new("foo", pkg))
 })
 
+
+test_that("Function config_prep_raw_schema() @ L255", {
+  
+  path <- system.file("extdata", "tool1/latest/sampleA.tool1.table1.tsv", package = "nemo")
+  (x <- config_prep_raw_schema(path = path, delim = "\t"))
+  expect_equal(x[1, "field", drop = T], "'SampleID'")
+})
+
+
+test_that("Function config_prep_raw() @ L300", {
+  
+  path <- system.file("extdata", "tool1/latest/sampleA.tool1.table1.tsv", package = "nemo")
+  name <- "table1"
+  descr <- "Table1 from Tool1."
+  pat <- "\\.tool1\\.table1\\.tsv$"
+  l <- config_prep_raw(path, name, descr, pat)
+  expect_equal(names(l[[1]]), c("description", "pattern", "ftype", "schema"))
+})
+

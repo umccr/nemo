@@ -12,12 +12,14 @@ File path.}
 
 \item{...}{Passed on to \code{readr::read_delim}.}
 }
+\value{
+A tibble with columns \code{field} and \code{type}, each single-quoted for
+prettier YAML export.
+}
 \description{
 Prepares config schema from raw file.
 }
 \examples{
-\dontrun{
-path <- here::here("nogit/oa_v2/esvee/prep/COLO829_tumor.esvee.prep.fragment_length.tsv")
-config_prep_raw_schema(path = path, delim = "\t")
-}
+path <- system.file("extdata", "tool1/latest/sampleA.tool1.table1.tsv", package = "nemo")
+(x <- config_prep_raw_schema(path = path, delim = "\t"))
 }
