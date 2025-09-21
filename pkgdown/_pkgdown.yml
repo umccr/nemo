@@ -25,6 +25,10 @@ navbar:
           href: articles/installation.html
         - text: Structure
           href: articles/structure.html
+        - text: Contribute
+          href: articles/contribute.html
+        - text: Devnotes
+          href: articles/devnotes.html
         - text: UML
           href: articles/uml.html
     news:
