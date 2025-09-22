@@ -192,11 +192,6 @@ Tool <- R6::R6Class(
           ),
           tool_parser = glue("{self$name}_{.data$parser}")
         ) |>
-        dplyr::rowwise() |>
-        dplyr::mutate(
-          schema = list(self$config$get_raw_schema(.data$parser))
-        ) |>
-        dplyr::ungroup() |>
         dplyr::mutate(group = dplyr::row_number(), .by = "bname") |>
         dplyr::mutate(
           group = dplyr::if_else(.data$group == 1, glue(""), glue("_{.data$group}")),
@@ -339,7 +334,7 @@ Tool <- R6::R6Class(
           )
         ) |>
         dplyr::ungroup() |>
-        dplyr::select(-c("parse_fun", "tidy_fun", "schema"))
+        dplyr::select(-c("parse_fun", "tidy_fun"))
       if (!keep_raw) {
         d <- d |>
           dplyr::select(-"raw")
