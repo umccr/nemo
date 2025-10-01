@@ -81,7 +81,7 @@ Tool <- R6::R6Class(
     #' @param files_tbl (`tibble(n)`)\cr
     #' Tibble of files from [list_files_dir()].
     initialize = function(name = NULL, pkg = NULL, path = NULL, files_tbl = NULL) {
-      assertthat::assert_that(
+      stopifnot(
         !is.null(path) || !is.null(files_tbl),
         !is.null(name),
         !is.null(pkg)
@@ -160,9 +160,9 @@ Tool <- R6::R6Class(
     #' @return A tibble of file paths.
     list_files = function(type = "file") {
       files_tbl <- self$files_tbl
-      assertthat::assert_that(!is.null(self$path) || !is.null(files_tbl))
+      stopifnot(!is.null(self$path) || !is.null(files_tbl))
       if (!is.null(files_tbl)) {
-        assertthat::assert_that(is_files_tbl(files_tbl))
+        stopifnot(is_files_tbl(files_tbl))
       }
       patterns <- self$config$get_raw_patterns() |>
         dplyr::rename(pat_name = "name", pat_value = "value")

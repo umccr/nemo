@@ -118,7 +118,8 @@ Config <- R6::R6Class(
     get_raw_schemas_all = function() {
       self$config[["raw"]][["raw"]] |>
         purrr::map(\(rawfile) {
-          rawfile[["schema"]] |>
+          description <- tibble::tibble(tbl_description = rawfile[["description"]])
+          schema <- rawfile[["schema"]] |>
             purrr::map(
               \(s) {
                 {
@@ -132,6 +133,7 @@ Config <- R6::R6Class(
               }
             ) |>
             tibble::enframe(name = "version", value = "schema")
+          dplyr::bind_cols(description, schema)
         }) |>
         dplyr::bind_rows(.id = "name")
     },
@@ -205,7 +207,8 @@ Config <- R6::R6Class(
       l1 <- self$config[["tidy"]][["tidy"]]
       l1 |>
         purrr::map(\(tt) {
-          tt[["schema"]] |>
+          description <- tibble::tibble(tbl_description = tt[["description"]])
+          schema <- tt[["schema"]] |>
             purrr::map(\(v) {
               v |>
                 purrr::map(
@@ -221,6 +224,7 @@ Config <- R6::R6Class(
                 tibble::enframe(name = "tbl", value = "schema")
             }) |>
             tibble::enframe(name = "version", value = "value2")
+          dplyr::bind_cols(description, schema)
         }) |>
         tibble::enframe(name = "name", value = "value1") |>
         tidyr::unnest("value1") |>
@@ -363,7 +367,7 @@ config_prep_raw <- function(path, name, descr, pat, type = "tsv", v = "latest", 
 #' config <- config_prep_multi(x, tool_descr)
 #' @export
 config_prep_multi <- function(x, tool_descr = NULL) {
-  assertthat::assert_that(
+  stopifnot(
     tibble::is_tibble(x),
     all(c("name", "descr", "pat", "type", "path") %in% colnames(x)),
     !is.null(tool_descr)
