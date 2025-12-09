@@ -109,13 +109,12 @@ Tool <- R6::R6Class(
     #' @param ... (ignored).
     #' @return self invisibly.
     print = function(...) {
-      # fmt: skip
       res <- tibble::tribble(
-        ~var, ~value,
-        "name", self$name,
-        "path", self$path %||% "<ignored>",
-        "files", as.character(nrow(self$files)),
-        "tidied", as.character(!private$needs_tidying)
+        ~var     , ~value                               ,
+        "name"   , self$name                            ,
+        "path"   , self$path %||% "<ignored>"           ,
+        "files"  , as.character(nrow(self$files))       ,
+        "tidied" , as.character(!private$needs_tidying)
       ) |>
         tidyr::unnest("value")
       cat(glue("#--- Tool {self$name} ---#"))

@@ -1,6 +1,5 @@
 # Construct UML diagram from all available classes
 
-# fmt: skip
 # classes start with a cap, copy into vector and get their value
 # dput(ls("package:nemo", pattern = "[A-Z].*")) # note: load pkg prior
 fun_char <- c("Config", "Tool", "Tool1", "Workflow", "Workflow1")
