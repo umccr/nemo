@@ -17,8 +17,13 @@
 #' (ts1 <- conf$get_tidy_schemas_all())
 #' conf$get_tidy_schema("table1")
 #' conf$get_tidy_schema("table1", v = "v1.2.3")
+#' conf$get_tidy_schema("table1", subtbl = "tbl1")
 #'
 #' @testexamples
+#' expect_error(conf$get_raw_schema("foo"))
+#' expect_error(conf$get_raw_schema("table1", v = "foo"))
+#' expect_error(conf$get_tidy_schema("table1", v = "foo"))
+#' expect_error(conf$get_tidy_schema("table1", subtbl = "foo"))
 #' expect_true(conf$are_raw_schemas_valid())
 #' expect_true(ts1 |> dplyr::filter(.data$name == "table1") |> nrow() == 2)
 #' expect_true(all(unique(rv1$value) == c("v1.2.3", "latest")))
@@ -56,12 +61,11 @@ Config <- R6::R6Class(
     #' @description Print details about the Tool.
     #' @param ... (ignored).
     print = function(...) {
-      # fmt: skip
       res <- tibble::tribble(
-        ~var, ~value,
-        "tool", self$tool,
-        "nraw", as.character(nrow(self$raw_schemas_all)),
-        "ntidy", as.character(nrow(self$tidy_schemas_all))
+        ~var    , ~value                                    ,
+        "tool"  , self$tool                                 ,
+        "nraw"  , as.character(nrow(self$raw_schemas_all))  ,
+        "ntidy" , as.character(nrow(self$tidy_schemas_all))
       )
       cat(glue("#--- Config {self$tool} ---#\n"))
       print(knitr::kable(res))
@@ -85,6 +89,7 @@ Config <- R6::R6Class(
       )
       raw <- yaml::read_yaml(file.path(pkg_config_path, "raw.yaml"))
       tidy <- yaml::read_yaml(file.path(pkg_config_path, "tidy.yaml"))
+      stopifnot("raw" %in% names(raw), "tidy" %in% names(tidy))
       list(raw = raw, tidy = tidy)
     },
     #' @description Return all output file patterns.
@@ -112,7 +117,8 @@ Config <- R6::R6Class(
     get_raw_schemas_all = function() {
       self$config[["raw"]][["raw"]] |>
         purrr::map(\(rawfile) {
-          rawfile[["schema"]] |>
+          description <- tibble::tibble(tbl_description = rawfile[["description"]])
+          schema <- rawfile[["schema"]] |>
             purrr::map(
               \(s) {
                 {
@@ -126,6 +132,7 @@ Config <- R6::R6Class(
               }
             ) |>
             tibble::enframe(name = "version", value = "schema")
+          dplyr::bind_cols(description, schema)
         }) |>
         dplyr::bind_rows(.id = "name")
     },
@@ -133,16 +140,25 @@ Config <- R6::R6Class(
     #' @param x (`character(1)`)\cr
     #' Raw file name.
     #' @param v (`character(1)`)\cr
-    #' Version (def: latest).
-    get_raw_schema = function(x, v = "latest") {
+    #' Version of schema. If NULL, returns all versions for particular file.
+    get_raw_schema = function(x = NULL, v = NULL) {
+      stopifnot(!is.null(x))
       s <- self$raw_schemas_all
       assertthat::assert_that(
         x %in% s[["name"]],
         msg = glue("{x} not found in schemas for {self$tool}.")
       )
-      s |>
-        dplyr::filter(.data$name == x, .data$version == v) |>
-        dplyr::select("schema") |>
+      res <- s |>
+        dplyr::filter(.data$name == x)
+      if (!is.null(v)) {
+        assertthat::assert_that(
+          v %in% res[["version"]],
+          msg = glue("{v} not found in versions for {x} in {self$tool}.")
+        )
+        res <- res |>
+          dplyr::filter(.data$version == v)
+      }
+      res |>
         tidyr::unnest("schema")
     },
     #' @description Validate schema.
@@ -190,7 +206,8 @@ Config <- R6::R6Class(
       l1 <- self$config[["tidy"]][["tidy"]]
       l1 |>
         purrr::map(\(tt) {
-          tt[["schema"]] |>
+          description <- tibble::tibble(tbl_description = tt[["description"]])
+          schema <- tt[["schema"]] |>
             purrr::map(\(v) {
               v |>
                 purrr::map(
@@ -206,6 +223,7 @@ Config <- R6::R6Class(
                 tibble::enframe(name = "tbl", value = "schema")
             }) |>
             tibble::enframe(name = "version", value = "value2")
+          dplyr::bind_cols(description, schema)
         }) |>
         tibble::enframe(name = "name", value = "value1") |>
         tidyr::unnest("value1") |>
@@ -215,22 +233,35 @@ Config <- R6::R6Class(
     #' @param x (`character(1)`)\cr
     #' Tidy tbl name.
     #' @param v (`character(1)`)\cr
-    #' Version of schema (def: latest).
+    #' Version of schema. If NULL, returns all versions for particular tbl.
     #' @param subtbl (`character(1)`)\cr
-    #' Subtbl to use (def: tbl1).
-    get_tidy_schema = function(x, v = "latest", subtbl = "tbl1") {
+    #' Subtbl to use. If NULL, returns all subtbls for particular tbl and version.
+    get_tidy_schema = function(x = NULL, v = NULL, subtbl = NULL) {
+      stopifnot(!is.null(x))
       s <- self$tidy_schemas_all
       assertthat::assert_that(
         x %in% s[["name"]],
         msg = glue("{x} not found in schemas for {self$tool}.")
       )
-      s |>
-        dplyr::filter(
-          .data$name == x,
-          .data$version == v,
-          .data$tbl == subtbl
-        ) |>
-        dplyr::select("schema") |>
+      res <- s |>
+        dplyr::filter(.data$name == x)
+      if (!is.null(v)) {
+        assertthat::assert_that(
+          v %in% res[["version"]],
+          msg = glue("{v} not found in versions for {x} in {self$tool}.")
+        )
+        res <- res |>
+          dplyr::filter(.data$version == v)
+      }
+      if (!is.null(subtbl)) {
+        assertthat::assert_that(
+          subtbl %in% res[["tbl"]],
+          msg = glue("{subtbl} not found in tbls for {x} in {self$tool}.")
+        )
+        res <- res |>
+          dplyr::filter(.data$tbl == subtbl)
+      }
+      res |>
         tidyr::unnest("schema")
     }
   ) # end public
@@ -335,7 +366,7 @@ config_prep_raw <- function(path, name, descr, pat, type = "tsv", v = "latest", 
 #' config <- config_prep_multi(x, tool_descr)
 #' @export
 config_prep_multi <- function(x, tool_descr = NULL) {
-  assertthat::assert_that(
+  stopifnot(
     tibble::is_tibble(x),
     all(c("name", "descr", "pat", "type", "path") %in% colnames(x)),
     !is.null(tool_descr)

@@ -25,6 +25,10 @@ navbar:
           href: articles/installation.html
         - text: Structure
           href: articles/structure.html
+        - text: Contribute
+          href: articles/contribute.html
+        - text: Devnotes
+          href: articles/devnotes.html
         - text: UML
           href: articles/uml.html
     news:
@@ -40,11 +44,14 @@ reference:
     contents:
       - config_prep_raw
       - config_prep_raw_schema
+      - config_prep_multi
+      - config_prep_write
   - title: "Parsing"
     contents:
       - parse_file
-      - file_hdr
+      - parse_file_keyvalue
       - parse_file_nohead
+      - file_hdr
       - schema_guess
   - title: "Example Classes"
     contents:

@@ -43,7 +43,7 @@ format <- "csv"
 id <- "run1"
 nemo_write(d = d, fpfix = fpfix, format = format, id = id)
 (res <- readr::read_csv(glue::glue("{fpfix}.csv.gz"), show_col_types = FALSE))
-\dontshow{if (RPostgres::postgresHasDefault()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (RPostgres::postgresHasDefault()) withAutoprint(\{ # examplesIf}
 # for database writing
 con <- DBI::dbConnect(RPostgres::Postgres())
 tbl_nm <- "awesome_tbl"

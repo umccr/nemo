@@ -21,6 +21,7 @@ conf$get_tidy_descriptions()
 (ts1 <- conf$get_tidy_schemas_all())
 conf$get_tidy_schema("table1")
 conf$get_tidy_schema("table1", v = "v1.2.3")
+conf$get_tidy_schema("table1", subtbl = "tbl1")
 
 }
 \section{Public fields}{
@@ -163,7 +164,7 @@ Return all output file schemas.
 \subsection{Method \code{get_raw_schema()}}{
 Get raw file schema.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Config$get_raw_schema(x, v = "latest")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Config$get_raw_schema(x = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -173,7 +174,7 @@ Get raw file schema.
 Raw file name.}
 
 \item{\code{v}}{(\code{character(1)})\cr
-Version (def: latest).}
+Version of schema. If NULL, returns all versions for particular file.}
 }
 \if{html}{\out{</div>}}
 }
@@ -214,7 +215,7 @@ Return all tidy tibble schemas.
 \subsection{Method \code{get_tidy_schema()}}{
 Get tidy tbl schema.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Config$get_tidy_schema(x, v = "latest", subtbl = "tbl1")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Config$get_tidy_schema(x = NULL, v = NULL, subtbl = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -224,10 +225,10 @@ Get tidy tbl schema.
 Tidy tbl name.}
 
 \item{\code{v}}{(\code{character(1)})\cr
-Version of schema (def: latest).}
+Version of schema. If NULL, returns all versions for particular tbl.}
 
 \item{\code{subtbl}}{(\code{character(1)})\cr
-Subtbl to use (def: tbl1).}
+Subtbl to use. If NULL, returns all subtbls for particular tbl and version.}
 }
 \if{html}{\out{</div>}}
 }

@@ -81,7 +81,7 @@ Tool <- R6::R6Class(
     #' @param files_tbl (`tibble(n)`)\cr
     #' Tibble of files from [list_files_dir()].
     initialize = function(name = NULL, pkg = NULL, path = NULL, files_tbl = NULL) {
-      assertthat::assert_that(
+      stopifnot(
         !is.null(path) || !is.null(files_tbl),
         !is.null(name),
         !is.null(pkg)
@@ -109,13 +109,12 @@ Tool <- R6::R6Class(
     #' @param ... (ignored).
     #' @return self invisibly.
     print = function(...) {
-      # fmt: skip
       res <- tibble::tribble(
-        ~var, ~value,
-        "name", self$name,
-        "path", self$path %||% "<ignored>",
-        "files", as.character(nrow(self$files)),
-        "tidied", as.character(!private$needs_tidying)
+        ~var     , ~value                               ,
+        "name"   , self$name                            ,
+        "path"   , self$path %||% "<ignored>"           ,
+        "files"  , as.character(nrow(self$files))       ,
+        "tidied" , as.character(!private$needs_tidying)
       ) |>
         tidyr::unnest("value")
       cat(glue("#--- Tool {self$name} ---#"))
@@ -160,9 +159,9 @@ Tool <- R6::R6Class(
     #' @return A tibble of file paths.
     list_files = function(type = "file") {
       files_tbl <- self$files_tbl
-      assertthat::assert_that(!is.null(self$path) || !is.null(files_tbl))
+      stopifnot(!is.null(self$path) || !is.null(files_tbl))
       if (!is.null(files_tbl)) {
-        assertthat::assert_that(is_files_tbl(files_tbl))
+        stopifnot(is_files_tbl(files_tbl))
       }
       patterns <- self$config$get_raw_patterns() |>
         dplyr::rename(pat_name = "name", pat_value = "value")
@@ -192,11 +191,6 @@ Tool <- R6::R6Class(
           ),
           tool_parser = glue("{self$name}_{.data$parser}")
         ) |>
-        dplyr::rowwise() |>
-        dplyr::mutate(
-          schema = list(self$config$get_raw_schema(.data$parser))
-        ) |>
-        dplyr::ungroup() |>
         dplyr::mutate(group = dplyr::row_number(), .by = "bname") |>
         dplyr::mutate(
           group = dplyr::if_else(.data$group == 1, glue(""), glue("_{.data$group}")),
@@ -339,7 +333,7 @@ Tool <- R6::R6Class(
           )
         ) |>
         dplyr::ungroup() |>
-        dplyr::select(-c("parse_fun", "tidy_fun", "schema"))
+        dplyr::select(-c("parse_fun", "tidy_fun"))
       if (!keep_raw) {
         d <- d |>
           dplyr::select(-"raw")

@@ -51,12 +51,11 @@ Workflow <- R6::R6Class(
     #' @description Print details about the File.
     #' @param ... (ignored).
     print = function(...) {
-      # fmt: skip
       res <- tibble::tribble(
-        ~var, ~value,
-        "name", self$name,
-        "path", glue::glue_collapse(self$path, sep = ", "),
-        "ntools", as.character(length(self$tools))
+        ~var     , ~value                                     ,
+        "name"   , self$name                                  ,
+        "path"   , glue::glue_collapse(self$path, sep = ", ") ,
+        "ntools" , as.character(length(self$tools))
       )
       cat("#--- Workflow ---#\n")
       print(res)
