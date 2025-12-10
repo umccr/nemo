@@ -10,9 +10,9 @@
 #' x <- Tool1$new(path = path)$
 #'   filter_files(exclude = "alignments_dupfreq")$
 #'   tidy(keep_raw = TRUE)
-#' a$tbls
-#' a$files
-#' a$list_files()
+#' x$tbls
+#' x$files
+#' x$list_files()
 #' lx <- Linx$new(path)
 #' dbconn <- DBI::dbConnect(
 #'   drv = RPostgres::Postgres(),
@@ -381,18 +381,23 @@ Tool <- R6::R6Class(
         ) |>
         tidyr::unnest("tidy", names_sep = "_") |>
         dplyr::rowwise() |>
-        # handle sub-tbls
         dplyr::mutate(
+          tidy_data = list(
+            tidy_data |>
+              tibble::add_column(
+                nemo_id = as.character(id),
+                nemo_pfix = as.character(prefix),
+                .before = 1
+              )
+          ),
+          # handle sub-tbls
           tbl_name = dplyr::if_else(
             .data$parser == .data$tidy_name,
             .data$tool_parser,
             paste(.data$tool_parser, .data$tidy_name, sep = "_")
           ),
-          fpfix = dplyr::if_else(
-            format == "db",
-            .data$prefix,
-            paste(file.path(odir, .data$prefix), .data$tbl_name, sep = "_")
-          ),
+          # used to write when non-db format
+          fpfix = paste(file.path(odir, .data$prefix), .data$tbl_name, sep = "_"),
           dbtab = ifelse(
             format == "db",
             list(.data$tbl_name),
@@ -403,7 +408,6 @@ Tool <- R6::R6Class(
               d = .data$tidy_data,
               fpfix = .data$fpfix,
               format = format,
-              id = id,
               dbconn = dbconn,
               dbtab = .data$dbtab
             )

@@ -14,9 +14,9 @@ x <- Tool$new("tool1", pkg = "nemo", path = path)
 x <- Tool1$new(path = path)$
   filter_files(exclude = "alignments_dupfreq")$
   tidy(keep_raw = TRUE)
-a$tbls
-a$files
-a$list_files()
+x$tbls
+x$files
+x$list_files()
 lx <- Linx$new(path)
 dbconn <- DBI::dbConnect(
   drv = RPostgres::Postgres(),

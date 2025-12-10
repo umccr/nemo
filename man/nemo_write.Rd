@@ -4,14 +4,7 @@
 \alias{nemo_write}
 \title{Write data}
 \usage{
-nemo_write(
-  d,
-  fpfix = NULL,
-  format = "tsv",
-  id = NULL,
-  dbconn = NULL,
-  dbtab = NULL
-)
+nemo_write(d, fpfix = NULL, format = "tsv", dbconn = NULL, dbtab = NULL)
 }
 \arguments{
 \item{d}{(\code{data.frame()})\cr
@@ -23,9 +16,6 @@ argument. For a format of db, this is inserted into the \code{nemo_pfix} column.
 
 \item{format}{(\code{character(1)})\cr
 Output format. One of tsv, csv, parquet, rds, or db.}
-
-\item{id}{(\code{character(1)})\cr
-ID to use in the first \code{nemo_id} column for this table.}
 
 \item{dbconn}{(\code{DBIConnection(1)})\cr
 Database connection object (see \code{DBI::dbConnect}). Used only when format is db.}
@@ -40,14 +30,13 @@ Writes tabular data in the given format.
 d <- tibble::tibble(name = "foo", data = 123)
 fpfix <- file.path(tempdir(), "data_test1")
 format <- "csv"
-id <- "run1"
-nemo_write(d = d, fpfix = fpfix, format = format, id = id)
+nemo_write(d = d, fpfix = fpfix, format = format)
 (res <- readr::read_csv(glue::glue("{fpfix}.csv.gz"), show_col_types = FALSE))
 \dontshow{if (RPostgres::postgresHasDefault()) withAutoprint(\{ # examplesIf}
 # for database writing
 con <- DBI::dbConnect(RPostgres::Postgres())
 tbl_nm <- "awesome_tbl"
-nemo_write(d = d, fpfix = basename(fpfix), format = "db", id = "123", dbconn = con, dbtab = tbl_nm)
+nemo_write(d = d, fpfix = basename(fpfix), format = "db", dbconn = con, dbtab = tbl_nm)
 DBI::dbListTables(con)
 DBI::dbReadTable(con, tbl_nm)
 DBI::dbDisconnect(con)
