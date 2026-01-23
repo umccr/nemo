@@ -182,7 +182,7 @@ Tool <- R6::R6Class(
       }
       res |>
         dplyr::mutate(
-          prefix = stringr::str_replace(.data$bname, glue("(.*){.data$pattern}"), "\\1"),
+          prefix = stringr::str_remove(.data$bname, .data$pattern),
           # handle wigits version files
           prefix = dplyr::if_else(
             .data$parser == "version" & .data$prefix == "",
