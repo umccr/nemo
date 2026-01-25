@@ -5,7 +5,6 @@
 #' @examples
 #' \dontrun{
 #' path <- here::here("inst/extdata/tool1")
-#' x <- Tool$new("tool1", pkg = "nemo", path = path)
 #' # demo filter + tidy
 #' x <- Tool1$new(path = path)$
 #'   filter_files(exclude = "alignments_dupfreq")$
@@ -371,7 +370,6 @@ Tool <- R6::R6Class(
         # for tidying (and therefore writing). So return NULL.
         return(NULL)
       }
-
       d_write <- self$tbls |>
         dplyr::select(
           "tool_parser",
@@ -385,8 +383,8 @@ Tool <- R6::R6Class(
           tidy_data = list(
             tidy_data |>
               tibble::add_column(
-                nemo_id = as.character(id),
-                nemo_pfix = as.character(prefix),
+                input_id = as.character(id),
+                input_pfix = as.character(prefix),
                 .before = 1
               )
           ),
@@ -411,9 +409,17 @@ Tool <- R6::R6Class(
               dbconn = dbconn,
               dbtab = .data$dbtab
             )
-          )
+          ),
+          outpath = attr(out, "outpath")
         ) |>
-        dplyr::ungroup()
+        dplyr::ungroup() |>
+        dplyr::select(
+          "tool_parser",
+          "prefix",
+          "tidy_data",
+          "tbl_name",
+          "outpath"
+        )
       invisible(d_write)
     },
     #' @description Parse, filter, tidy and write files.

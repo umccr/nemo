@@ -59,7 +59,8 @@ nemo_write <- function(d, fpfix = NULL, format = "tsv", dbconn = NULL, dbtab = N
     fun <- getExportedValue(x[["pkg"]], x[["fun"]])
     fun(d, osfx)
   }
-  return(invisible(d))
+  attr(d, "outpath") <- if (format == "db") NULL else osfx
+  invisible(d)
 }
 
 #' Output Format is Valid
