@@ -350,12 +350,20 @@ Tool <- R6::R6Class(
     #' Directory path to output tidy files. Ignored if format is db.
     #' @param format (`character(1)`)\cr
     #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
     #' @return A tibble with the tidy data and their output location prefix.
-    write = function(odir = ".", format = "tsv", id = NULL, dbconn = NULL) {
+    write = function(
+      odir = ".",
+      format = "tsv",
+      input_id = NULL,
+      dbconn = NULL,
+      output_id = ulid::ulid()
+    ) {
       if (format != "db") {
         if (is.null(odir)) {
           stop("Output directory must be specified when format is not 'db'.")
@@ -363,7 +371,7 @@ Tool <- R6::R6Class(
         fs::dir_create(odir)
         odir <- normalizePath(odir)
       }
-      stopifnot(!is.null(id))
+      stopifnot(!is.null(input_id), !is.null(output_id))
       stopifnot("Did you forget to tidy?" = !private$needs_tidying)
       if (is.null(self$tbls)) {
         # even though tidying is not needed, there must be no files detected
@@ -383,8 +391,9 @@ Tool <- R6::R6Class(
           tidy_data = list(
             tidy_data |>
               tibble::add_column(
-                input_id = as.character(id),
+                input_id = as.character(input_id),
                 input_pfix = as.character(prefix),
+                output_id = as.character(output_id),
                 .before = 1
               )
           ),
@@ -427,8 +436,8 @@ Tool <- R6::R6Class(
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
     #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @param include (`character(n)`)\cr
@@ -439,7 +448,7 @@ Tool <- R6::R6Class(
     nemofy = function(
       odir = ".",
       format = "tsv",
-      id = NULL,
+      input_id = NULL,
       dbconn = NULL,
       include = NULL,
       exclude = NULL
@@ -451,7 +460,7 @@ Tool <- R6::R6Class(
         write(
           odir = odir,
           format = format,
-          id = id,
+          input_id = input_id,
           dbconn = dbconn
       )
     }

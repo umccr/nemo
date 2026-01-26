@@ -29,6 +29,7 @@ Imports:
     rlang,
     tibble,
     tidyr,
+    ulid,
     yaml
 Suggests:
     argparse,
