@@ -19,7 +19,7 @@
 #'   user = "orcabus"
 #' )
 #' lx$nemofy(
-#'     odir = "nogit/test_data",
+#'     diro = "nogit/test_data",
 #'     format = "db", # "parquet",
 #'     id = "run2",
 #'     dbconn = dbconn,
@@ -346,30 +346,30 @@ Tool <- R6::R6Class(
       return(invisible(self))
     },
     #' @description Write tidy tibbles.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files. Ignored if format is db.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
+    #' Format of output.
     #' @param input_id (`character(1)`)\cr
-    #' Input ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
-    #' @param output_id (`character(1)`)\cr
-    #' Output ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
     #' @return A tibble with the tidy data and their output location prefix.
     write = function(
-      odir = ".",
+      diro = ".",
       format = "tsv",
       input_id = NULL,
-      dbconn = NULL,
-      output_id = ulid::ulid()
+      output_id = ulid::ulid(),
+      dbconn = NULL
     ) {
       if (format != "db") {
-        if (is.null(odir)) {
+        if (is.null(diro)) {
           stop("Output directory must be specified when format is not 'db'.")
         }
-        fs::dir_create(odir)
-        odir <- normalizePath(odir)
+        fs::dir_create(diro)
+        diro <- normalizePath(diro)
       }
       stopifnot(!is.null(input_id), !is.null(output_id))
       stopifnot("Did you forget to tidy?" = !private$needs_tidying)
@@ -404,7 +404,7 @@ Tool <- R6::R6Class(
             paste(.data$tool_parser, .data$tidy_name, sep = "_")
           ),
           # used to write when non-db format
-          fpfix = paste(file.path(odir, .data$prefix), .data$tbl_name, sep = "_"),
+          fpfix = paste(file.path(diro, .data$prefix), .data$tbl_name, sep = "_"),
           dbtab = ifelse(
             format == "db",
             list(.data$tbl_name),
@@ -432,12 +432,14 @@ Tool <- R6::R6Class(
       invisible(d_write)
     },
     #' @description Parse, filter, tidy and write files.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
+    #' Format of output.
     #' @param input_id (`character(1)`)\cr
-    #' Input ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @param include (`character(n)`)\cr
@@ -446,9 +448,10 @@ Tool <- R6::R6Class(
     #' Files to exclude.
     #' @return A tibble with the tidy data and their output location prefix.
     nemofy = function(
-      odir = ".",
+      diro = ".",
       format = "tsv",
       input_id = NULL,
+      output_id = ulid::ulid(),
       dbconn = NULL,
       include = NULL,
       exclude = NULL
@@ -458,9 +461,10 @@ Tool <- R6::R6Class(
         filter_files(include = include, exclude = exclude)$
         tidy()$
         write(
-          odir = odir,
+          diro = diro,
           format = format,
           input_id = input_id,
+          output_id = output_id,
           dbconn = dbconn
       )
     }
