@@ -29,16 +29,26 @@
 #' nemo_metadata(files, pkgs, input_id, output_id, input_dir, output_dir)
 #' @export
 nemo_metadata <- function(files, pkgs, input_id, output_id, input_dir, output_dir) {
+  stopifnot(
+    is.data.frame(files),
+    rlang::is_character(pkgs),
+    rlang::is_character(input_id, n = 1),
+    rlang::is_character(output_id, n = 1),
+    rlang::is_character(input_dir),
+    rlang::is_character(output_dir, n = 1)
+  )
   stopifnot(all(purrr::map_lgl(pkgs, pkg_found)))
   pkg_versions <- pkgs |>
-    purrr::map_chr(\(pkg) as.character(utils::packageVersion(pkg))) |>
-    purrr::set_names(pkgs)
+    tibble::as_tibble_col(column_name = "name") |>
+    dplyr::rowwise() |>
+    dplyr::mutate(version = as.character(utils::packageVersion(.data$pkg_name))) |>
+    dplyr::ungroup()
   list(
-    files = files,
+    input_id = jsonlite::unbox(input_id),
+    output_id = jsonlite::unbox(output_id),
+    input_dir = I(input_dir),
+    output_dir = jsonlite::unbox(output_dir),
     pkg_versions = pkg_versions,
-    input_id = input_id,
-    output_id = output_id,
-    input_dir = input_dir,
-    output_dir = output_dir
+    files = files
   )
 }
