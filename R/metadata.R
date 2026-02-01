@@ -41,7 +41,7 @@ nemo_metadata <- function(files, pkgs, input_id, output_id, input_dir, output_di
   pkg_versions <- pkgs |>
     tibble::as_tibble_col(column_name = "name") |>
     dplyr::rowwise() |>
-    dplyr::mutate(version = as.character(utils::packageVersion(.data$pkg_name))) |>
+    dplyr::mutate(version = as.character(utils::packageVersion(.data$name))) |>
     dplyr::ungroup()
   list(
     input_id = jsonlite::unbox(input_id),

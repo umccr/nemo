@@ -9,7 +9,7 @@ test_that("Function Workflow() @ L19", {
   wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
   diro <- tempdir()
   wf1$list_files()
-  wf1$nemofy(diro = diro, format = "parquet", id = "run1")
+  wf1$nemofy(diro = diro, format = "parquet", input_id = "run1")
   (lf <- list.files(diro, pattern = "tool1.*parquet", full.names = FALSE))
   #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
   #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)

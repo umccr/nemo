@@ -83,7 +83,7 @@ cli_nemo_tidy <- function(
   res <- obj$nemofy(
     odir = out_dir,
     format = out_format,
-    id = id,
+    input_id = id,
     dbconn = dbconn,
     include = include,
     exclude = exclude

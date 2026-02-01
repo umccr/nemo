@@ -11,7 +11,7 @@ path <- system.file("extdata/tool1", package = "nemo")
 odir <- tempdir()
 id <- "workflow1_run1"
 w <- Workflow1$new(path)
-x <- w$nemofy(odir = odir, format = "parquet", id = id)
+x <- w$nemofy(diro = odir, format = "parquet", input_id = id)
 (lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
 }
 \section{Super class}{

@@ -8,7 +8,7 @@
 #' wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
 #' diro <- tempdir()
 #' wf1$list_files()
-#' wf1$nemofy(diro = diro, format = "parquet", id = "run1")
+#' wf1$nemofy(diro = diro, format = "parquet", input_id = "run1")
 #' (lf <- list.files(diro, pattern = "tool1.*parquet", full.names = FALSE))
 #' #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
 #' #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
@@ -148,28 +148,36 @@ Workflow <- R6::R6Class(
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
     #' Format of output.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @param include (`character(n)`)\cr
     #' Files to include.
     #' @param exclude (`character(n)`)\cr
     #' Files to exclude.
-    #' @return A tibble with the tidy data and their output location prefix.
+    #' @return self invisibly.
     nemofy = function(
       diro = ".",
       format = "tsv",
-      id = NULL,
+      input_id = NULL,
+      output_id = ulid::ulid(),
       dbconn = NULL,
       include = NULL,
       exclude = NULL
     ) {
       # fmt: skip
-      self$
-        filter_files(include = include, exclude = exclude)$
+      self$filter_files(include = include, exclude = exclude)$
         tidy()$
-        write(diro = diro, format = format, id = id, dbconn = dbconn)
+        write(
+          diro = diro,
+          format = format,
+          input_id = input_id,
+          output_id = output_id,
+          dbconn = dbconn
+      )
     },
     #' @description Get raw schemas for all Tools.
     #' @return Tibble with names of tool and file, schema and its version.

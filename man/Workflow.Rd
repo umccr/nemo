@@ -12,7 +12,7 @@ tools <- list(tool1 = Tool1)
 wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
 diro <- tempdir()
 wf1$list_files()
-wf1$nemofy(diro = diro, format = "parquet", id = "run1")
+wf1$nemofy(diro = diro, format = "parquet", input_id = "run1")
 (lf <- list.files(diro, pattern = "tool1.*parquet", full.names = FALSE))
 #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
 #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
@@ -210,7 +210,8 @@ Parse, filter, tidy and write files.
 \if{html}{\out{<div class="r">}}\preformatted{Workflow$nemofy(
   diro = ".",
   format = "tsv",
-  id = NULL,
+  input_id = NULL,
+  output_id = ulid::ulid(),
   dbconn = NULL,
   include = NULL,
   exclude = NULL
@@ -226,8 +227,11 @@ Directory path to output tidy files.}
 \item{\code{format}}{(\code{character(1)})\cr
 Format of output.}
 
-\item{\code{id}}{(\code{character(1)})\cr
-ID to use for the dataset (e.g. \code{wfrid.123}, \code{prid.456}).}
+\item{\code{input_id}}{(\code{character(1)})\cr
+Input ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_id}}{(\code{character(1)})\cr
+Output ID to use for the dataset (e.g. \code{run123}).}
 
 \item{\code{dbconn}}{(\code{DBIConnection})\cr
 Database connection object (see \code{DBI::dbConnect}).}
@@ -241,7 +245,7 @@ Files to exclude.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A tibble with the tidy data and their output location prefix.
+self invisibly.
 }
 }
 \if{html}{\out{<hr>}}
