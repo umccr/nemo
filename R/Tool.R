@@ -35,7 +35,8 @@ Tool <- R6::R6Class(
   private = list(
     # Do files need to be tidied? Used when no files are detected, so we can
     # use downstream as a bypass.
-    needs_tidying = NULL
+    is_tidied = NULL,
+    is_written = NULL
   ),
   public = list(
     #' @field name (`character(1)`)\cr
@@ -100,7 +101,8 @@ Tool <- R6::R6Class(
       self$get_tidy_schema <- self$config$get_tidy_schema
       self$get_raw_schema <- self$config$get_raw_schema
       self$files_tbl <- files_tbl
-      private$needs_tidying <- TRUE
+      private$is_tidied <- FALSE
+      private$is_written <- FALSE
       # upon init, files starts off as the raw list of files
       self$files <- self$list_files(type = "file")
     },
@@ -109,11 +111,12 @@ Tool <- R6::R6Class(
     #' @return self invisibly.
     print = function(...) {
       res <- tibble::tribble(
-        ~var     , ~value                               ,
-        "name"   , self$name                            ,
-        "path"   , self$path %||% "<ignored>"           ,
-        "files"  , as.character(nrow(self$files))       ,
-        "tidied" , as.character(!private$needs_tidying)
+        ~var      , ~value                           ,
+        "name"    , self$name                        ,
+        "path"    , self$path %||% "<ignored>"       ,
+        "files"   , as.character(nrow(self$files))   ,
+        "tidied"  , as.character(private$is_tidied)  ,
+        "written" , as.character(private$is_written)
       ) |>
         tidyr::unnest("value")
       cat(glue("#--- Tool {self$name} ---#"))
@@ -303,13 +306,13 @@ Tool <- R6::R6Class(
     #' @return self invisibly.
     tidy = function(tidy = TRUE, keep_raw = FALSE) {
       # if no tidying needed, early return
-      if (!private$needs_tidying) {
+      if (private$is_tidied) {
         return(invisible(self))
       }
       # if no files found, early return
       if (nrow(self$files) == 0) {
         self$tbls <- NULL
-        private$needs_tidying <- FALSE
+        private$is_tidied <- TRUE
         return(invisible(self))
       }
       # if both FALSE, just return the file list
@@ -342,7 +345,7 @@ Tool <- R6::R6Class(
           dplyr::select(-"tidy")
       }
       self$tbls <- d
-      private$needs_tidying <- FALSE
+      private$is_tidied <- TRUE
       return(invisible(self))
     },
     #' @description Write tidy tibbles.
@@ -372,7 +375,7 @@ Tool <- R6::R6Class(
         diro <- normalizePath(diro)
       }
       stopifnot(!is.null(input_id), !is.null(output_id))
-      stopifnot("Did you forget to tidy?" = !private$needs_tidying)
+      stopifnot("Did you forget to tidy?" = private$is_tidied)
       if (is.null(self$tbls)) {
         # even though tidying is not needed, there must be no files detected
         # for tidying (and therefore writing). So return NULL.
@@ -429,7 +432,8 @@ Tool <- R6::R6Class(
           "tbl_name",
           "outpath"
         )
-      invisible(d_write)
+      private$is_written <- TRUE
+      return(invisible(d_write))
     },
     #' @description Parse, filter, tidy and write files.
     #' @param diro (`character(1)`)\cr

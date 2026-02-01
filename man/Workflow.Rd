@@ -10,10 +10,10 @@ A Workflow is composed of multiple Tools.
 path <- system.file("extdata/tool1", package = "nemo")
 tools <- list(tool1 = Tool1)
 wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
-odir <- tempdir()
+diro <- tempdir()
 wf1$list_files()
-wf1$nemofy(odir = odir, format = "parquet", id = "run1")
-(lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
+wf1$nemofy(diro = diro, format = "parquet", id = "run1")
+(lf <- list.files(diro, pattern = "tool1.*parquet", full.names = FALSE))
 #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
 #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
 }
@@ -31,6 +31,9 @@ List of Tools that compose a Workflow.}
 
 \item{\code{files_tbl}}{(\code{tibble(n)})\cr
 Tibble of files from \code{\link[=list_files_dir]{list_files_dir()}}.}
+
+\item{\code{written_files}}{(\code{tibble(n)})\cr
+Tibble of files written from \code{self$write()}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -47,6 +50,7 @@ Tibble of files from \code{\link[=list_files_dir]{list_files_dir()}}.}
 \item \href{#method-Workflow-get_raw_schemas_all}{\code{Workflow$get_raw_schemas_all()}}
 \item \href{#method-Workflow-get_tidy_schemas_all}{\code{Workflow$get_tidy_schemas_all()}}
 \item \href{#method-Workflow-get_tbls}{\code{Workflow$get_tbls()}}
+\item \href{#method-Workflow-get_metadata}{\code{Workflow$get_metadata()}}
 \item \href{#method-Workflow-clone}{\code{Workflow$clone()}}
 }
 }
@@ -164,20 +168,29 @@ self invisibly.
 \subsection{Method \code{write()}}{
 Write tidy tibbles.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Workflow$write(odir = ".", format = "tsv", id = NULL, dbconn = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Workflow$write(
+  diro = ".",
+  format = "tsv",
+  input_id = NULL,
+  output_id = ulid::ulid(),
+  dbconn = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{odir}}{(\code{character(1)})\cr
+\item{\code{diro}}{(\code{character(1)})\cr
 Directory path to output tidy files.}
 
 \item{\code{format}}{(\code{character(1)})\cr
-Format of output files.}
+Format of output.}
 
-\item{\code{id}}{(\code{character(1)})\cr
-ID to use for the dataset (e.g. \code{wfrid.123}, \code{prid.456}).}
+\item{\code{input_id}}{(\code{character(1)})\cr
+Input ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_id}}{(\code{character(1)})\cr
+Output ID to use for the dataset (e.g. \code{run123}).}
 
 \item{\code{dbconn}}{(\code{DBIConnection})\cr
 Database connection object (see \code{DBI::dbConnect}).}
@@ -185,7 +198,7 @@ Database connection object (see \code{DBI::dbConnect}).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A tibble with the tidy data and their output location prefix.
+self invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -195,7 +208,7 @@ A tibble with the tidy data and their output location prefix.
 Parse, filter, tidy and write files.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Workflow$nemofy(
-  odir = ".",
+  diro = ".",
   format = "tsv",
   id = NULL,
   dbconn = NULL,
@@ -207,11 +220,11 @@ Parse, filter, tidy and write files.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{odir}}{(\code{character(1)})\cr
+\item{\code{diro}}{(\code{character(1)})\cr
 Directory path to output tidy files.}
 
 \item{\code{format}}{(\code{character(1)})\cr
-Format of output files.}
+Format of output.}
 
 \item{\code{id}}{(\code{character(1)})\cr
 ID to use for the dataset (e.g. \code{wfrid.123}, \code{prid.456}).}
@@ -268,6 +281,33 @@ Get tidy tbls for all Tools.
 
 \subsection{Returns}{
 Tibble with tidy tbls of all Tools.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Workflow-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-Workflow-get_metadata}{}}}
+\subsection{Method \code{get_metadata()}}{
+Get metadata
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Workflow$get_metadata(input_id, output_id, output_dir)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{input_id}}{(\code{character(1)})\cr
+Input ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_id}}{(\code{character(1)})\cr
+Output ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_dir}}{(\code{character(1)})\cr
+Output directory.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+List with metadata
 }
 }
 \if{html}{\out{<hr>}}

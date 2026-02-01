@@ -135,19 +135,12 @@ Workflow <- R6::R6Class(
         }) |>
         dplyr::bind_rows()
       private$is_written <- TRUE
-      self$written <- res
+      self$written_files <- res
       # Write metadata
-      # if (format != "db" && !is.null(res) && nrow(res) > 0) {
-      #   meta <- Metadata$new(
-      #     workflow = self,
-      #     write_result = res,
-      #     output_dir = diro,
-      #     format = format,
-      #     input_id = input_id,
-      #     output_id = output_id
-      #   )
-      #   meta$write()
-      # }
+      if (format != "db" && !is.null(res)) {
+        meta <- self$get_metadata(input_id = input_id, output_id = output_id, output_dir = diro)
+        jsonlite::write_json(meta, file.path(diro, "metadata.json"), pretty = TRUE)
+      }
       return(invisible(self))
     },
     #' @description Parse, filter, tidy and write files.
@@ -206,6 +199,31 @@ Workflow <- R6::R6Class(
       self$tools |>
         purrr::map(\(x) x$tbls) |>
         dplyr::bind_rows()
+    },
+    #' @description Get metadata
+    #' @return List with metadata
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
+    #' @param output_dir (`character(1)`)\cr
+    #' Output directory.
+    get_metadata = function(input_id, output_id, output_dir) {
+      files <- NULL
+      # just keep bname and provide diro
+      if (private$is_written) {
+        files <- self$written_files |>
+          dplyr::mutate(outpath = basename(.data$outpath)) |>
+          dplyr::select("tbl_name", "prefix", "outpath")
+      }
+      meta <- nemo_metadata(
+        files = files,
+        pkgs = c("nemo", "tidywigits"),
+        input_id = input_id,
+        output_id = output_id,
+        input_dir = self$path,
+        output_dir = output_dir
+      )
     }
   ), # public end
   private = list(

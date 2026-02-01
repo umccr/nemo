@@ -13,7 +13,7 @@ test_that("Function nemo_write() @ L34", {
 })
 
 
-test_that("Function valid_out_fmt() @ L77", {
+test_that("Function valid_out_fmt() @ L78", {
   
   valid_out_fmt("tsv")
   expect_true(valid_out_fmt("tsv"))
@@ -22,7 +22,7 @@ test_that("Function valid_out_fmt() @ L77", {
 })
 
 
-test_that("Function nemo_osfx() @ L109", {
+test_that("Function nemo_osfx() @ L110", {
   
   fpfix <- "path/to/foo"
   format <- "tsv"
