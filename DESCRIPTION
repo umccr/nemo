@@ -23,6 +23,7 @@ Imports:
     fs,
     glue,
     log4r,
+    paws.storage,
     purrr,
     R6,
     readr,
