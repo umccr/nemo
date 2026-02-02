@@ -6,10 +6,10 @@
 #' path <- system.file("extdata/tool1", package = "nemo")
 #' tools <- list(tool1 = Tool1)
 #' wf1 <- Workflow$new(name = "foo", path = path, tools = tools)
-#' odir <- tempdir()
+#' diro <- tempdir()
 #' wf1$list_files()
-#' wf1$nemofy(odir = odir, format = "parquet", id = "run1")
-#' (lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
+#' wf1$nemofy(diro = diro, format = "parquet", input_id = "run1")
+#' (lf <- list.files(diro, pattern = "tool1.*parquet", full.names = FALSE))
 #' #dbconn <- DBI::dbConnect(drv = RPostgres::Postgres(), dbname = "nemo", user = "orcabus")
 #' #wf1$nemofy(format = "db", id = "runABC", dbconn = dbconn)
 #' @testexamples
@@ -31,6 +31,9 @@ Workflow <- R6::R6Class(
     #' @field files_tbl (`tibble(n)`)\cr
     #' Tibble of files from [list_files_dir()].
     files_tbl = NULL,
+    #' @field written_files (`tibble(n)`)\cr
+    #' Tibble of files written from `self$write()`.
+    written_files = NULL,
 
     #' @description Create a new Workflow object.
     #' @param name (`character(1)`)\cr
@@ -42,6 +45,8 @@ Workflow <- R6::R6Class(
     initialize = function(name = NULL, path = NULL, tools = NULL) {
       self$name <- name
       private$validate_tools(tools)
+      private$is_tidied <- FALSE
+      private$is_written <- FALSE
       self$path <- normalizePath(path)
       self$files_tbl <- list_files_dir(self$path)
       # handle everything in a list of Tools
@@ -52,10 +57,12 @@ Workflow <- R6::R6Class(
     #' @param ... (ignored).
     print = function(...) {
       res <- tibble::tribble(
-        ~var     , ~value                                     ,
-        "name"   , self$name                                  ,
-        "path"   , glue::glue_collapse(self$path, sep = ", ") ,
-        "ntools" , as.character(length(self$tools))
+        ~var      , ~value                                     ,
+        "name"    , self$name                                  ,
+        "path"    , glue::glue_collapse(self$path, sep = ", ") ,
+        "ntools"  , as.character(length(self$tools))           ,
+        "tidied"  , as.character(private$is_tidied)            ,
+        "written" , as.character(private$is_written)
       )
       cat("#--- Workflow ---#\n")
       print(res)
@@ -88,52 +95,89 @@ Workflow <- R6::R6Class(
     #' Should the raw parsed tibbles be kept in the final output?
     #' @return self invisibly.
     tidy = function(tidy = TRUE, keep_raw = FALSE) {
+      # if no tidying needed, early return
+      if (private$is_tidied) {
+        return(invisible(self))
+      }
       self$tools <- self$tools |>
         purrr::map(\(x) x$tidy(tidy = tidy, keep_raw = keep_raw))
-      invisible(self)
+      private$is_tidied <- TRUE
+      return(invisible(self))
     },
     #' @description Write tidy tibbles.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Format of output.
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
-    #' @return A tibble with the tidy data and their output location prefix.
-    write = function(odir = ".", format = "tsv", id = NULL, dbconn = NULL) {
-      self$tools |>
-        purrr::map(\(x) x$write(odir = odir, format = format, id = id, dbconn = dbconn)) |>
+    #' @return self invisibly.
+    write = function(
+      diro = ".",
+      format = "tsv",
+      input_id = NULL,
+      output_id = ulid::ulid(),
+      dbconn = NULL
+    ) {
+      res <- self$tools |>
+        purrr::map(\(x) {
+          x$write(
+            diro = diro,
+            format = format,
+            input_id = input_id,
+            output_id = output_id,
+            dbconn = dbconn
+          )
+        }) |>
         dplyr::bind_rows()
+      private$is_written <- TRUE
+      self$written_files <- res
+      # Write metadata
+      if (format != "db" && !is.null(res)) {
+        meta <- self$get_metadata(input_id = input_id, output_id = output_id, output_dir = diro)
+        jsonlite::write_json(meta, file.path(diro, "metadata.json"), pretty = TRUE)
+      }
+      return(invisible(self))
     },
     #' @description Parse, filter, tidy and write files.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Format of output.
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @param include (`character(n)`)\cr
     #' Files to include.
     #' @param exclude (`character(n)`)\cr
     #' Files to exclude.
-    #' @return A tibble with the tidy data and their output location prefix.
+    #' @return self invisibly.
     nemofy = function(
-      odir = ".",
+      diro = ".",
       format = "tsv",
-      id = NULL,
+      input_id = NULL,
+      output_id = ulid::ulid(),
       dbconn = NULL,
       include = NULL,
       exclude = NULL
     ) {
       # fmt: skip
-      self$
-        filter_files(include = include, exclude = exclude)$
+      self$filter_files(include = include, exclude = exclude)$
         tidy()$
-        write(odir = odir, format = format, id = id, dbconn = dbconn)
+        write(
+          diro = diro,
+          format = format,
+          input_id = input_id,
+          output_id = output_id,
+          dbconn = dbconn
+      )
     },
     #' @description Get raw schemas for all Tools.
     #' @return Tibble with names of tool and file, schema and its version.
@@ -163,6 +207,31 @@ Workflow <- R6::R6Class(
       self$tools |>
         purrr::map(\(x) x$tbls) |>
         dplyr::bind_rows()
+    },
+    #' @description Get metadata
+    #' @return List with metadata
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
+    #' @param output_dir (`character(1)`)\cr
+    #' Output directory.
+    get_metadata = function(input_id, output_id, output_dir) {
+      files <- NULL
+      # just keep bname and provide diro
+      if (private$is_written) {
+        files <- self$written_files |>
+          dplyr::mutate(outpath = basename(.data$outpath)) |>
+          dplyr::select("tbl_name", "prefix", "outpath")
+      }
+      meta <- nemo_metadata(
+        files = files,
+        pkgs = c("nemo", "tidywigits"),
+        input_id = input_id,
+        output_id = output_id,
+        input_dir = self$path,
+        output_dir = output_dir
+      )
     }
   ), # public end
   private = list(
@@ -172,6 +241,10 @@ Workflow <- R6::R6Class(
       tool_nms <- purrr::map_chr(x, "classname") |> tolower()
       stopifnot(!is.null(tool_nms))
       stopifnot(all(purrr::map(x, "inherit") == as.symbol("Tool")))
-    }
+    },
+    # Do files need to be tidied? Used when no files are detected, so we can
+    # use downstream as a bypass.
+    is_tidied = NULL,
+    is_written = NULL
   ) # private end
 )

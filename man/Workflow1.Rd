@@ -11,7 +11,7 @@ path <- system.file("extdata/tool1", package = "nemo")
 odir <- tempdir()
 id <- "workflow1_run1"
 w <- Workflow1$new(path)
-x <- w$nemofy(odir = odir, format = "parquet", id = id)
+x <- w$nemofy(diro = odir, format = "parquet", input_id = id)
 (lf <- list.files(odir, pattern = "tool1.*parquet", full.names = FALSE))
 }
 \section{Super class}{
@@ -28,6 +28,7 @@ x <- w$nemofy(odir = odir, format = "parquet", id = id)
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="nemo" data-topic="Workflow" data-id="filter_files"><a href='../../nemo/html/Workflow.html#method-Workflow-filter_files'><code>nemo::Workflow$filter_files()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="nemo" data-topic="Workflow" data-id="get_metadata"><a href='../../nemo/html/Workflow.html#method-Workflow-get_metadata'><code>nemo::Workflow$get_metadata()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="nemo" data-topic="Workflow" data-id="get_raw_schemas_all"><a href='../../nemo/html/Workflow.html#method-Workflow-get_raw_schemas_all'><code>nemo::Workflow$get_raw_schemas_all()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="nemo" data-topic="Workflow" data-id="get_tbls"><a href='../../nemo/html/Workflow.html#method-Workflow-get_tbls'><code>nemo::Workflow$get_tbls()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="nemo" data-topic="Workflow" data-id="get_tidy_schemas_all"><a href='../../nemo/html/Workflow.html#method-Workflow-get_tidy_schemas_all'><code>nemo::Workflow$get_tidy_schemas_all()</code></a></span></li>

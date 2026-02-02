@@ -9,7 +9,6 @@ Base class for all nemo tools.
 \examples{
 \dontrun{
 path <- here::here("inst/extdata/tool1")
-x <- Tool$new("tool1", pkg = "nemo", path = path)
 # demo filter + tidy
 x <- Tool1$new(path = path)$
   filter_files(exclude = "alignments_dupfreq")$
@@ -24,7 +23,7 @@ dbconn <- DBI::dbConnect(
   user = "orcabus"
 )
 lx$nemofy(
-    odir = "nogit/test_data",
+    diro = "nogit/test_data",
     format = "db", # "parquet",
     id = "run2",
     dbconn = dbconn,
@@ -352,20 +351,29 @@ self invisibly.
 \subsection{Method \code{write()}}{
 Write tidy tibbles.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tool$write(odir = ".", format = "tsv", id = NULL, dbconn = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tool$write(
+  diro = ".",
+  format = "tsv",
+  input_id = NULL,
+  output_id = ulid::ulid(),
+  dbconn = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{odir}}{(\code{character(1)})\cr
+\item{\code{diro}}{(\code{character(1)})\cr
 Directory path to output tidy files. Ignored if format is db.}
 
 \item{\code{format}}{(\code{character(1)})\cr
-Format of output files.}
+Format of output.}
 
-\item{\code{id}}{(\code{character(1)})\cr
-ID to use for the dataset (e.g. \code{wfrid.123}, \code{prid.456}).}
+\item{\code{input_id}}{(\code{character(1)})\cr
+Input ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_id}}{(\code{character(1)})\cr
+Output ID to use for the dataset (e.g. \code{run123}).}
 
 \item{\code{dbconn}}{(\code{DBIConnection})\cr
 Database connection object (see \code{DBI::dbConnect}).}
@@ -383,9 +391,10 @@ A tibble with the tidy data and their output location prefix.
 Parse, filter, tidy and write files.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tool$nemofy(
-  odir = ".",
+  diro = ".",
   format = "tsv",
-  id = NULL,
+  input_id = NULL,
+  output_id = ulid::ulid(),
   dbconn = NULL,
   include = NULL,
   exclude = NULL
@@ -395,14 +404,17 @@ Parse, filter, tidy and write files.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{odir}}{(\code{character(1)})\cr
+\item{\code{diro}}{(\code{character(1)})\cr
 Directory path to output tidy files.}
 
 \item{\code{format}}{(\code{character(1)})\cr
-Format of output files.}
+Format of output.}
 
-\item{\code{id}}{(\code{character(1)})\cr
-ID to use for the dataset (e.g. \code{wfrid.123}, \code{prid.456}).}
+\item{\code{input_id}}{(\code{character(1)})\cr
+Input ID to use for the dataset (e.g. \code{run123}).}
+
+\item{\code{output_id}}{(\code{character(1)})\cr
+Output ID to use for the dataset (e.g. \code{run123}).}
 
 \item{\code{dbconn}}{(\code{DBIConnection})\cr
 Database connection object (see \code{DBI::dbConnect}).}

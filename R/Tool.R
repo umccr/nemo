@@ -5,7 +5,6 @@
 #' @examples
 #' \dontrun{
 #' path <- here::here("inst/extdata/tool1")
-#' x <- Tool$new("tool1", pkg = "nemo", path = path)
 #' # demo filter + tidy
 #' x <- Tool1$new(path = path)$
 #'   filter_files(exclude = "alignments_dupfreq")$
@@ -20,7 +19,7 @@
 #'   user = "orcabus"
 #' )
 #' lx$nemofy(
-#'     odir = "nogit/test_data",
+#'     diro = "nogit/test_data",
 #'     format = "db", # "parquet",
 #'     id = "run2",
 #'     dbconn = dbconn,
@@ -36,7 +35,8 @@ Tool <- R6::R6Class(
   private = list(
     # Do files need to be tidied? Used when no files are detected, so we can
     # use downstream as a bypass.
-    needs_tidying = NULL
+    is_tidied = NULL,
+    is_written = NULL
   ),
   public = list(
     #' @field name (`character(1)`)\cr
@@ -101,7 +101,8 @@ Tool <- R6::R6Class(
       self$get_tidy_schema <- self$config$get_tidy_schema
       self$get_raw_schema <- self$config$get_raw_schema
       self$files_tbl <- files_tbl
-      private$needs_tidying <- TRUE
+      private$is_tidied <- FALSE
+      private$is_written <- FALSE
       # upon init, files starts off as the raw list of files
       self$files <- self$list_files(type = "file")
     },
@@ -110,11 +111,12 @@ Tool <- R6::R6Class(
     #' @return self invisibly.
     print = function(...) {
       res <- tibble::tribble(
-        ~var     , ~value                               ,
-        "name"   , self$name                            ,
-        "path"   , self$path %||% "<ignored>"           ,
-        "files"  , as.character(nrow(self$files))       ,
-        "tidied" , as.character(!private$needs_tidying)
+        ~var      , ~value                           ,
+        "name"    , self$name                        ,
+        "path"    , self$path %||% "<ignored>"       ,
+        "files"   , as.character(nrow(self$files))   ,
+        "tidied"  , as.character(private$is_tidied)  ,
+        "written" , as.character(private$is_written)
       ) |>
         tidyr::unnest("value")
       cat(glue("#--- Tool {self$name} ---#"))
@@ -304,13 +306,13 @@ Tool <- R6::R6Class(
     #' @return self invisibly.
     tidy = function(tidy = TRUE, keep_raw = FALSE) {
       # if no tidying needed, early return
-      if (!private$needs_tidying) {
+      if (private$is_tidied) {
         return(invisible(self))
       }
       # if no files found, early return
       if (nrow(self$files) == 0) {
         self$tbls <- NULL
-        private$needs_tidying <- FALSE
+        private$is_tidied <- TRUE
         return(invisible(self))
       }
       # if both FALSE, just return the file list
@@ -343,35 +345,42 @@ Tool <- R6::R6Class(
           dplyr::select(-"tidy")
       }
       self$tbls <- d
-      private$needs_tidying <- FALSE
+      private$is_tidied <- TRUE
       return(invisible(self))
     },
     #' @description Write tidy tibbles.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files. Ignored if format is db.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Format of output.
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @return A tibble with the tidy data and their output location prefix.
-    write = function(odir = ".", format = "tsv", id = NULL, dbconn = NULL) {
+    write = function(
+      diro = ".",
+      format = "tsv",
+      input_id = NULL,
+      output_id = ulid::ulid(),
+      dbconn = NULL
+    ) {
       if (format != "db") {
-        if (is.null(odir)) {
+        if (is.null(diro)) {
           stop("Output directory must be specified when format is not 'db'.")
         }
-        fs::dir_create(odir)
-        odir <- normalizePath(odir)
+        fs::dir_create(diro)
+        diro <- normalizePath(diro)
       }
-      stopifnot(!is.null(id))
-      stopifnot("Did you forget to tidy?" = !private$needs_tidying)
+      stopifnot(!is.null(input_id), !is.null(output_id))
+      stopifnot("Did you forget to tidy?" = private$is_tidied)
       if (is.null(self$tbls)) {
         # even though tidying is not needed, there must be no files detected
         # for tidying (and therefore writing). So return NULL.
         return(NULL)
       }
-
       d_write <- self$tbls |>
         dplyr::select(
           "tool_parser",
@@ -385,8 +394,9 @@ Tool <- R6::R6Class(
           tidy_data = list(
             tidy_data |>
               tibble::add_column(
-                nemo_id = as.character(id),
-                nemo_pfix = as.character(prefix),
+                input_id = as.character(input_id),
+                input_pfix = as.character(prefix),
+                output_id = as.character(output_id),
                 .before = 1
               )
           ),
@@ -397,7 +407,7 @@ Tool <- R6::R6Class(
             paste(.data$tool_parser, .data$tidy_name, sep = "_")
           ),
           # used to write when non-db format
-          fpfix = paste(file.path(odir, .data$prefix), .data$tbl_name, sep = "_"),
+          fpfix = paste(file.path(diro, .data$prefix), .data$tbl_name, sep = "_"),
           dbtab = ifelse(
             format == "db",
             list(.data$tbl_name),
@@ -411,18 +421,29 @@ Tool <- R6::R6Class(
               dbconn = dbconn,
               dbtab = .data$dbtab
             )
-          )
+          ),
+          outpath = attr(out, "outpath")
         ) |>
-        dplyr::ungroup()
-      invisible(d_write)
+        dplyr::ungroup() |>
+        dplyr::select(
+          "tool_parser",
+          "prefix",
+          "tidy_data",
+          "tbl_name",
+          "outpath"
+        )
+      private$is_written <- TRUE
+      return(invisible(d_write))
     },
     #' @description Parse, filter, tidy and write files.
-    #' @param odir (`character(1)`)\cr
+    #' @param diro (`character(1)`)\cr
     #' Directory path to output tidy files.
     #' @param format (`character(1)`)\cr
-    #' Format of output files.
-    #' @param id (`character(1)`)\cr
-    #' ID to use for the dataset (e.g. `wfrid.123`, `prid.456`).
+    #' Format of output.
+    #' @param input_id (`character(1)`)\cr
+    #' Input ID to use for the dataset (e.g. `run123`).
+    #' @param output_id (`character(1)`)\cr
+    #' Output ID to use for the dataset (e.g. `run123`).
     #' @param dbconn (`DBIConnection`)\cr
     #' Database connection object (see `DBI::dbConnect`).
     #' @param include (`character(n)`)\cr
@@ -431,9 +452,10 @@ Tool <- R6::R6Class(
     #' Files to exclude.
     #' @return A tibble with the tidy data and their output location prefix.
     nemofy = function(
-      odir = ".",
+      diro = ".",
       format = "tsv",
-      id = NULL,
+      input_id = NULL,
+      output_id = ulid::ulid(),
       dbconn = NULL,
       include = NULL,
       exclude = NULL
@@ -443,9 +465,10 @@ Tool <- R6::R6Class(
         filter_files(include = include, exclude = exclude)$
         tidy()$
         write(
-          odir = odir,
+          diro = diro,
           format = format,
-          id = id,
+          input_id = input_id,
+          output_id = output_id,
           dbconn = dbconn
       )
     }

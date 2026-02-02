@@ -47,23 +47,20 @@ nemo_write <- function(d, fpfix = NULL, format = "tsv", dbconn = NULL, dbtab = N
   } else {
     stopifnot(!is.null(fpfix))
     fpfix <- as.character(fpfix)
-    sfx <- c(tsv = "tsv.gz", csv = "csv.gz", parquet = "parquet", rds = "rds")
-    osfx <- function(s) glue("{fpfix}.{sfx[s]}")
+    osfx <- nemo_osfx(fpfix, format)
     fs::dir_create(dirname(fpfix))
-    if (format == "tsv") {
-      readr::write_tsv(d, osfx("tsv"))
-    } else if (format == "csv") {
-      readr::write_csv(d, osfx("csv"))
-    } else if (format == "parquet") {
-      arrow::write_parquet(d, osfx("parquet"))
-    } else if (format == "rds") {
-      readr::write_rds(d, osfx("rds"))
-    } else {
-      stop("No where else to go, check your output format!")
-    }
+    w <- list(
+      tsv = list(fun = "write_tsv", pkg = "readr"),
+      csv = list(fun = "write_csv", pkg = "readr"),
+      parquet = list(fun = "write_parquet", pkg = "arrow"),
+      rds = list(fun = "write_rds", pkg = "readr")
+    )
+    x <- w[[format]]
+    fun <- getExportedValue(x[["pkg"]], x[["fun"]])
+    fun(d, osfx)
   }
-  # also gets returned in case of NULL format
-  return(invisible(d))
+  attr(d, "outpath") <- if (format == "db") NULL else osfx
+  invisible(d)
 }
 
 #' Output Format is Valid
@@ -92,4 +89,27 @@ valid_out_fmt <- function(x, choices = nemo_out_formats()) {
 #' @export
 nemo_out_formats <- function() {
   c("parquet", "db", "tsv", "csv", "rds")
+}
+
+#' Construct Output File Paths with Format Suffix
+#'
+#' @param fpfix (`character(n)`)\cr
+#' Vector of one or more file prefixes e.g. /path/to/foo
+#' @param format (`character(1)`)\cr
+#' Output format. One of tsv, csv, parquet, rds, or db.
+#' @return Character vector of output file paths
+#'
+#' @examples
+#' fpfix <- "path/to/foo"
+#' format <- "tsv"
+#' o <- nemo_osfx(fpfix, format)
+#' @testexamples
+#' expect_equal(o, glue("{fpfix}.tsv.gz"))
+#'
+#' @export
+nemo_osfx <- function(fpfix, format) {
+  valid_out_fmt(format)
+  fpfix <- as.character(fpfix)
+  sfx <- c(tsv = "tsv.gz", csv = "csv.gz", parquet = "parquet", rds = "rds")
+  paste0(fpfix, ".", sfx[format])
 }
