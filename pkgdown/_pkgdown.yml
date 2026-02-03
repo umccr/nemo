@@ -62,6 +62,8 @@ reference:
       - empty_tbl
       - get_tbl_version_attr
       - list_files_dir
+      - nemo_metadata
+      - nemo_osfx
       - nemo_out_formats
       - nemo_write
       - valid_out_fmt

@@ -272,7 +272,7 @@ to distinguish results from the same run from the same tool.
 t2$tidy() # first need to tidy
 outdir1 <- tempdir()
 fmt <- "csv"
-t2$write(odir = outdir1, format = fmt, id = "run123")
+t2$write(diro = outdir1, format = fmt, input_id = "run123")
 wfiles <- fs::dir_info(outdir1) |> dplyr::select(1:5)
 wfiles |>
   dplyr::mutate(bname = basename(.data$path)) |>
@@ -290,9 +290,9 @@ t3 <- nemo::Tool1$new(path = tool1_path)
 outdir2 <- file.path(tempdir(), "t3") |> fs::dir_create()
 t3$files
 t3$nemofy(
-  odir = outdir2,
+  diro = outdir2,
   format = "tsv",
-  id = "run_t3"
+  input_id = "run_t3"
 )
 wfiles2 <- fs::dir_info(outdir2) |>
   dplyr::mutate(bname = basename(.data$path))
@@ -318,9 +318,9 @@ w <- system.file("extdata/tool1", package = "nemo") |>
 outdir3 <- file.path(tempdir(), "oa") |> fs::dir_create()
 w$list_files()
 x <- w$nemofy(
-  odir = outdir3,
+  diro = outdir3,
   format = "tsv",
-  id = "workflow1_run1"
+  input_id = "workflow1_run1"
 )
 wfiles3 <- fs::dir_info(outdir3) |>
   dplyr::select(1:5) |>
