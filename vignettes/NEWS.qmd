@@ -50,10 +50,17 @@ pr <- function(n) {
 }
 ```
 
-## DEV
+## v0.0.2 (2026-02-03)
 
 - Add key-value parser (`r pr(12)`, `r iss(11)`)
 - Export config writer (`r pr(13)`)
+- Add table description to schema getters, contribution docs, pkgdown fixes (`r pr(19)`)
+- Add `nemo_id` + `nemo_pfix` in class writer (`r pr(21)`, `r iss(18)`)
+  - changed odir to diro arg in nemofy
+- list_files: str_remove offers more flexibility (`r pr(24)`, `r iss(23)`)
+- Add metadata export functionality (`r pr(25)`, `r iss(17)`)
+  - rename `nemo_id` + `nemo_pfix` to `input_id` + `input_pfix`, respectively
+  - add `output_id`
 
 ## v0.0.1 (2025-09-07)
 
