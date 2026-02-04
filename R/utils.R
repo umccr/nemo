@@ -98,7 +98,7 @@ set_tbl_version_attr <- function(tbl, v, x = "file_version") {
 #' expect_equal(nrow(x), 0)
 #' @export
 empty_tbl <- function(cnames, ctypes = readr::cols(.default = "c")) {
-  d <- readr::read_csv(I("\n)", col_names = cnames, col_types = ctypes)
+  d <- readr::read_csv(I("\n"), col_names = cnames, col_types = ctypes)
   d[]
 }
 
