@@ -327,5 +327,4 @@ wfiles3 <- fs::dir_info(outdir3) |>
   dplyr::mutate(bname = basename(.data$path))
 wfiles3 |>
   dplyr::select("bname", "size", "type")
-readr::read_tsv(wfiles3$path[1], show_col_types = F)
 ```
