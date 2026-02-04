@@ -36,7 +36,7 @@ files <- tibble::tibble(
   prefix = c("S123", "S123"),
   outpath = c("S123_purple_qc.tsv", "S123_amber_qc.tsv")
 )
-pkgs <- c("nemo", "tidywigits")
+pkgs <- c("nemo")
 input_id <- "run123"
 output_id <- ulid::ulid()
 input_dir <- "/path/to/wigits/run123"

@@ -26,7 +26,7 @@ test_that("Function nemo_osfx() @ L110", {
   
   fpfix <- "path/to/foo"
   format <- "tsv"
-  o <- nemo_osfx(fpfix, format)
+  (o <- nemo_osfx(fpfix, format))
   expect_equal(o, glue("{fpfix}.tsv.gz"))
 })
 

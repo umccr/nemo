@@ -22,5 +22,5 @@ Construct Output File Paths with Format Suffix
 \examples{
 fpfix <- "path/to/foo"
 format <- "tsv"
-o <- nemo_osfx(fpfix, format)
+(o <- nemo_osfx(fpfix, format))
 }
