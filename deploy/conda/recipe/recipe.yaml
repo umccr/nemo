@@ -23,6 +23,7 @@ requirements:
     - r-dplyr
     - r-fs
     - r-glue
+    - r-jsonlite
     - r-knitr
     - r-log4r
     - r-purrr
@@ -32,6 +33,7 @@ requirements:
     - r-rpostgres
     - r-tibble
     - r-tidyr
+    - r-ulid
     - r-yaml
   run:
     - r-base
@@ -51,6 +53,7 @@ requirements:
     - r-rpostgres
     - r-tibble
     - r-tidyr
+    - r-ulid
     - r-yaml
 
 tests:

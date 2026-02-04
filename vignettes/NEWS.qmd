@@ -50,7 +50,7 @@ pr <- function(n) {
 }
 ```
 
-## v0.0.2 (2026-02-03)
+## v0.0.2 (2026-02-04)
 
 - Add key-value parser (`r pr(12)`, `r iss(11)`)
 - Export config writer (`r pr(13)`)
@@ -61,6 +61,7 @@ pr <- function(n) {
 - Add metadata export functionality (`r pr(25)`, `r iss(17)`)
   - rename `nemo_id` + `nemo_pfix` to `input_id` + `input_pfix`, respectively
   - add `output_id`
+- Bugfix: use `I()` for vroom literal data in `empty_tbl` (`r iss(27)`, `r pr(28`))
 
 ## v0.0.1 (2025-09-07)
 
