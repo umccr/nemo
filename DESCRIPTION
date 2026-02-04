@@ -22,6 +22,7 @@ Imports:
     dplyr,
     fs,
     glue,
+    jsonlite,
     log4r,
     purrr,
     R6,

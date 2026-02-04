@@ -293,7 +293,7 @@ Tibble with tidy tbls of all Tools.
 \subsection{Method \code{get_metadata()}}{
 Get metadata
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Workflow$get_metadata(input_id, output_id, output_dir)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Workflow$get_metadata(input_id, output_id, output_dir, pkgs = c("nemo"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -307,6 +307,9 @@ Output ID to use for the dataset (e.g. \code{run123}).}
 
 \item{\code{output_dir}}{(\code{character(1)})\cr
 Output directory.}
+
+\item{\code{pkgs}}{(\code{character(n)})\cr
+Which R packages to extract versions for.}
 }
 \if{html}{\out{</div>}}
 }

@@ -102,7 +102,7 @@ nemo_out_formats <- function() {
 #' @examples
 #' fpfix <- "path/to/foo"
 #' format <- "tsv"
-#' o <- nemo_osfx(fpfix, format)
+#' (o <- nemo_osfx(fpfix, format))
 #' @testexamples
 #' expect_equal(o, glue("{fpfix}.tsv.gz"))
 #'

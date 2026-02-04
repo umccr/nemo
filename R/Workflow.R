@@ -216,7 +216,9 @@ Workflow <- R6::R6Class(
     #' Output ID to use for the dataset (e.g. `run123`).
     #' @param output_dir (`character(1)`)\cr
     #' Output directory.
-    get_metadata = function(input_id, output_id, output_dir) {
+    #' @param pkgs (`character(n)`)\cr
+    #' Which R packages to extract versions for.
+    get_metadata = function(input_id, output_id, output_dir, pkgs = c("nemo")) {
       files <- NULL
       # just keep bname and provide diro
       if (private$is_written) {
@@ -226,12 +228,13 @@ Workflow <- R6::R6Class(
       }
       meta <- nemo_metadata(
         files = files,
-        pkgs = c("nemo", "tidywigits"),
+        pkgs = pkgs,
         input_id = input_id,
         output_id = output_id,
         input_dir = self$path,
         output_dir = output_dir
       )
+      return(meta)
     }
   ), # public end
   private = list(
