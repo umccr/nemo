@@ -9,7 +9,7 @@ Using {remotes} directly from GitHub:
 ``` r
 install.packages("remotes")
 remotes::install_github("umccr/nemo") # latest main commit
-remotes::install_github("umccr/nemo@v0.0.1.9002") # released version
+remotes::install_github("umccr/nemo@v0.0.2") # released version
 ```
 
 ### Conda
@@ -23,7 +23,7 @@ The conda package is available from the umccr channel at
 conda create \
   -n nemo_env \
   -c umccr -c conda-forge \
-  r-nemo==0.0.1.9002
+  r-nemo==0.0.2
 
 conda activate nemo_env
 ```
@@ -36,7 +36,7 @@ environment with the deployed conda package:
 ``` bash
 pixi init -c umccr -c conda-forge ./tidy_env
 cd ./tidy_env
-pixi add r-nemo==0.0.1.9002
+pixi add r-nemo==0.0.2
 ```
 
 Then you can create a task to run the `nemo.R` CLI script:

@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nemo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -456,10 +456,10 @@ interest and infer their schemas:</li>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
 <span><span class="co">##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;fs::&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lf</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## tibble [1 × 9] (S3: tbl_df/tbl/data.frame)</span></span>
@@ -467,7 +467,7 @@ interest and infer their schemas:</li>
 <span><span class="co">##  $ parser      : chr "table1"</span></span>
 <span><span class="co">##  $ bname       : chr "sampleA.tool1.table1.tsv"</span></span>
 <span><span class="co">##  $ size        : 'fs_bytes' num 113</span></span>
-<span><span class="co">##  $ lastmodified: POSIXct[1:1], format: "2026-02-04 12:51:15"</span></span>
+<span><span class="co">##  $ lastmodified: POSIXct[1:1], format: "2026-02-04 12:58:09"</span></span>
 <span><span class="co">##  $ path        : chr "/home/runner/miniconda3/envs/pkgdown_env/lib/R/library/nemo/extdata/tool1/v1.2.3/sampleA.tool1.table1.tsv"</span></span>
 <span><span class="co">##  $ pattern     : chr "\\.tool1\\.table1\\.tsv$"</span></span>
 <span><span class="co">##  $ prefix      : 'glue' chr "sampleA"</span></span>
@@ -486,10 +486,10 @@ assigned anywhere:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 11</span></span></span>
 <span><span class="co">##   tool_parser  parser bname    size lastmodified        path  pattern prefix group raw      tidy    </span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fs:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sample…   113 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sample…   153 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2    <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sample…    70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sample…    83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sample…   113 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sample…   153 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2    <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sample…    70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sample…    83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…       <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t1</span><span class="op">$</span><span class="va">tbls</span><span class="op">$</span><span class="va">raw</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Rows: 3</span></span>
@@ -523,18 +523,18 @@ exclude in the analysis:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
 <span><span class="co">##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;fs::&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t2</span><span class="op">$</span><span class="fu">filter_files</span><span class="op">(</span>include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tool1_table2"</span>, <span class="st">"tool1_table3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">t2</span><span class="op">$</span><span class="va">files</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
 <span><span class="co">##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;fs::&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
 </div>
 <div class="tab-pane" id="write" role="tabpanel" aria-labelledby="write-tab">
 
@@ -558,22 +558,22 @@ from the same tool.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 3</span></span></span>
 <span><span class="co">##    bname                                 size type </span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;fs::bytes&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> file1270151e35f8                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> file127018b67abd                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> file127024643a4b                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> file12702cca01c1                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> file1270327680ec                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> file12703359a67a                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> file1270409c1641                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> file12704452bf57                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> file12705390d0de                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> file12705fbf3e47                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> file127066a0969c                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> file12706a843f7b                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> file12707f4f5c8d                     4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> file1270ec98efb                      4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> file1270f0d2c0f                      4.71K file </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> rmarkdown-str12707161a856.html       1.13K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> file123f2498858b                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> file123f310234eb                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> file123f39d59ddf                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> file123f3f5373c8                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> file123f41a948c1                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> file123f4249eeda                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> file123f42da7e1d                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> file123f4af15798                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> file123f5dbeb4a6                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> file123f6253d6e5                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> file123f63a185c5                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> file123f63ac97bd                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> file123f704d5086                     4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> file123fac648ec                      4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> file123fc566d31                      4.71K file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> rmarkdown-str123f2d80b345.html       1.13K file </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">17</span> sampleA_tool1_table2.csv.gz            123 file </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">18</span> sampleA_tool1_table3.csv.gz            134 file</span></span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
@@ -590,10 +590,10 @@ process of filtering, tidying, and writing.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
 <span><span class="co">##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;fs::&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">t3</span><span class="op">$</span><span class="fu">nemofy</span><span class="op">(</span></span>
 <span>  diro <span class="op">=</span> <span class="va">outdir2</span>,</span>
@@ -616,9 +616,9 @@ process of filtering, tidying, and writing.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
 <span><span class="co">##   input_id input_pfix output_id                  sample_id chromosome start   end metric_x</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> run_t3   sampleA    01KGMBEQ07VWP0GMB665K10RZR sampleA   chr1          10    50      0.1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> run_t3   sampleA    01KGMBEQ07VWP0GMB665K10RZR sampleA   chr2         100   500      0.2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> run_t3   sampleA    01KGMBEQ07VWP0GMB665K10RZR sampleA   chr3        <span style="text-decoration: underline;">1</span>000  <span style="text-decoration: underline;">5</span>000      0.3</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr1          10    50      0.1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr2         100   500      0.2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr3        <span style="text-decoration: underline;">1</span>000  <span style="text-decoration: underline;">5</span>000      0.3</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -645,10 +645,10 @@ object contains functions such as <code>filter_files</code>,
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
 <span><span class="co">##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;fs::&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:51:15</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl… _2   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 <span style="color: #949494;">12:58:09</span> /hom… <span style="color: #949494;">"</span>\\.to… sampl…</span></span></code></pre>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">w</span><span class="op">$</span><span class="fu">nemofy</span><span class="op">(</span></span>
 <span>  diro <span class="op">=</span> <span class="va">outdir3</span>,</span>
@@ -663,7 +663,7 @@ object contains functions such as <code>filter_files</code>,
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
 <span><span class="co">##   bname                                size type </span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;fs::bytes&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> metadata.json                         806 file </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> metadata.json                         801 file </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> sampleA_2_tool1_table1.tsv.gz         177 file </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> sampleA_tool1_table1.tsv.gz           157 file </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> sampleA_tool1_table2.tsv.gz           131 file </span></span>
