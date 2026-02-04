@@ -4,6 +4,8 @@
 <url><loc>https://umccr.github.io/nemo/LICENSE-text.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/LICENSE.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/articles/NEWS.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/articles/contribute.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/articles/devnotes.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/articles/index.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/articles/installation.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/articles/notes.html</loc></url>
@@ -16,8 +18,10 @@
 <url><loc>https://umccr.github.io/nemo/reference/Tool1.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/Workflow.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/Workflow1.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/reference/config_prep_multi.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/config_prep_raw.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/config_prep_raw_schema.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/reference/config_prep_write.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/empty_tbl.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/enframe_data.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/file_hdr.html</loc></url>
@@ -29,10 +33,13 @@
 <url><loc>https://umccr.github.io/nemo/reference/nemo_cli.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/nemo_log.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/nemo_log_date.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/reference/nemo_metadata.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/reference/nemo_osfx.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/nemo_out_formats.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/nemo_write.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/nemoverse_wf_dispatch.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/parse_file.html</loc></url>
+<url><loc>https://umccr.github.io/nemo/reference/parse_file_keyvalue.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/parse_file_nohead.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/pkg_found.html</loc></url>
 <url><loc>https://umccr.github.io/nemo/reference/schema_guess.html</loc></url>
