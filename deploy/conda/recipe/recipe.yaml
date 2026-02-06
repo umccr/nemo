@@ -1,6 +1,6 @@
 context:
   name: r-nemo
-  version: 0.0.2 # bump
+  version: 0.0.2.9001 # bump
 
 package:
   name: ${{ name|lower }}
