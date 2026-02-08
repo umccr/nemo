@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/umccr/nemo/blob/main/DESCRIPTION)
 
 Diakumis P (2026). *nemo: Tidy and explore outputs from bioinformatic
-pipelines*. R package version 0.0.2, https://umccr.github.io/nemo/,
+pipelines*. R package version 0.0.3, https://umccr.github.io/nemo/,
 <https://github.com/umccr/nemo>.
 
     @Manual{,
       title = {nemo: Tidy and explore outputs from bioinformatic pipelines},
       author = {Peter Diakumis},
       year = {2026},
-      note = {R package version 0.0.2, https://umccr.github.io/nemo/},
+      note = {R package version 0.0.3, https://umccr.github.io/nemo/},
       url = {https://github.com/umccr/nemo},
     }

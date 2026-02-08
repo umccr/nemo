@@ -1,5 +1,9 @@
 # NEWS
 
+## v0.0.3 (2026-02-09)
+
+- `nemo_write`: use NA outpath attr for db
+
 ## v0.0.2 (2026-02-04)
 
 - Add key-value parser ([pr12](https://github.com/umccr/nemo/pull/12),

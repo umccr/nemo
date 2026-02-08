@@ -308,10 +308,10 @@ We can list files that can be parsed with `list_files()`:
     ## # A tibble: 4 × 9
     ##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group
     ##   <glue>       <chr>  <chr>                    <fs::> <dttm>              <chr> <chr>   <glue> <glu>
-    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 12:58:09 /hom… "\\.to… sampl… _2   
-    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 12:58:09 /hom… "\\.to… sampl…
+    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-08 23:24:37 /hom… "\\.to… sampl… _2   
+    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-08 23:24:37 /hom… "\\.to… sampl…
 
 ``` r
 lf |> dplyr::slice(1) |> str()
@@ -322,7 +322,7 @@ lf |> dplyr::slice(1) |> str()
     ##  $ parser      : chr "table1"
     ##  $ bname       : chr "sampleA.tool1.table1.tsv"
     ##  $ size        : 'fs_bytes' num 113
-    ##  $ lastmodified: POSIXct[1:1], format: "2026-02-04 12:58:09"
+    ##  $ lastmodified: POSIXct[1:1], format: "2026-02-08 23:24:37"
     ##  $ path        : chr "/home/runner/miniconda3/envs/pkgdown_env/lib/R/library/nemo/extdata/tool1/v1.2.3/sampleA.tool1.table1.tsv"
     ##  $ pattern     : chr "\\.tool1\\.table1\\.tsv$"
     ##  $ prefix      : 'glue' chr "sampleA"
@@ -341,10 +341,10 @@ t1$tbls
     ## # A tibble: 4 × 11
     ##   tool_parser  parser bname    size lastmodified        path  pattern prefix group raw      tidy    
     ##   <glue>       <chr>  <chr>   <fs:> <dttm>              <chr> <chr>   <glue> <glu> <list>   <list>  
-    ## 1 tool1_table1 table1 sample…   113 2026-02-04 12:58:09 /hom… "\\.to… sampl…       <tibble> <tibble>
-    ## 2 tool1_table1 table1 sample…   153 2026-02-04 12:58:09 /hom… "\\.to… sampl… _2    <tibble> <tibble>
-    ## 3 tool1_table2 table2 sample…    70 2026-02-04 12:58:09 /hom… "\\.to… sampl…       <tibble> <tibble>
-    ## 4 tool1_table3 table3 sample…    83 2026-02-04 12:58:09 /hom… "\\.to… sampl…       <tibble> <tibble>
+    ## 1 tool1_table1 table1 sample…   113 2026-02-08 23:24:37 /hom… "\\.to… sampl…       <tibble> <tibble>
+    ## 2 tool1_table1 table1 sample…   153 2026-02-08 23:24:37 /hom… "\\.to… sampl… _2    <tibble> <tibble>
+    ## 3 tool1_table2 table2 sample…    70 2026-02-08 23:24:37 /hom… "\\.to… sampl…       <tibble> <tibble>
+    ## 4 tool1_table3 table3 sample…    83 2026-02-08 23:24:37 /hom… "\\.to… sampl…       <tibble> <tibble>
 
 ``` r
 t1$tbls$raw[[1]] |> dplyr::glimpse()
@@ -384,10 +384,10 @@ t2$files
     ## # A tibble: 4 × 9
     ##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group
     ##   <glue>       <chr>  <chr>                    <fs::> <dttm>              <chr> <chr>   <glue> <glu>
-    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 12:58:09 /hom… "\\.to… sampl… _2   
-    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 12:58:09 /hom… "\\.to… sampl…
+    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-08 23:24:37 /hom… "\\.to… sampl… _2   
+    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-08 23:24:37 /hom… "\\.to… sampl…
 
 ``` r
 t2$filter_files(include = c("tool1_table2", "tool1_table3"))
@@ -397,8 +397,8 @@ t2$files
     ## # A tibble: 2 × 9
     ##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group
     ##   <glue>       <chr>  <chr>                    <fs::> <dttm>              <chr> <chr>   <glue> <glu>
-    ## 1 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 2 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 12:58:09 /hom… "\\.to… sampl…
+    ## 1 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 2 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-08 23:24:37 /hom… "\\.to… sampl…
 
 After tidying the data of interest, we can write the tidy tibbles to
 various formats, like Apache Parquet, PostgreSQL, CSV/TSV and R’s RDS.
@@ -422,22 +422,22 @@ wfiles |>
     ## # A tibble: 18 × 3
     ##    bname                                 size type 
     ##    <chr>                          <fs::bytes> <fct>
-    ##  1 file123f2498858b                     4.71K file 
-    ##  2 file123f310234eb                     4.71K file 
-    ##  3 file123f39d59ddf                     4.71K file 
-    ##  4 file123f3f5373c8                     4.71K file 
-    ##  5 file123f41a948c1                     4.71K file 
-    ##  6 file123f4249eeda                     4.71K file 
-    ##  7 file123f42da7e1d                     4.71K file 
-    ##  8 file123f4af15798                     4.71K file 
-    ##  9 file123f5dbeb4a6                     4.71K file 
-    ## 10 file123f6253d6e5                     4.71K file 
-    ## 11 file123f63a185c5                     4.71K file 
-    ## 12 file123f63ac97bd                     4.71K file 
-    ## 13 file123f704d5086                     4.71K file 
-    ## 14 file123fac648ec                      4.71K file 
-    ## 15 file123fc566d31                      4.71K file 
-    ## 16 rmarkdown-str123f2d80b345.html       1.13K file 
+    ##  1 file124314358d5d                     4.71K file 
+    ##  2 file124317c3240f                     4.71K file 
+    ##  3 file12431b3e0420                     4.71K file 
+    ##  4 file124322ee0ca1                     4.71K file 
+    ##  5 file1243507b028                      4.71K file 
+    ##  6 file124356bd7b3f                     4.71K file 
+    ##  7 file12435fd935cf                     4.71K file 
+    ##  8 file124363338479                     4.71K file 
+    ##  9 file12436521d73                      4.71K file 
+    ## 10 file12436a0f7e39                     4.71K file 
+    ## 11 file12436c663314                     4.71K file 
+    ## 12 file12436f268c10                     4.71K file 
+    ## 13 file1243716e4fa                      4.71K file 
+    ## 14 file1243740e777a                     4.71K file 
+    ## 15 file124374b22092                     4.71K file 
+    ## 16 rmarkdown-str12431470482d.html       1.13K file 
     ## 17 sampleA_tool1_table2.csv.gz            123 file 
     ## 18 sampleA_tool1_table3.csv.gz            134 file
 
@@ -457,10 +457,10 @@ t3$files
     ## # A tibble: 4 × 9
     ##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group
     ##   <glue>       <chr>  <chr>                    <fs::> <dttm>              <chr> <chr>   <glue> <glu>
-    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 12:58:09 /hom… "\\.to… sampl… _2   
-    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 12:58:09 /hom… "\\.to… sampl…
+    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-08 23:24:37 /hom… "\\.to… sampl… _2   
+    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-08 23:24:37 /hom… "\\.to… sampl…
 
 ``` r
 t3$nemofy(
@@ -477,10 +477,10 @@ wfiles2 |>
     ## # A tibble: 4 × 3
     ##   bname                                size type 
     ##   <chr>                         <fs::bytes> <fct>
-    ## 1 sampleA_2_tool1_table1.tsv.gz         170 file 
-    ## 2 sampleA_tool1_table1.tsv.gz           150 file 
-    ## 3 sampleA_tool1_table2.tsv.gz           121 file 
-    ## 4 sampleA_tool1_table3.tsv.gz           133 file
+    ## 1 sampleA_2_tool1_table1.tsv.gz         171 file 
+    ## 2 sampleA_tool1_table1.tsv.gz           151 file 
+    ## 3 sampleA_tool1_table2.tsv.gz           123 file 
+    ## 4 sampleA_tool1_table3.tsv.gz           134 file
 
 ``` r
 readr::read_tsv(wfiles2$path[2], show_col_types = F)
@@ -489,9 +489,9 @@ readr::read_tsv(wfiles2$path[2], show_col_types = F)
     ## # A tibble: 3 × 8
     ##   input_id input_pfix output_id                  sample_id chromosome start   end metric_x
     ##   <chr>    <chr>      <chr>                      <chr>     <chr>      <dbl> <dbl>    <dbl>
-    ## 1 run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr1          10    50      0.1
-    ## 2 run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr2         100   500      0.2
-    ## 3 run_t3   sampleA    01KGMBTDP7VWP0GMB665K10RZR sampleA   chr3        1000  5000      0.3
+    ## 1 run_t3   sampleA    01KGZS885DVWP0GMB665K10RZR sampleA   chr1          10    50      0.1
+    ## 2 run_t3   sampleA    01KGZS885DVWP0GMB665K10RZR sampleA   chr2         100   500      0.2
+    ## 3 run_t3   sampleA    01KGZS885DVWP0GMB665K10RZR sampleA   chr3        1000  5000      0.3
 
 ## `Workflow`
 
@@ -515,10 +515,10 @@ w$list_files()
     ## # A tibble: 4 × 9
     ##   tool_parser  parser bname                      size lastmodified        path  pattern prefix group
     ##   <glue>       <chr>  <chr>                    <fs::> <dttm>              <chr> <chr>   <glue> <glu>
-    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-04 12:58:09 /hom… "\\.to… sampl… _2   
-    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-04 12:58:09 /hom… "\\.to… sampl…      
-    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-04 12:58:09 /hom… "\\.to… sampl…
+    ## 1 tool1_table1 table1 sampleA.tool1.table1.tsv    113 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 2 tool1_table1 table1 sampleA.tool1.table1.tsv    153 2026-02-08 23:24:37 /hom… "\\.to… sampl… _2   
+    ## 3 tool1_table2 table2 sampleA.tool1.table2.tsv     70 2026-02-08 23:24:37 /hom… "\\.to… sampl…      
+    ## 4 tool1_table3 table3 sampleA.tool1.table3.tsv     83 2026-02-08 23:24:37 /hom… "\\.to… sampl…
 
 ``` r
 x <- w$nemofy(
@@ -537,7 +537,7 @@ wfiles3 |>
     ##   bname                                size type 
     ##   <chr>                         <fs::bytes> <fct>
     ## 1 metadata.json                         801 file 
-    ## 2 sampleA_2_tool1_table1.tsv.gz         177 file 
-    ## 3 sampleA_tool1_table1.tsv.gz           157 file 
+    ## 2 sampleA_2_tool1_table1.tsv.gz         178 file 
+    ## 3 sampleA_tool1_table1.tsv.gz           158 file 
     ## 4 sampleA_tool1_table2.tsv.gz           131 file 
-    ## 5 sampleA_tool1_table3.tsv.gz           141 file
+    ## 5 sampleA_tool1_table3.tsv.gz           142 file

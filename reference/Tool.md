@@ -105,7 +105,7 @@ Create a new Tool object.
 - `pkg`:
 
   (`character(1)`)  
-  Package name tool belong to (for config lookup).
+  Package name tool belongs to (for config lookup).
 
 - `path`:
 
