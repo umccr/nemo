@@ -59,7 +59,7 @@ nemo_write <- function(d, fpfix = NULL, format = "tsv", dbconn = NULL, dbtab = N
     fun <- getExportedValue(x[["pkg"]], x[["fun"]])
     fun(d, osfx)
   }
-  attr(d, "outpath") <- if (format == "db") NULL else osfx
+  attr(d, "outpath") <- if (format == "db") NA_character_ else osfx
   invisible(d)
 }
 

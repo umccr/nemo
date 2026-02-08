@@ -74,7 +74,7 @@ Tool <- R6::R6Class(
     #' @param name (`character(1)`)\cr
     #' Name of tool.
     #' @param pkg (`character(1)`)\cr
-    #' Package name tool belong to (for config lookup).
+    #' Package name tool belongs to (for config lookup).
     #' @param path (`character(1)`)\cr
     #' Output directory of tool. If `files_tbl` is supplied, this basically gets
     #' ignored.

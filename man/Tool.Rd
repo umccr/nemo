@@ -103,7 +103,7 @@ Create a new Tool object.
 Name of tool.}
 
 \item{\code{pkg}}{(\code{character(1)})\cr
-Package name tool belong to (for config lookup).}
+Package name tool belongs to (for config lookup).}
 
 \item{\code{path}}{(\code{character(1)})\cr
 Output directory of tool. If \code{files_tbl} is supplied, this basically gets
