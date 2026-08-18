@@ -27,9 +27,8 @@ s3sync <- function(src, dest, pats = NULL) {
   pats <- pats %||% pats_default
   pat_args <- pats |>
     dplyr::mutate(flag = as.character(glue::glue("--{.data$inex}clude"))) |>
-    dplyr::select("flag", "pat") |>
-    t() |>
-    as.vector()
+    tidyr::pivot_longer(c("flag", "pat"), values_to = "value") |>
+    dplyr::pull("value")
   args <- c("s3", "sync", src, dest, pat_args)
   system2("aws", args)
 }
