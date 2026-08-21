@@ -28,11 +28,15 @@ s3sync <- function(src, dest, pats = NULL, dryrun = FALSE) {
     "ex"  , "*"
   )
   pats <- pats %||% pats_default
+  dest <- path.expand(dest)
   pat_args <- pats |>
-    dplyr::mutate(flag = as.character(glue::glue("--{.data$inex}clude"))) |>
+    dplyr::mutate(
+      flag = as.character(glue::glue("--{.data$inex}clude")),
+      pat = shQuote(.data$pat)
+    ) |>
     tidyr::pivot_longer(c("flag", "pat"), values_to = "value") |>
     dplyr::pull("value")
-  args <- c("s3", "sync", src, dest, pat_args)
+  args <- c("s3", "sync", shQuote(src), shQuote(dest), pat_args)
   if (dryrun) {
     args <- c(args, "--dryrun")
   }
