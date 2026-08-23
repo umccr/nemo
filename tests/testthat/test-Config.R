@@ -5,16 +5,16 @@ test_that("Config initialize validates inputs", {
 
 test_that("Config pattern and ftype methods", {
   conf <- Config$new("tool1", "nemo")
-  expect_equal(nrow(conf$get_patterns()), 6)
+  expect_equal(nrow(conf$get_patterns()), 5)
   expect_equal(conf$get_pattern("table1"), "\\.tool1\\.table1\\.tsv$")
-  expect_equal(dplyr::distinct(conf$get_ftypes(), .data$ftype) |> nrow(), 5)
+  expect_equal(dplyr::distinct(conf$get_ftypes(), .data$ftype) |> nrow(), 4)
   expect_equal(conf$get_ftype("table1"), "tsv")
 })
 
 test_that("Config description methods", {
   conf <- Config$new("tool1", "nemo")
   expect_true(is.character(conf$get_description("table1")))
-  expect_equal(nrow(conf$get_descriptions()), 6)
+  expect_equal(nrow(conf$get_descriptions()), 5)
 })
 
 test_that("Config schema methods", {
@@ -33,6 +33,6 @@ test_that("Config schema methods", {
 
 test_that("Config get_col_map", {
   conf <- Config$new("tool1", "nemo")
-  cm <- conf$get_col_map("table5")
+  cm <- conf$get_col_map("table6")
   expect_named(cm, c("raw", "tidy", "type", "description"))
 })

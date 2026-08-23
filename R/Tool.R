@@ -31,7 +31,7 @@
 #' toolB$list_files()
 #' # tidy + write
 #' toolC <- Tool$new(name = name, pkg = pkg, path = path)$
-#'   filter_files(exclude = "tool1_table5")$
+#'   filter_files(exclude = "tool1_table6")$
 #'   tidy()
 #' toolC$list_files()
 #' toolC$get_tbls() # note the tidy column
@@ -41,7 +41,7 @@
 #'
 #' # run
 #' toolD <- Tool$new(name = name, pkg = pkg, path = path)$
-#'   filter_files(exclude = "tool1_table5")$
+#'   filter_files(exclude = "tool1_table6")$
 #'   run(output_dir = dir2, format = "parquet", input_id = "run2")
 #' (lfD <- list.files(dir2, full.names = TRUE))
 #'
@@ -554,7 +554,7 @@ Tool <- R6::R6Class(
     #' @param include (`character(n)`)\cr
     #' tool_parser names to include (e.g. `"tool1_table1"`).
     #' @param exclude (`character(n)`)\cr
-    #' tool_parser names to exclude (e.g. `"tool1_table5"`).
+    #' tool_parser names to exclude (e.g. `"tool1_table6"`).
     #' @return (`R6::R6Class()`)\cr
     #' R6 object invisibly. Results stored in `self$written_files`.
     run = function(

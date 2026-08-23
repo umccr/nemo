@@ -34,7 +34,7 @@ conf <- Config$new(tool, pkg)
 (s1 <- conf$get_schema_raw("table1"))
 conf$get_schema_raw("table1", version = "v1.2.3")
 conf$get_schema_tidy("table1")
-(cm <- conf$get_col_map("table5"))
+(cm <- conf$get_col_map("table6"))
 
 }
 \section{Public fields}{
@@ -338,7 +338,7 @@ Table \code{version}, \code{field} and \code{type}.
 \if{latex}{\out{\hypertarget{method-Config-get_col_map}{}}}
 \subsection{Method \code{get_col_map()}}{
 Get column mapping (raw -> tidy) for a table.
-Used for tables with custom parse logic (e.g. csv-nohead-long).
+Useful inside custom parse/tidy logic that needs the raw-to-tidy mapping.
 
 \strong{\code{version = NULL} resolves to a single version here}, unlike
 \code{get_schema_raw()}/\code{get_schema_tidy()} which return \emph{all} versions when

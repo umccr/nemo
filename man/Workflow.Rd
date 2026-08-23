@@ -27,7 +27,7 @@ path <- system.file("extdata/tool1", package = "nemo")
 tools <- list(tool1 = Tool1)
 wf <- Workflow$new(name = "wf1", path = path, tools = tools)
 (lf_all <- wf$list_files())
-wf$filter_files(exclude = "tool1_table5")
+wf$filter_files(exclude = "tool1_table6")
 wf$tidy()
 (tbls <- wf$get_tbls())
 (rs <- wf$get_schemas_raw())
@@ -156,7 +156,7 @@ Filter files in given workflow directory.
 tool_parser names to include (e.g. \code{"tool1_table1"}).}
 
 \item{\code{exclude}}{(\code{character(n)})\cr
-tool_parser names to exclude (e.g. \code{"tool1_table5"}).}
+tool_parser names to exclude (e.g. \code{"tool1_table6"}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -299,7 +299,7 @@ If \code{TRUE} (default), write a \code{metadata.parquet} file. Set to \code{FAL
 tool_parser names to include (e.g. \code{"tool1_table1"}).}
 
 \item{\code{exclude}}{(\code{character(n)})\cr
-tool_parser names to exclude (e.g. \code{"tool1_table5"}).}
+tool_parser names to exclude (e.g. \code{"tool1_table6"}).}
 }
 \if{html}{\out{</div>}}
 }

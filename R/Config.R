@@ -28,7 +28,7 @@
 #' (s1 <- conf$get_schema_raw("table1"))
 #' conf$get_schema_raw("table1", version = "v1.2.3")
 #' conf$get_schema_tidy("table1")
-#' (cm <- conf$get_col_map("table5"))
+#' (cm <- conf$get_col_map("table6"))
 #'
 #' @export
 Config <- R6::R6Class(
@@ -162,7 +162,7 @@ Config <- R6::R6Class(
       private$get_schema(x, version, private$schemas_tidy)
     },
     #' @description Get column mapping (raw -> tidy) for a table.
-    #' Used for tables with custom parse logic (e.g. csv-nohead-long).
+    #' Useful inside custom parse/tidy logic that needs the raw-to-tidy mapping.
     #'
     #' **`version = NULL` resolves to a single version here**, unlike
     #' `get_schema_raw()`/`get_schema_tidy()` which return *all* versions when
