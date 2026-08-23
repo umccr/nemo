@@ -11,7 +11,7 @@ params:
   pkg: "nemo"
 ---
 
-```{css, echo=FALSE}
+```{css, css-chunk, echo=FALSE}
 /*
 https://github.com/r-lib/pkgdown/issues/2721
 Correct flex boxes from sizing based upon the largest in tabset
@@ -113,13 +113,12 @@ tables:
 
 The `ftype` field signals how the file is parsed:
 
-| `ftype`           | Description                                  | `raw:` names                            | Parser                   |
-| ----------------- | -------------------------------------------- | --------------------------------------- | ------------------------ |
-| `tsv`             | Header present; tab-delimited                | actual column names                     | `parse_file`             |
-| `csv`             | Header present; comma-delimited              | actual column names                     | `parse_file` (delim=`,`) |
-| `tsv-nohead`      | No header; positional columns                | `X1, X2, …, XN`                         | `parse_file_nohead`      |
-| `tsv-keyvalue`    | No header; 2 cols (key, value); pivoted wide | actual key values                       | `parse_file_keyvalue`    |
-| `csv-nohead-long` | No header; long format; custom pivot         | metric names (values in the key column) | custom `tidy_*` method   |
+| `ftype`        | Description                                  | `raw:` names        | Parser                   |
+| -------------- | -------------------------------------------- | ------------------- | ------------------------ |
+| `tsv`          | Header present; tab-delimited                | actual column names | `parse_file`             |
+| `csv`          | Header present; comma-delimited              | actual column names | `parse_file` (delim=`,`) |
+| `tsv-nohead`   | No header; positional columns                | `X1, X2, …, XN`     | `parse_file_nohead`      |
+| `tsv-keyvalue` | No header; 2 cols (key, value); pivoted wide | actual key values   | `parse_file_keyvalue`    |
 
 Child packages can register additional ftypes by overriding
 `private$extra_ftypes()` --- return a named list of
@@ -194,13 +193,13 @@ conf$get_schema_raw("table1", version = "v1.2.3")
 conf$get_schema_tidy("table1", version = "v1.2.3")
 ```
 
-For `csv-nohead-long` tables, `get_col_map()` returns the raw-to-tidy
-metric-name mapping used inside the tool's `tidy_*` method:
+`get_col_map()` returns the raw-to-tidy column mapping (with types and
+descriptions) for a table, handy inside a custom `tidy_*` method:
 
 ```{r}
 #| label: config_col_map
 
-conf$get_col_map("table5")
+conf$get_col_map("table6")
 ```
 
 ## Tool {.tabset .tabset-pills}

@@ -63,9 +63,9 @@ test_that("Tool filter_files errors after tidy()", {
 
 test_that("Tool tidy produces correct structure", {
   tool <- Tool$new(name = name, pkg = pkg, path = path)$filter_files(
-    exclude = "tool1_table5"
+    exclude = "tool1_table6"
   )$tidy()
-  expect_false("tool1_table5" %in% tool$list_files()$tool_parser)
+  expect_false("tool1_table6" %in% tool$list_files()$tool_parser)
   expect_true("tool1_table3" %in% tool$list_files()$tool_parser)
   expect_false(is.null(tool$get_tbls()))
   expect_named(
@@ -147,7 +147,7 @@ test_that("Tool write is idempotent", {
 test_that("Tool write produces correct outputs and metadata", {
   out <- withr::local_tempdir()
   tool <- Tool$new(name = name, pkg = pkg, path = path)$filter_files(
-    exclude = "tool1_table5"
+    exclude = "tool1_table6"
   )$tidy()
   tool$write(output_dir = out, format = "parquet", input_id = "run1")
   lf <- list.files(out, full.names = TRUE)
@@ -224,11 +224,11 @@ test_that("Tool run chains filter + tidy + write and records written_files", {
   tool <- Tool$new(name = name, pkg = pkg, path = path)$run(
     output_dir = out,
     format = "parquet",
-    exclude = "tool1_table5",
+    exclude = "tool1_table6",
     input_id = "run2"
   )
   expect_named(tool$written_files, c("raw_path", "tool_parser", "prefix", "tbl_name", "outpath"))
-  expect_false(any(grepl("table5", basename(list.files(out)))))
+  expect_false(any(grepl("table6", basename(list.files(out)))))
   expect_true(any(grepl("table1", basename(list.files(out)))))
 })
 

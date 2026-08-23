@@ -22,7 +22,7 @@
 #' tools <- list(tool1 = Tool1)
 #' wf <- Workflow$new(name = "wf1", path = path, tools = tools)
 #' (lf_all <- wf$list_files())
-#' wf$filter_files(exclude = "tool1_table5")
+#' wf$filter_files(exclude = "tool1_table6")
 #' wf$tidy()
 #' (tbls <- wf$get_tbls())
 #' (rs <- wf$get_schemas_raw())
@@ -107,7 +107,7 @@ Workflow <- R6::R6Class(
     #' @param include (`character(n)`)\cr
     #' tool_parser names to include (e.g. `"tool1_table1"`).
     #' @param exclude (`character(n)`)\cr
-    #' tool_parser names to exclude (e.g. `"tool1_table5"`).
+    #' tool_parser names to exclude (e.g. `"tool1_table6"`).
     #' @return (`R6::R6Class()`)\cr
     #' R6 object invisibly.
     filter_files = function(include = NULL, exclude = NULL) {
@@ -259,7 +259,7 @@ Workflow <- R6::R6Class(
     #' @param include (`character(n)`)\cr
     #' tool_parser names to include (e.g. `"tool1_table1"`).
     #' @param exclude (`character(n)`)\cr
-    #' tool_parser names to exclude (e.g. `"tool1_table5"`).
+    #' tool_parser names to exclude (e.g. `"tool1_table6"`).
     #' @return (`R6::R6Class()`)\cr
     #' R6 object invisibly.
     run = function(

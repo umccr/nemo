@@ -1,6 +1,6 @@
 tables:
   table1:
-    description: 'Table1 for tool1 (txt: header present, tab-delimited).'
+    description: 'Table1 for tool1 (tsv: header present, tab-delimited).'
     pattern: "\\.tool1\\.table1\\.tsv$"
     ftype: 'tsv'
     columns:
@@ -40,7 +40,7 @@ tables:
         description: 'metric Z'
         versions: ['latest']
   table2:
-    description: 'Table2 for tool1 (txt: header present, tab-delimited).'
+    description: 'Table2 for tool1 (tsv: header present, tab-delimited).'
     pattern: "\\.tool1\\.table2\\.tsv$"
     ftype: 'tsv'
     columns:
@@ -60,7 +60,7 @@ tables:
         description: 'metric B'
         versions: ['latest']
   table3:
-    description: 'Table3 for tool1 (txt-keyvalue: no header, 2 cols, col1=key col2=value).'
+    description: 'Table3 for tool1 (tsv-keyvalue: no header, 2 cols, col1=key col2=value).'
     pattern: "\\.tool1\\.table3\\.tsv$"
     ftype: 'tsv-keyvalue'
     columns:
@@ -90,7 +90,7 @@ tables:
         description: 'unmapped reads'
         versions: ['latest']
   table4:
-    description: 'Table4 for tool1 (txt-nohead: no header, positional cols X1..XN).'
+    description: 'Table4 for tool1 (tsv-nohead: no header, positional cols X1..XN).'
     pattern: "\\.tool1\\.table4\\.tsv$"
     ftype: 'tsv-nohead'
     columns:
@@ -143,29 +143,4 @@ tables:
         tidy: 'tpm_raw'
         type: 'float'
         description: 'raw TPM'
-        versions: ['latest']
-  table5:
-    description: 'Table5 for tool1 (csv-nohead-long: no header, long format with metric name col).'
-    pattern: "\\.tool1\\.table5\\.csv$"
-    ftype: 'csv-nohead-long'
-    columns:
-      - raw: 'Total reads'
-        tidy: 'reads_total'
-        type: 'float'
-        description: 'total reads'
-        versions: ['latest']
-      - raw: 'Mapped reads'
-        tidy: 'reads_map'
-        type: 'float'
-        description: 'mapped reads'
-        versions: ['latest']
-      - raw: 'Unmapped reads'
-        tidy: 'reads_unmap'
-        type: 'float'
-        description: 'unmapped reads'
-        versions: ['latest']
-      - raw: 'Total bases'
-        tidy: 'bases_total'
-        type: 'float'
-        description: 'total bases'
         versions: ['latest']

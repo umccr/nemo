@@ -82,11 +82,11 @@ tool1 <- list(
       )
     )
   ),
-  # txt-nohead: no header, positional columns, tab-delimited
+  # tsv-nohead: no header, positional columns, tab-delimited
   table4 = list(
     list(
       version = "v1.0.0",
-      format = "txt-nohead",
+      format = "tsv-nohead",
       data = tibble::tibble(
         SampleID = c("sampleA", "sampleB"),
         Chromosome = c("chr1", "chr2"),
@@ -95,7 +95,7 @@ tool1 <- list(
     ),
     list(
       version = "latest",
-      format = "txt-nohead",
+      format = "tsv-nohead",
       data = tibble::tibble(
         SampleID = c("sampleA", "sampleB"),
         Chromosome = c("chr1", "chr2"),
@@ -126,35 +126,6 @@ tool1 <- list(
         RawTPM = c(11.1, 44.4, 6.66)
       )
     )
-  ),
-  # csv-nohead-long: no header, comma-delimited, long format with metric name column
-  # mimics DRAGEN-style metrics files (category, rg, variable, count, pct)
-  # includes TUMOR/NORMAL sections for both SUMMARY and PER RG
-  table5 = list(
-    list(
-      version = "latest",
-      format = "csv-nohead-long",
-      # fmt: skip
-      data = tibble::tribble(
-        ~section,                      ~rg,               ~variable,         ~count,    ~pct,
-        "TUMOR MAPPING/ALIGNING SUMMARY",  "",            "Total reads",    3000000,   100.00,
-        "TUMOR MAPPING/ALIGNING SUMMARY",  "",            "Mapped reads",   2900000,    96.67,
-        "TUMOR MAPPING/ALIGNING SUMMARY",  "",            "Unmapped reads",  100000,     3.33,
-        "TUMOR MAPPING/ALIGNING SUMMARY",  "",            "Total bases",   450000000,      NA,
-        "NORMAL MAPPING/ALIGNING SUMMARY", "",            "Total reads",    1500000,   100.00,
-        "NORMAL MAPPING/ALIGNING SUMMARY", "",            "Mapped reads",   1460000,    97.33,
-        "NORMAL MAPPING/ALIGNING SUMMARY", "",            "Unmapped reads",   40000,     2.67,
-        "NORMAL MAPPING/ALIGNING SUMMARY", "",            "Total bases",   226500000,      NA,
-        "TUMOR MAPPING/ALIGNING PER RG",   "BC01.1.FC1", "Total reads",    3000000,   100.00,
-        "TUMOR MAPPING/ALIGNING PER RG",   "BC01.1.FC1", "Mapped reads",   2900000,    96.67,
-        "TUMOR MAPPING/ALIGNING PER RG",   "BC01.1.FC1", "Unmapped reads",  100000,     3.33,
-        "TUMOR MAPPING/ALIGNING PER RG",   "BC01.1.FC1", "Total bases",   450000000,      NA,
-        "NORMAL MAPPING/ALIGNING PER RG",  "BC02.1.FC1", "Total reads",    1500000,   100.00,
-        "NORMAL MAPPING/ALIGNING PER RG",  "BC02.1.FC1", "Mapped reads",   1460000,    97.33,
-        "NORMAL MAPPING/ALIGNING PER RG",  "BC02.1.FC1", "Unmapped reads",   40000,     2.67,
-        "NORMAL MAPPING/ALIGNING PER RG",  "BC02.1.FC1", "Total bases",   226500000,      NA
-      )
-    )
   )
 )
 
@@ -163,10 +134,7 @@ purrr::map2(tool1, names(tool1), \(tab, tab_name) {
   purrr::map(tab, \(entry) {
     odir <- here::here("inst/extdata", "tool1", entry$version) |>
       fs::dir_create()
-    if (entry$format == "csv-nohead-long") {
-      fname <- file.path(odir, glue::glue("sampleA.tool1.{tab_name}.csv"))
-      readr::write_csv(entry$data, fname, col_names = FALSE, na = "")
-    } else if (entry$format == "csv") {
+    if (entry$format == "csv") {
       fname <- file.path(odir, glue::glue("sampleA.tool1.{tab_name}.csv"))
       readr::write_csv(entry$data, fname, col_names = TRUE, na = "NA")
     } else {

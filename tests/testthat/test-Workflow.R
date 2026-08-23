@@ -24,10 +24,10 @@ test_that("Workflow list_files returns all matched parsers with tool column", {
 
 test_that("Workflow filter_files + tidy + get_tbls", {
   wf <- Workflow$new(name = "wf1", path = path, tools = tools)
-  wf$filter_files(exclude = "tool1_table5")
+  wf$filter_files(exclude = "tool1_table6")
   wf$tidy()
   tbls <- wf$get_tbls()
-  expect_false("tool1_table5" %in% tbls$tool_parser)
+  expect_false("tool1_table6" %in% tbls$tool_parser)
   expect_true("tool1_table4" %in% tbls$tool_parser)
   expect_named(
     tbls,
@@ -55,7 +55,7 @@ test_that("Workflow get_schemas_raw", {
 
 test_that("Workflow write produces correct outputs and written_files", {
   wf <- Workflow$new(name = "wf1", path = path, tools = tools)
-  wf$filter_files(exclude = "tool1_table5")
+  wf$filter_files(exclude = "tool1_table6")
   wf$tidy()
   out <- withr::local_tempdir()
   wf$write(output_dir = out, format = "parquet", input_id = "run1")
@@ -66,7 +66,7 @@ test_that("Workflow write produces correct outputs and written_files", {
 
 test_that("Workflow get_metadata has correct structure", {
   wf <- Workflow$new(name = "wf1", path = path, tools = tools)
-  wf$filter_files(exclude = "tool1_table5")
+  wf$filter_files(exclude = "tool1_table6")
   wf$tidy()
   out <- withr::local_tempdir()
   wf$write(output_dir = out, format = "parquet", input_id = "run1")
