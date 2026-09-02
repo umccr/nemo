@@ -51,6 +51,15 @@ pr <- function(n) {
 
 ## v0.1.1 (unreleased)
 
+### New features
+
+- `Tool` gains a `flat_tidy_names` field (default `FALSE`). When `TRUE`, a
+  fanned-out (one-file-to-many-tables) sub-table is named `<tool>_<tidy_name>`
+  instead of the concatenated `<tool>_<parser><tidy_name>`, giving flat output
+  names (e.g. `dragenfastqc_posbasecontent`). The default preserves existing
+  behaviour for every tool; `write()` errors if the dropped parser token would
+  let two outputs collide to the same name.
+
 ### Breaking changes
 
 - Removed the `csv-nohead-long` ftype and the associated `table5` fixture from

@@ -161,6 +161,22 @@ test_that("Tool write produces correct outputs and metadata", {
   expect_named(tool$written_files, c("raw_path", "tool_parser", "prefix", "tbl_name", "outpath"))
 })
 
+test_that("flat_tidy_names defaults FALSE and leaves single-table names unchanged", {
+  expect_false(Tool$new(name = name, pkg = pkg, path = path)$flat_tidy_names)
+  base_out <- withr::local_tempdir()
+  flat_out <- withr::local_tempdir()
+  Tool$new(name = name, pkg = pkg, path = path)$filter_files(
+    exclude = "tool1_table6"
+  )$tidy()$write(output_dir = base_out, format = "parquet")
+  tool <- Tool$new(name = name, pkg = pkg, path = path)$filter_files(exclude = "tool1_table6")
+  tool$flat_tidy_names <- TRUE
+  tool$tidy()$write(output_dir = flat_out, format = "parquet")
+  strip <- function(d) sort(grep("^metadata_", list.files(d), value = TRUE, invert = TRUE))
+  # Tool1's tables are single-output (parser == tidy_name), so dropping the parser
+  # token must produce identical <tool>_<tidy_name> names as the default path.
+  expect_equal(strip(flat_out), strip(base_out))
+})
+
 test_that("Tool write with write_metadata = FALSE skips metadata file", {
   out <- withr::local_tempdir()
   Tool$new(name = name, pkg = pkg, path = path)$filter_files(include = "tool1_table1")$tidy()$write(
