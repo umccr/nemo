@@ -275,6 +275,16 @@ Tool <- R6::R6Class(
     #' @field written_files (`tibble()`)\cr
     #' Tibble of files written from `self$write()`.
     written_files = NULL,
+    #' @field flat_tidy_names (`logical(1)`)\cr
+    #' Controls how a fanned-out (one-file-to-many-tables) output is named. When
+    #' `FALSE`, a sub-table's name is the parser table name concatenated
+    #' with its `tidy_name` (e.g. parser `ploidy` + `stats` -> `ploidystats`),
+    #' preserving the existing behaviour for every tool. When `TRUE`, the parser
+    #' token is dropped and the output is named `<tool>_<tidy_name>` directly (e.g.
+    #' `dragenfastqc_posbasecontent`), giving flat, self-sufficient sub-table names.
+    #' Only enable this when a tool's `tidy_name`s are unique across all its outputs
+    #' - `write()` errors if two outputs collide to the same name.
+    flat_tidy_names = FALSE,
     #' @description Create a new Tool object.
     #' @param name (`character(1)`)\cr
     #' Name of tool.
@@ -463,17 +473,37 @@ Tool <- R6::R6Class(
         dplyr::select("raw_path", "tool_parser", "parser", "prefix", "tidy") |>
         tidyr::unnest("tidy", names_sep = "_") |>
         dplyr::mutate(
-          tbl_name = dplyr::if_else(
-            .data$parser == .data$tidy_name,
-            .data$tool_parser,
-            paste0(.data$tool_parser, .data$tidy_name)
-          ),
+          # flat_tidy_names drops the parser token so a fanned-out sub-table is
+          # named <tool>_<tidy_name> directly; otherwise keep the concatenated
+          # <tool>_<parser><tidy_name> form (parser == tidy_name -> just tool_parser).
+          tbl_name = if (isTRUE(self$flat_tidy_names)) {
+            paste0(self$name, "_", .data$tidy_name)
+          } else {
+            dplyr::if_else(
+              .data$parser == .data$tidy_name,
+              .data$tool_parser,
+              paste0(.data$tool_parser, .data$tidy_name)
+            )
+          },
           fpfix = paste(file.path(output_dir, .data$prefix), .data$tbl_name, sep = "_"),
           tidy_data = purrr::pmap(
             list(.data$tidy_data, .data$tidy_name, .data$prefix),
             \(d, nm, pfx) private$prepend_id_cols(d, nm, pfx, input_id, output_id, prefix_include)
           )
         )
+      # Guard against flat_tidy_names silently overwriting: two outputs sharing a
+      # prefix must not reduce to the same table name (the parser token that would
+      # normally disambiguate them has been dropped).
+      if (isTRUE(self$flat_tidy_names)) {
+        dup <- unique(d_write$fpfix[duplicated(d_write$fpfix)])
+        if (length(dup) > 0) {
+          nemo_stop(glue(
+            "flat_tidy_names = TRUE produced duplicate output name(s): ",
+            "{glue::glue_collapse(basename(dup), sep = '; ')}. ",
+            "Sub-table tidy_names must be unique across the tool's outputs."
+          ))
+        }
+      }
       # Write files (side effects kept separate from pure prep above)
       outpaths <- purrr::pmap_chr(
         list(d_write$tidy_data, d_write$fpfix, d_write$tbl_name),
