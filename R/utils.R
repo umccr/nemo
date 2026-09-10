@@ -137,6 +137,7 @@ nemoverse_wf_dispatch <- function(wf) {
   nemo_assert_not_null(wf)
   wfs <- list(
     wigits = list(pkg = "tidywigits", wf = "Wigits", repo = "https://github.com/tidywf/tidywigits"),
+    dragen = list(pkg = "tidydragen", wf = "Dragen", repo = "https://github.com/tidywf/tidydragen"),
     workflow1 = list(pkg = "nemo", wf = "Workflow1", repo = "https://github.com/tidywf/nemo"),
     # basemean is a test/example entry only — not a real workflow
     basemean = list(pkg = "base", wf = "mean", repo = "CRAN")
